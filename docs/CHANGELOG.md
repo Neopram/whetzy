@@ -5,6 +5,22 @@ Versioning: [Semantic Versioning](https://semver.org/)
 
 ---
 
+## [Unreleased] — 2026-10-22 (cierre de filas y ledger)
+
+**ES**
+
+- Filas cerradas con evidencia: 42.2, 42.4, 42.5, 42.6, 42.9, 42.11, 42.12, 39.13, 28.0, 28.3, 46.4.
+- 46.14: las pantallas usan el esqueleto `Loading`, sin «Cargando…» suelto; guarda que lo impide.
+- 24.6: el informe de dominio no se compra con créditos en la app nativa.
+- Ledger: series 44 y 45 (completas) pasan a `LEDGER_HISTORY` §B.
+
+**EN**
+
+- Rows closed with evidence: 42.2, 42.4, 42.5, 42.6, 42.9, 42.11, 42.12, 39.13, 28.0, 28.3, 46.4.
+- 46.14: screens use the `Loading` skeleton, with no stray «Loading…»; a guard enforces it.
+- 24.6: the domain report is not bought with credits in the native app.
+- Ledger: series 44 and 45 (complete) moved to `LEDGER_HISTORY` §B.
+
 ## [Unreleased] — 2026-10-22 (PR unificado y decisiones delegadas)
 
 **ES**

@@ -2949,3 +2949,18 @@ La comparación del §6 del plan con el código (`master` `00e52a5`) dejó en `P
   en Railway cuando vuelvan los builds; es paso del dueño.
 - **H.16** (proteger `master`): la integración de la sesión recibe 403 en la protección de ramas; queda para el
   dueño en Settings → Branches.
+
+## 2026-10-22 — Cierre de filas verificadas y ledger (continuación del PR unificado)
+
+- **Cerradas con evidencia ejecutada** (hash en el ledger): 42.4, 42.5, 42.6, 42.9, 42.11, 42.12, 39.13, 28.0, 28.3, 46.4 y
+  42.2. Cada una tiene su test en rojo antes del arreglo o una mutación de la guarda.
+- **Parciales, con el motivo escrito en su fila:** 42.3 (la traza de los colgados no está probada), 42.10 (Android
+  sin prueba en dispositivo: cola humana), 26.10 (el envío mensual real depende de H.30), 31.6 (ningún gate define
+  `WHETZY_PG_TEST_URL`), 46.14, 24.6, 24.8 y 34.2.
+- **CI de `8435112`:** verde en backend, frontend, e2e, android y Cloudflare Pages. Nivel 2 local: 14 de 14 pasos.
+- **Antes en rojo, ya corregido:** `test_motor_wiring` (cota de `selected_index` solo con opciones), la guarda de
+  instructor que había subido mutada en `cd5f725`, y `offline.spec` (abría la cola de IndexedDB sin versión).
+- **Ledger:** las series 44 y 45 están completas y pasan a `LEDGER_HISTORY` §B; el fichero vuelve a tener margen
+  bajo su límite de 60 KB.
+- **Decisiones de criterio abiertas para el dueño:** si el informe de dominio se compra con créditos en la app
+  nativa (ahora no, `601b5bb`), y el modo claro (34.2).

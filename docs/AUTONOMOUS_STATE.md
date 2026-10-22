@@ -41,14 +41,12 @@
 
 | Serie | Nombre | DONE/Total | % | Abiertas |
 |---|---|---|---|---|
-| 46 | Experiencia avanzada | 11/20 | 55 % | 46.1, 46.3, 46.4, 46.5, 46.6, 46.6a +3 |
-| 45 | Alta con correo | 4/4 | 100 % | — |
-| 44 | Back-office de soporte | 4/4 | 100 % | — |
+| 46 | Experiencia avanzada | 12/20 | 60 % | 46.1, 46.3, 46.5, 46.6, 46.6a, 46.7 +2 |
 | 43 | Flujo del alumno listo para pruebas | 5/8 | 62 % | 43.4, 43.5, 43.6 |
-| 42 | Ultracode: código tras la sincronización | 0/13 | 0 % | 42.1, 42.2, 42.3, 42.4, 42.5, 42.6 +7 |
+| 42 | Ultracode: código tras la sincronización | 7/13 | 54 % | 42.1, 42.3, 42.7, 42.8, 42.10, 42.13 |
 | 41 | Documentación al día con el código | 5/6 | 83 % | 41.3 |
 | 40 | Superar a Brilliant y Kodree donde hoy ganan | 1/13 | 8 % | 40.2, 40.3, 40.4, 40.5, 40.6, 40.7 +6 |
-| 39 | Noche 2026-09-26 — incidente de arranque, deuda de calidad y aprobaci… | 31/41 | 76 % | 39.8, 39.9, 39.10, 39.13, 39.26, 39.27 +2 |
+| 39 | Noche 2026-09-26 — incidente de arranque, deuda de calidad y aprobaci… | 32/41 | 78 % | 39.8, 39.9, 39.10, 39.26, 39.27, 39.33 +1 |
 | 38 | Negocio medible — KPIs, pilotos B2B, instructores, afiliados | 6/6 | 100 % | — |
 | 37 | Catálogo uniforme 32 × 10, simulacros reservados y prioridad por dema… | 7/23 | 30 % | 37.1, 37.4, 37.5, 37.6, 37.7, 37.8 +10 |
 | 35 | Lo que el mercado enseña: competencia verificada → producto | 4/5 | 80 % | 35.6 |
@@ -58,7 +56,7 @@
 | 31 | Fuente única de cifras, staging y migraciones con datos | 3/7 | 50 % | 31.1, 31.5, 31.6, 31.8 |
 | 30 | Integridad del despliegue — incidente de login del 2026-09-24 | 3/4 | 75 % | 30.2 |
 | 29 | Economía cerrada y rails — créditos, referidos, códigos, USDC, creden… | 7/8 | 88 % | 29.9 |
-| 28 | Marketplace de instructores | 2/9 | 22 % | 28.0, 28.1, 28.3, 28.4, 28.5, 28.7 +1 |
+| 28 | Marketplace de instructores | 4/9 | 44 % | 28.1, 28.4, 28.5, 28.7, 28.8 |
 | 27 | Distribución masiva EN | 0/11 | 0 % | 27.0, 27.1, 27.2, 27.3, 27.4, 27.5 +5 |
 | 26 | Distribución masiva ES | 0/11 | 0 % | 26.0, 26.1, 26.2, 26.3, 26.4, 26.5 +5 |
 | 24 | Interfaz que venda al verse — UI/UX + competencia en vivo + vídeo | 1/9 | 11 % | 24.0, 24.1, 24.2, 24.3, 24.4, 24.6 +2 |
@@ -226,9 +224,9 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 24.2 | **1** | **Landing que vende** (`/es`, `/en`; absorbe 19.8 y 23.2): hero con el… | **PARCIAL** | Lighthouse (preview): perf 77-89, a11y 94. LCP 3965-4392ms, falla presupuesto 2500ms. Falta: demo 3 preguntas, remedir en prod, copy/A-B del dueño → §I |
 | 24.3 | **1** | **Onboarding rediseñado**: 3 preguntas de segmento (`SEGMENTOS.md` §«Cómo… | **PARCIAL** | 2026-10-16: el alta lleva a la primera lección (D-20, #188; e2e en #220). Falta abandono por paso en admin (22.1) → §T |
 | 24.4 | **1** | **Dashboard con el motor visible**: mapa de dominio por skill (BKT como… | **PARCIAL** | 2026-10-16: bandas con evidencia en Hoy y Preparación (#189); el Elo solo en DEV (#205, ADR-60) sustituye a «Elo visible». Falta fuente por número → §T |
-| 24.6 | **2** | **Gamificación original + wallet de créditos**: racha con identidad… | **PARCIAL** | **PARCIAL** (2026-09-25) → §I |
+| 24.6 | **2** | **Gamificación original + wallet de créditos**: racha con identidad… | PARCIAL `601b5bb`: canje e informe en nativo ocultos | saldo = ledger y e2e; decisión del dueño sobre el informe |
 | 24.7 | **2** | Panel de certificación: readiness por dominio (18.1), simu… | **DONE** | → §T |
-| 24.8 | **2** | **Perfil público** `/u/<handle>` (opt-in): dominio verificado,… | **PARCIAL** | 2026-10-16: sin enlace a `/project` (#207) y CSS en módulo (#223); sigue tras `PUBLIC_PROFILES_ENABLED=False` → §T |
+| 24.8 | **2** | **Perfil público** `/u/<handle>` (opt-in): dominio verificado,… | PARCIAL `0e26ec4`, `bbe8ded` (`/u/*` noindex) | e2e; imagen OG (fuera de alcance) |
 | 24.9 | **2** | Panel B2B (`SEGMENTOS.md` segmento 5): progreso por empleado, tiem… |  | → §I (criterio archivado por 20.10) |
 
 #### Dependencias
@@ -266,7 +264,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 26.7 | **4** | Perfiles en comunidades ES: Python Argentina Discord, Dev En Españ… | HUMAN-BLOCKED (H.23: perfiles… |  |
 | 26.8 | **4** | Superteam LATAM (México, Argentina, Brasil) como canal (ADR-38): p… |  | → §I (criterio archivado por 20.10) |
 | 26.9 | **3** | Blog `/blog` ES/EN (SEO orgánico, `archive/SPEC_WEB.md:152`): Mark… | **PARCIAL** | `3497429` (#93) → §S |
-| 26.10 | **3** | Newsletter (`archive/EXECUTION_PLAN_25-29.md:87`): alta con doble… |  | → §I (criterio archivado por 20.10) |
+| 26.10 | **3** | Newsletter (`archive/EXECUTION_PLAN_25-29.md:87`): alta con doble… | PARCIAL `2975cb2`: envío real depende de H.30 | proveedor de correo (H.30) |
 
 ### 27. Distribución masiva EN (ADR-27; spec `DISTRIBUCION.md`)
 
@@ -296,10 +294,10 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
-| 28.0 | **4** | Schema DB: `instructor_profiles`, `marketplace_courses`,… | **PARCIAL** | **PARCIAL** (2026-09-25) → §I |
+| 28.0 | **4** | Schema DB: `instructor_profiles`, `marketplace_courses`,… | DONE `2975cb2` | `test_esquema_instructor.py` 18 passed |
 | 28.1 | **4** | API: CRUD cursos instructor, upload contenido JSON, preview; códig… | **PARCIAL** | **PARCIAL** (2026-09-25) → §I |
 | 28.2 | **4** | Quality gate pipeline para instructores… | **DONE** | → §T |
-| 28.3 | **4** | Panel instructor — React: dashboard revenue, cursos, métricas por… | **PARCIAL** — Verificado 2026-09-25 contra el… | → §I (criterio archivado por 20.10) |
+| 28.3 | **4** | Panel instructor — React: dashboard revenue, cursos, métricas por… | DONE `8435112` (guarda backend y frontend, mutada) | 403 sin `can_create_courses` |
 | 28.4 | **4** | Marketplace público: catálogo con filtros, ratings, preview de pri… | **PARCIAL** — Verificado 2026-09-25… | → §I (criterio archivado por 20.10) |
 | 28.5 | **4** | Checkout cursos de instructor: Stripe/Paddle, split automático 70/30 | **PARCIAL** — Verificado 2026-09-25 contra el… | → §I (criterio archivado por 20.10) |
 | 28.7 | **4** | Payouts mensuales: job día 15 de cada mes, mínimo $50; rail elegid… | **PARCIAL** | **PARCIAL** (2026-09-25) → §I |
@@ -347,7 +345,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 31.1 | **0** | Staging: un preview de Cloudflare Pages y un servicio de Railway d… | HUMAN-BLOCKED… | 2026-09-30: #34 fusiona 2 migraciones directo contra producción sin ensayarlas ahí — sin staging, cada fusión repite ese riesgo |
 | 31.4 | **0** | Migración sin datos dejó sin preguntas a los usuarios con… | **DONE** | `1225a29` → §T |
 | 31.5 | **0** | Regla del dueño 2026-09-30: PRs pequeños (veto a analítica levantado, ADR-68) | DOING | mismo texto en `ORCHESTRATOR.md` |
-| 31.6 | **2** | Tests de analítica sobre Postgres real, no solo SQLite — D1/D7/CUR… | TODO | `test_product_metrics.py` también contra Postgres real, en verde |
+| 31.6 | **2** | Tests de analítica sobre Postgres real, no solo SQLite — D1/D7/CUR… | PARCIAL: 48 passed con `WHETZY_PG_TEST_URL`; ningún gate la define | variable en un gate de CI |
 | 31.7 | **0** | Pausa de sesiones autónomas y cierre, 2026-09-30 →… | **DONE** | → §T |
 | 31.8 | **0** | Lanzamiento piloto (prompt del dueño 2026-10-01): kit… | PARCIAL | kit escrito; invitar, día 4 y recuento = dueño |
 | 31.9 | **0** | 229 ejecutables gratis o imposibles reparados; corrige el… | **DONE** | → §T |
@@ -489,7 +487,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 39.10 | **3** | Mapa de tracks con rutas y recomendación | TODO | vitest + e2e, ES/EN, a11y |
 | 39.11 | **2** | Límite de gasto de Groq por usuario y global | DONE | → §M |
 | 39.12 | **3** | LLM de respaldo (ADR-50f) | DONE | → §M |
-| 39.13 | **3** | Emails de re-enganche (ADR-50g) | TODO | Flag apagado, baja en un clic, tests |
+| 39.13 | **3** | Emails de re-enganche (ADR-50g) | DONE `2975cb2` | flag apagado, baja en un clic, tests |
 | 39.14 | **3** | Plantilla de lección con formato (ADR-50d) | **DONE** | `4e8d941` → §T |
 | 39.15 | **1** | Fichero `LICENSE` (ADR-50e) | DONE | → §M |
 | 39.25 | **1** | MLA-C01 retirado: ampliar track43 sin reestructurar | **DONE** | `a6fe453` → §T |
@@ -541,17 +539,17 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | ID | PRI | Tarea | Estado | Criterio de aceptación |
 |---|---|---|---|---|
 | 42.1 | **0** | Prueba de nivel: estimador EAP con prior | PARCIAL (EAP hecho, #219; la siembra pasa a 43.3) | test rojo antes y verde después; simulación de la parada por SE adjunta |
-| 42.2 | **0** | Puerta E2E: origen 5199, paso e2e en `ci_local.sh`, guarda de contrato | PARCIAL (5199 hecho, #220; falta el paso y la guarda) | `npx playwright test` sin rojos; paso en `ci_local.sh` |
-| 42.3 | **1** | E2E: specs desfasados y `/auth` colgado | PARCIAL (54/56, #217 y #220) | 2 saltados con causa; traza de los colgados |
-| 42.4 | **1** | Duelos 3a: 202 ≠ «Perdiste», feedback, opt-out, cotas, desempate, copy | TODO (tras 41.6) | tests rojos antes (202, opt-out, cota) y verdes después |
-| 42.5 | **1** | Duelos 3b: el retador reanuda; caducidad | TODO (tras 42.4 y H.52) | reanudación y tercero rechazado con test |
-| 42.6 | **1** | Readiness sobre todas las skills del dominio; una definición de do… | TODO (se hace dentro de 43.4) | test de cobertura rojo antes; guarda de literales |
+| 42.2 | **0** | Puerta E2E: origen 5199, paso e2e en `ci_local.sh`, guarda de contrato | DONE `b00bb2e`, `8435112` (e2e verde en CI) | `test_e2e_cors_contract.py` 2 passed; CI e2e success |
+| 42.3 | **1** | E2E: specs desfasados y `/auth` colgado | PARCIAL: 0 saltados en CI `8435112` | traza de los colgados (no probada) |
+| 42.4 | **1** | Duelos 3a: 202 ≠ «Perdiste», feedback, opt-out, cotas, desempate, copy | DONE `fd82efc`, `8435112` | `test_duels.py` 42 passed; 11 rojos con el código anterior |
+| 42.5 | **1** | Duelos 3b: el retador reanuda; caducidad | DONE `fd82efc`, `8435112` (H.52 decidido, ADR-69 #6) | reanudación y tercero rechazado con test |
+| 42.6 | **1** | Readiness sobre todas las skills del dominio; una definición de do… | DONE `fd82efc` (`app/core/mastery.py`) | guarda de literales en `app/` (mutada) |
 | 42.7 | **1** | `exam_pass_predictor`: retirar o conectar tras bandera | TODO (tras H.53) | sin importadores en `backend/app`, o endpoint con test |
 | 42.8 | **1** | Prior del onboarding y siembra con encogimiento | BLOCKED (sustituida por 43.3: siembra por módulo, ADR-65 D4) | 1/1 deja de dar 0,94; prior por experiencia con test |
-| 42.9 | **1** | Evidencia por fuente: función única y contadores | TODO (tras 42.8) | `test_evidence_policy.py`; migración con datos OK |
-| 42.10 | **2** | Historial de pantallas; atrás de Android | PARCIAL (`pushState`, #218; falta Android) | unit + e2e de pila; Android en cola humana |
-| 42.11 | **1** | Offline: la cola no se vacía hasta confirmar; `declaredUnknown` | TODO | red caída en `flush` conserva la cola; test rojo antes |
-| 42.12 | **2** | Blueprint mínimo en `Track` (`code`, `exam_guide`, versión) | TODO | loader persiste; migración con datos; `content/` sin cambios |
+| 42.9 | **1** | Evidencia por fuente: función única y contadores | DONE `fd82efc` | `test_evidence_policy.py`; migración probada en Postgres con datos |
+| 42.10 | **2** | Historial de pantallas; atrás de Android | PARCIAL (`pushState`, #218; Android sin probar) | prueba en dispositivo Android (cola humana) |
+| 42.11 | **1** | Offline: la cola no se vacía hasta confirmar; `declaredUnknown` | DONE `9e8f018`, `64c721b` | red caída en `flush` conserva la cola; test rojo antes |
+| 42.12 | **2** | Blueprint mínimo en `Track` (`code`, `exam_guide`, versión) | DONE `fd82efc` | loader persiste; migración con datos; `content/` sin cambios |
 | 42.13 | **2** | Higiene: retirar `getPricingPlans`; jurisdicción según H.54 | TODO (tras H.54) | sin usos; test de precios visibles |
 
 ### 43. Flujo del alumno listo para pruebas (anexo del dueño 2026-10-17; `PLAN_FLUJO_ALUMNO.md`; ADR-65)
@@ -569,27 +567,9 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 43.7 | **1** | Playground contextual desde la lección… | DONE — #238 → §T (6) | → §T (6) |
 | 43.8 | **0** | Puerta «lista para pruebas»:… | DONE — #239 → §T (6) | → §T (6) |
 
-### 44. Back-office de soporte (plan del dueño 2026-10-17; `PLAN_BACKOFFICE.md`)
+### Serie 44 — Back-office de soporte (4/4 DONE; detalle en LEDGER_HISTORY §B)
 
-> **Estado:** `ABIERTA`. **PRI:** 0. Tras cerrar la 43 (43.8 en verde) **y la 45**, y antes del resto de la 42. Una rama y un PR por fila.
-
-| ID | PRI | Tarea | Estado | Criterio de aceptación |
-|---|---|---|---|---|
-| 44.1 | **0** | `GET /admin/users?q=` y `/admin/users/{id}`; tabla `admin_action_log`; registro de `view`; exige 2FA (B7) | DONE — #282 `6e631b7`, §7 10-21 | no-owner 403; owner sin 2FA 403; `q` de 2 caracteres 422; ficha crea fila `view`; email enmascarado |
-| 44.2 | **0** | `POST /admin/users/{id}/actions/{accion}`: las cinco acciones de B4, con motivo y fila en el registro | DONE — #283 `086f802`, §7 10-21 | un test por acción; motivo vacío 422; plan regalado > 90 días 422; suspender invalida la sesión |
-| 44.3 | **0** | Pestañas «Usuarios» y «Registro» en `AdminScreen`; i18n ES/EN | DONE — #284 `086f802`, §7 10-21 | vitest de búsqueda, ficha y acción; e2e `admin.spec.ts`; un alumno no ve la pestaña |
-| 44.4 | **1** | Docs de soporte (MAPA_PRODUCTO, ARCHITECTURE, RUNBOOK) y «queda registrado» en `legal.privacySupportAccess` | DONE — #285 `086f802`, §7 10-21 | `check_docs.py` verde |
-
-### 45. Alta con correo (plan del dueño 2026-10-17; `PLAN_CORREO_ALTA.md`; ADR-66)
-
-> **Estado:** `HECHA` (4/4 en `master`). **PRI:** 0.
-
-| ID | PRI | Tarea | Estado | Criterio de aceptación |
-|---|---|---|---|---|
-| 45.1 | **0** | E1, E6: idioma del alta (`?lang` →… | DONE — #242 → §T (6) | → §T (6) |
-| 45.2 | **0** | E2: un solo correo al registrarse (ver… | DONE — #243 → §T (6) | → §T (6) |
-| 45.3 | **0** | E4: franja «verifica tu correo» con Re… | DONE — #244 → §T (6) | → §T (6) |
-| 45.4 | **0** | E5: `VerifyEmailPage` con `lang`, «Con… | DONE — #246 → §T (6) | → §T (6) |
+### Serie 45 — Alta con correo (4/4 DONE; detalle en LEDGER_HISTORY §B)
 
 ### 46. Experiencia avanzada (dueño 2026-10-18; `PLAN_UI_AVANZADA.md`, #245)
 
@@ -603,7 +583,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 46.2 | **1** | `feedbackFx.ts`: bus, sonido, vibración | DONE — #263 `0449034`, §7 10-19 | plan §6.0–6.1 |
 | 46.2b | **2** | `@capacitor/haptics` | DONE — #276 `00e52a5`, §7 10-20 | PR propio (ADR-67 D4) |
 | 46.3 | **1** | Estados vacíos y momentos de Home | DOING — #264, #267, #272; falta e2e de misión | plan §2 y §6.2 |
-| 46.4 | **2** | Un solo sistema de tokens | TODO | 0 `var(--color-` |
+| 46.4 | **2** | Un solo sistema de tokens | DONE `4393460` | 0 `var(--color-`; 0 variables sin definir |
 | 46.5 | **2** | Regresión visual en nivel 2 | TODO | rojo al mutar un token |
 | 46.6 | **2** | Medición y re-puntuación | TODO | tabla con evidencia |
 | 46.7 | **1** | Resumen y ceremonias | DOING — #269, #273, #288; falta e2e nivel 4 | plan §6.4 |
@@ -614,7 +594,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 46.11 | **1** | Llama de racha en 3 tamaños + escudo | DONE — #290, §7 10-21 | plan §7.3 |
 | 46.12 | **1** | Home: contadores y banda con `AnimatePresence` | DONE — #291, §7 10-21 | plan §7.3 |
 | 46.13 | **2** | Liga y Preparación escalonadas | DONE — #292, §7 10-21 | plan §7.3 |
-| 46.14 | **1** | Transiciones de ruta y esqueletos de carga | DOING — #293, #295; faltan Estado y Landing (§7.4) | plan §7.4 |
+| 46.14 | **1** | Transiciones de ruta y esqueletos de carga | PARCIAL `601b5bb`: sin spinner «Cargando…» en pantallas | e2e de esqueletos fuera de Stats |
 | 46.15 | **2** | Movimiento en las 27 pantallas sin él | DOING — #295–#299; falta tabla §7.5 y check en Restablecer | plan §7.5 |
 | 46.16 | **2** | Tokens de movimiento y guarda | DONE — #294, §7 10-21 | plan §7.6 |
 
@@ -654,7 +634,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | H.47 | ¿Mantener el correo personal del dueño como contacto en la página pública `/evidence` (`EvidenceScreen.tsx:340`)? Por defecto (ADR-47) se deja y se propone un alias tipo `support@whetzy.com` | Dueño |
 | H.50 | Descarga del corpus (`scripts/corpus/`) en el setup script del entorno cloud, para que `corpus/` exista en cada sesión de autoría (ADR-59, `PLAN_CONTENIDO.md` §3) | Dueño |
 | H.51 | Firmar ADR-63 (evidencia por fuente) y los valores del prior. Recomendado: 0,10/0,20/0,30; k = 4; puerta de 7 solo con práctica | Dueño |
-| H.52 | Duelos: opt-out de ligas ⇒ no retar ni ser retado; caducidad a 7 días; sin XP; desempate por tiempo de servidor. El copy ya dice «por turnos» | Dueño |
+| H.52 | Duelos: opt-out de ligas ⇒ no retar ni ser retado; caducidad a 7 días; sin XP; desempate por tiempo de servidor. El copy ya dice «por turnos» | DECIDIDO por delegación (ADR-69 #6, 2026-10-22) |
 | H.53 | `exam_pass_predictor` (sin importadores en `backend/app`): retirarlo a `ml/` (recomendado) o conectarlo tras una bandera | Dueño |
 | H.54 | ADR-61 (transcrito del #89): ¿es fiel? Y la jurisdicción: §22 dice Chipre, pero `payment_service.py:22` sigue en Grecia. Recomendado: confirmar Chipre y tocar el código al constituir la entidad | Dueño |
 | H.55 | Deuda de contenido de estudio: 12.037 preguntas frente a 730 lecciones y 1.058 términos. Opciones: lecciones largas, ejemplos resueltos, laboratorios guiados; reabre «1 lección por skill» (ADR-54). Sin diseño | Dueño |
