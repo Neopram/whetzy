@@ -27,6 +27,10 @@ interface UserProfile {
   grantedUntil: string | null;
   /** Recibir correos de ofertas (la baja se hace desde Ajustes o desde el correo). */
   marketingEmails: boolean;
+  /** 24.8: perfil público activado por la persona (privado por defecto). */
+  publicProfileOptIn: boolean;
+  /** 24.8: el servidor permite perfiles públicos; sin esto no se ve el interruptor. */
+  publicProfilesEnabled: boolean;
   /** «Instructor» en Perfil: solo creadores (plan Creador, dueño o admin). */
   canCreateCourses: boolean;
   /** «Admin» en Perfil: solo el dueño. `/auth/me` no mandaba `is_admin`, así
@@ -192,6 +196,8 @@ function mapApiUser(u: UserRead): UserProfile {
     grantedTier: u.granted_tier ?? null,
     grantedUntil: u.granted_tier_expires_at ?? null,
     marketingEmails: !u.marketing_emails_opt_out,
+    publicProfileOptIn: u.public_profile_opt_in ?? false,
+    publicProfilesEnabled: u.public_profiles_enabled ?? false,
     canCreateCourses: u.can_create_courses ?? false,
     isOwner: u.is_owner ?? false,
     tutorDeepAccess: u.tutor_deep_access ?? false,
@@ -227,6 +233,8 @@ const defaultUser: UserProfile = {
   grantedTier: null,
   grantedUntil: null,
   marketingEmails: true,
+  publicProfileOptIn: false,
+  publicProfilesEnabled: false,
   canCreateCourses: false,
   isOwner: false,
   tutorDeepAccess: false,

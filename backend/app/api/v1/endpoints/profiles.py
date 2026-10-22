@@ -3,10 +3,9 @@
 Antes, la pantalla de perfil público del frontend mostraba datos
 100% inventados ("Carlos Pérez", certificados y Elo de ejemplo) para
 cualquier `username` -- nunca llamaba a ningún endpoint. Este es real o 404:
-sin columna de privacidad todavía (otra migración; la 54 -- S.4 -- no está
-en master, una a la vez), cualquier `username` existente y activo es
-visible, igual que ya lo es un certificado por su código
-(`GET /exams/certificates/{code}`), también sin autenticación.
+privado por defecto (24.8): solo se publica si el flag global
+`PUBLIC_PROFILES_ENABLED` está encendido Y la persona activó
+`User.public_profile_opt_in`. En cualquier otro caso, el mismo 404.
 """
 
 from __future__ import annotations
@@ -37,11 +36,19 @@ async def get_public_profile(
     response: Response,
     db: AsyncSession = Depends(get_db),
 ) -> PublicProfileRead:
-    if not settings.PUBLIC_PROFILES_ENABLED:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Profile not found")
-    user = (
-        await db.scalars(select(User).where(User.username == username, User.is_active.is_(True)))
-    ).first()
+    # 24.8: privado por defecto. Flag global apagado, cuenta inexistente, inactiva
+    # o sin opt-in dan el MISMO 404: no se revela si la cuenta existe.
+    user = None
+    if settings.PUBLIC_PROFILES_ENABLED:
+        user = (
+            await db.scalars(
+                select(User).where(
+                    User.username == username,
+                    User.is_active.is_(True),
+                    User.public_profile_opt_in.is_(True),
+                )
+            )
+        ).first()
     if user is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Profile not found")
 

@@ -96,6 +96,10 @@ class UserRead(UserBase):
     email_verified: bool = False
     # Correos de ofertas (reactivación): False si el usuario se dio de baja.
     marketing_emails_opt_out: bool = False
+    # 24.8: la persona publicó su perfil (privado por defecto) y si el servidor
+    # permite perfiles públicos (flag global); sin lo segundo no se ofrece el interruptor.
+    public_profile_opt_in: bool = False
+    public_profiles_enabled: bool = False
     onboarding_experience: int | None = None
     onboarding_goal: int | None = None
     onboarding_weekly_time: int | None = None

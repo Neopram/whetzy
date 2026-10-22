@@ -218,6 +218,10 @@ describe('public/_headers', () => {
   const csp = (rule: string) =>
     (rules.get(rule) ?? []).find((h) => h.startsWith('Content-Security-Policy:')) ?? '';
 
+  it('/u/* no se indexa mientras los perfiles públicos estén apagados (24.8)', () => {
+    expect(rules.get('/u/*')).toContain('X-Robots-Tag: noindex');
+  });
+
   it('el resto del sitio no deja entrar a Paddle y conserva COEP', () => {
     expect(csp('/*')).not.toContain('paddle');
     expect(rules.get('/*')).toContain('Cross-Origin-Embedder-Policy: credentialless');
