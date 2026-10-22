@@ -9,6 +9,7 @@ from sqlalchemy import ColumnElement, func, select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.core.mastery import mastered_clause
 from app.models.economy import Referral
 from app.models.gamification import Badge, League, LeagueEntry, Mission, UserMission
 from app.models.session import Response, StudySession
@@ -24,7 +25,6 @@ from app.schemas.gamification import (
     UserMissionRead,
 )
 from app.services.blocklist import blocked_user_ids
-from app.services.engine.domain_thresholds import mastered_clause
 
 PROMOTION_ZONE_SIZE = 5
 DEMOTION_ZONE_SIZE = 5

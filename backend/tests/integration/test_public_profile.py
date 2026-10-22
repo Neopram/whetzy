@@ -87,7 +87,11 @@ async def test_mastery_and_skills_mastered_reflect_real_skill_states(
 ) -> None:
     user = await _user(db_session)
     db_session.add_all([
-        UserSkillState(user_id=user.id, skill_id=content_seed["skill_id"], p_known=0.98),
+        # 42.6: dominada pide también 7 respuestas de práctica (ADR-63 §3).
+        UserSkillState(
+            user_id=user.id, skill_id=content_seed["skill_id"], p_known=0.98,
+            attempts=7, practice_attempts=7,
+        ),
     ])
     await db_session.commit()
 

@@ -24,31 +24,28 @@ literal shows up in a motor file outside this one.
 (2026-10-22); it now asks `is_mastered`, like progress.
 
 42.6 / ADR-63 §3: there is ONE definition of a mastered skill, `is_mastered`
-below — mastery at or above the threshold AND `MIN_EVIDENCE_ANSWERS` practice
-answers. A duel, a test-out or the placement test move `p_known` but never
+— mastery at or above the threshold AND `MIN_EVIDENCE_ANSWERS` practice
+answers. It lives in `app/core/mastery.py`, below the motor and gamification,
+and is re-exported here. A duel, a test-out or the placement test move `p_known` but never
 count as that evidence (`evidence_policy.py`).
 """
 
 from __future__ import annotations
 
-from typing import Any
-
-from sqlalchemy import ColumnElement, and_
-
 from app.core.config import settings
+from app.core.mastery import (  # re-exported: the motor's names for the shared definition
+    MASTERY_THRESHOLD,
+    MIN_EVIDENCE_ANSWERS,
+    is_mastered,
+    mastered_clause,
+)
 
-MASTERY_THRESHOLD: float = settings.MASTERY_THRESHOLD
 DEFAULT_MODULE_UNLOCK_MASTERY: float = settings.DEFAULT_MODULE_UNLOCK_MASTERY
-MIN_EVIDENCE_ANSWERS: int = settings.MIN_EVIDENCE_ANSWERS
 
-
-def is_mastered(p_known: float, practice_attempts: int) -> bool:
-    return p_known >= MASTERY_THRESHOLD and practice_attempts >= MIN_EVIDENCE_ANSWERS
-
-
-def mastered_clause(state: Any) -> ColumnElement[bool]:
-    """`is_mastered` as a SQL condition on `UserSkillState` (or an alias of it)."""
-    return and_(
-        state.p_known >= MASTERY_THRESHOLD,
-        state.practice_attempts >= MIN_EVIDENCE_ANSWERS,
-    )
+__all__ = [
+    "DEFAULT_MODULE_UNLOCK_MASTERY",
+    "MASTERY_THRESHOLD",
+    "MIN_EVIDENCE_ANSWERS",
+    "is_mastered",
+    "mastered_clause",
+]

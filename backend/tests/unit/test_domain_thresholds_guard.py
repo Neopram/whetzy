@@ -157,8 +157,11 @@ def _mastered_check_violations(path: Path) -> list[str]:
     return found
 
 
+SHARED_DEFINITION = APP_DIR / "core" / "mastery.py"
+
+
 def test_mastered_is_decided_in_one_place() -> None:
-    files = [p for p in APP_DIR.rglob("*.py") if p != CANONICAL_FILE]
+    files = [p for p in APP_DIR.rglob("*.py") if p not in (CANONICAL_FILE, SHARED_DEFINITION)]
     violations = [v for path in files for v in _mastered_check_violations(path)]
     assert violations == [], (
         "a mastery value is compared with the threshold outside domain_thresholds.py; "
