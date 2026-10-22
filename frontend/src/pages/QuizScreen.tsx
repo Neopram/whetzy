@@ -3,7 +3,7 @@ import { motion, useReducedMotion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { Player } from '@lottiefiles/react-lottie-player';
 import { useAppStore } from '../stores/useAppStore';
-import { quiz as quizApi, progress as progressApi, gamification, isQuotaError, type ServerFxEvent, type GlossaryTerm, type QuestionPublic, type QuizAnswerResponse, type QuizEndResponse, type SelectionReason, type SkillMasteryDetail, type AnswerEvidence } from '../services/api';
+import { ApiError, quiz as quizApi, progress as progressApi, gamification, isQuotaError, type ServerFxEvent, type GlossaryTerm, type QuestionPublic, type QuizAnswerResponse, type QuizEndResponse, type SelectionReason, type SkillMasteryDetail, type AnswerEvidence } from '../services/api';
 import { enqueue, offlineEventId } from '../services/offlineQueue';
 import { Button } from '../components/common/Button';
 import { ProgressBar } from '../components/common/ProgressBar';
@@ -275,7 +275,11 @@ export function QuizScreen() {
           showToast(t('quiz.incorrect'), 'error');
         }
       } catch (e) {
-        const isNetworkError = !navigator.onLine || (e instanceof TypeError);
+        // 42.11: `request()` convierte el fallo de `fetch` en un `ApiError` con
+        // `status` null, nunca en `TypeError`; sin mirarlo, con el navegador
+        // «en línea» y la red caída (o un 502 de deploy) la respuesta se perdía.
+        const isNetworkError =
+          !navigator.onLine || e instanceof TypeError || (e instanceof ApiError && e.esTransitorio);
         if (isNetworkError && sessionId && question) {
           await enqueue({
             id: offlineEventId(),
