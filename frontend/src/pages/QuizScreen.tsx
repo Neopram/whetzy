@@ -284,6 +284,7 @@ export function QuizScreen() {
             selectedIndex,
             responseTimeMs: rt,
             timestamp: Date.now(),
+            declaredUnknown,
             ...evidence,
           });
           setFeedback({

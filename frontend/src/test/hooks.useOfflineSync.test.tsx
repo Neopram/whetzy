@@ -8,11 +8,14 @@ import { useOfflineSync } from '../hooks/useOfflineSync';
 
 // Mock the services this hook depends on
 vi.mock('../services/offlineQueue', () => ({
-  dequeueAll: vi.fn().mockResolvedValue([]),
+  peekAll: vi.fn().mockResolvedValue([]),
+  remove: vi.fn().mockResolvedValue(undefined),
+  discard: vi.fn().mockResolvedValue(undefined),
   pendingCount: vi.fn().mockResolvedValue(0),
 }));
 
 vi.mock('../services/api', () => ({
+  ApiError: class ApiError extends Error {},
   quiz: {
     answer: vi.fn().mockResolvedValue({}),
   },
@@ -23,7 +26,7 @@ import * as offlineQueue from '../services/offlineQueue';
 describe('useOfflineSync', () => {
   beforeEach(() => {
     vi.mocked(offlineQueue.pendingCount).mockResolvedValue(0);
-    vi.mocked(offlineQueue.dequeueAll).mockResolvedValue([]);
+    vi.mocked(offlineQueue.peekAll).mockResolvedValue([]);
   });
 
   afterEach(() => vi.clearAllMocks());
@@ -56,7 +59,7 @@ describe('useOfflineSync', () => {
   });
 
   it('goes online and flushes queue when "online" event fires', async () => {
-    vi.mocked(offlineQueue.dequeueAll).mockResolvedValue([
+    vi.mocked(offlineQueue.peekAll).mockResolvedValue([
       { id: 'a1', sessionId: 's1', questionId: 'q1', selectedIndex: 0, responseTimeMs: 500, timestamp: 1 },
     ]);
     const { result } = renderHook(() => useOfflineSync());
@@ -65,7 +68,8 @@ describe('useOfflineSync', () => {
     });
     await waitFor(() => expect(result.current.isOnline).toBe(true));
     await waitFor(() => expect(result.current.isSyncing).toBe(false));
-    // After flush, pending should be 0
+    // Confirmed by the server → removed; pending comes from pendingCount()
+    expect(offlineQueue.remove).toHaveBeenCalledWith('a1');
     expect(result.current.pendingAnswers).toBe(0);
   });
 
