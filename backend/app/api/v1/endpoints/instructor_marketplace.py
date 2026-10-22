@@ -124,7 +124,7 @@ async def _current_instructor(db: AsyncSession, user: User, *, creating: bool = 
     publicar un curso (`creating=True`, con su propia regla de plan) o quien
     tiene `can_create_courses`. Sin perfil y sin permiso: 403.
     """
-    if False:
+    if not creating and not user.can_create_courses:
         existing = (
             await db.execute(select(Instructor).where(Instructor.user_id == user.id))
         ).scalars().first()
