@@ -58,6 +58,11 @@ const SSR_OUT_DIR = resolve(ROOT, 'dist-ssr'); // already in .gitignore
 const DIST_DIR = resolve(ROOT, 'dist');
 const LANDING_ENTRY = resolve(ROOT, 'src/entry-server/landingEntry.tsx');
 const LANDING_SRC_KEY = 'src/pages/LandingScreen.tsx'; // manifest key, i.e. the source module path
+const LEGAL_SRC_KEY = 'src/pages/LegalScreen.tsx';
+// Las tres páginas legales (2026-10-21): misma técnica que la landing, una carpeta por ruta.
+// `/terms` → dist/terms/index.html, que Cloudflare Pages sirve antes que el `/* /index.html 200`.
+const LEGAL_DOCS = ['terms', 'privacy', 'refund'];
+const LEGAL_MARKERS = { terms: 'Términos de Servicio', privacy: 'Política de Privacidad', refund: 'Política de reembolsos' };
 const ROOT_MARKER = '<div id="root"></div>';
 const HEAD_CLOSE = '</head>';
 
@@ -82,6 +87,11 @@ async function buildSsrBundle() {
  * emitted for LandingScreen.tsx's own route-level chunk (not the shared/global
  * CSS, which is already linked in dist/index.html). */
 async function readLandingCssHrefs() {
+  return readRouteCssHrefs(LANDING_SRC_KEY, 'LandingScreen');
+}
+
+/** El CSS de la ruta perezosa de `srcKey`, por el manifiesto (cambia de hash en cada build). */
+async function readRouteCssHrefs(srcKey, nameHint) {
   const manifestPath = resolve(DIST_DIR, '.vite/manifest.json');
   if (!existsSync(manifestPath)) {
     throw new Error(
@@ -89,12 +99,12 @@ async function readLandingCssHrefs() {
     );
   }
   const manifest = JSON.parse(await readFile(manifestPath, 'utf-8'));
-  const entry = manifest[LANDING_SRC_KEY];
-  
+  const entry = manifest[srcKey];
+
   let cssFiles = entry?.css ?? [];
   if (cssFiles.length === 0) {
     for (const key of Object.keys(manifest)) {
-      if (key.includes('LandingScreen') && manifest[key].file?.endsWith('.css')) {
+      if (key.includes(nameHint) && manifest[key].file?.endsWith('.css')) {
         cssFiles.push(manifest[key].file);
       }
     }
@@ -116,7 +126,7 @@ async function main() {
     throw new Error('[prerender-landing] LandingScreen manifest entry has no CSS — expected LandingScreen.css to produce one');
   }
 
-  const { renderLandingHtml } = await import(pathToFileURL(entryPath).href);
+  const { renderLandingHtml, renderLegalHtml } = await import(pathToFileURL(entryPath).href);
   const heroHtml = renderLandingHtml();
 
   if (!heroHtml.includes('data-lcp="hero"')) {
@@ -149,6 +159,22 @@ async function main() {
   await writeFile(resolve(landingDir, 'index.html'), landingHtml, 'utf-8');
 
   console.log(`[prerender-landing] wrote dist/landing/index.html (+ ${cssHrefs.join(', ')})`);
+
+  const legalCss = await readRouteCssHrefs(LEGAL_SRC_KEY, 'LegalScreen');
+  const legalLinks = legalCss.map((href) => `<link rel="stylesheet" crossorigin href="${href}">`).join('');
+  for (const doc of LEGAL_DOCS) {
+    const body = renderLegalHtml(doc);
+    if (!body.includes(LEGAL_MARKERS[doc])) {
+      throw new Error(`[prerender-landing] /${doc} rendered without its title — aborting, not writing a broken file`);
+    }
+    const page = shell
+      .replace(ROOT_MARKER, `<div id="root">${body}</div>`)
+      .replace(HEAD_CLOSE, `${legalLinks}${HEAD_CLOSE}`);
+    const dir = resolve(DIST_DIR, doc);
+    await mkdir(dir, { recursive: true });
+    await writeFile(resolve(dir, 'index.html'), page, 'utf-8');
+    console.log(`[prerender-landing] wrote dist/${doc}/index.html (${body.length} B)`);
+  }
 }
 
 main()

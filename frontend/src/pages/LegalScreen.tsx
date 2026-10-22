@@ -8,10 +8,11 @@ interface Props {
 export function LegalScreen({ doc }: Props) {
   const { t } = useTranslation();
   return (
-    <div className={styles.page}>
+    // <main>: son rutas sueltas, fuera del <main> de la app (axe: landmark-one-main).
+    <main className={styles.page}>
       <button className={styles.back} onClick={() => history.back()}>← {t('legal.back')}</button>
       {doc === 'privacy' ? <PrivacyContent /> : doc === 'refund' ? <RefundContent /> : <TermsContent />}
-    </div>
+    </main>
   );
 }
 
