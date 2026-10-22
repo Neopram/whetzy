@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useAppStore } from '../stores/useAppStore';
 import { lessonsApi, isQuotaError, type LessonRead } from '../services/api';
 import { lessonSteps, parseSource } from '../lib/lessonSteps';
-import { LoadingState } from '../components/common/LoadingState';
+import { Loading } from '../components/common/Loading';
 import { EmptyState } from '../components/common/EmptyState';
 import { ErrorState } from '../components/common/ErrorState';
 import styles from './LessonScreen.module.css';
@@ -82,7 +82,7 @@ export function LessonScreen({ skillId, onExit, onStartQuiz }: Props) {
   if (loading) {
     return (
       <div className={styles.screen}>
-        <LoadingState message={t('lesson.loading', 'Cargando lección…')} fullScreen />
+        <Loading label={t('lesson.loading', 'Cargando lección…')} shape="card" />
       </div>
     );
   }

@@ -26,7 +26,7 @@ beforeEach(async () => {
   (economy.balance as unknown as ReturnType<typeof vi.fn>).mockResolvedValue({ balance: 120, currency: 'credits', expires_in_days: 90 });
   (economy.referralCode as unknown as ReturnType<typeof vi.fn>).mockResolvedValue({ code: 'PM4HE2EG', share_url: 'https://whetzy.com/r/PM4HE2EG' });
   (economy.prices as unknown as ReturnType<typeof vi.fn>).mockResolvedValue({
-    credit_value_usd: 0.01, grifos: [], sumideros: [{ item: 'freeze_streak_1day', cost: 150 }],
+    credit_value_usd: 0.01, grifos: [], sumideros: [{ item: 'freeze_streak_1day', cost: 150 }, { item: 'mastery_report', cost: 300 }],
   });
 });
 afterEach(cleanup);
@@ -47,5 +47,17 @@ describe('WalletScreen: canje de código (24.6)', () => {
     expect(screen.queryByLabelText(i18n.t('wallet.promoPlaceholder'))).not.toBeInTheDocument();
     expect(screen.queryByRole('button', { name: i18n.t('wallet.redeem') })).not.toBeInTheDocument();
     expect(screen.queryByRole('heading', { name: i18n.t('wallet.promo') })).not.toBeInTheDocument();
+  });
+
+  it('el informe de dominio se compra con créditos en web y no en la app nativa (24.6)', async () => {
+    render(<WalletScreen />);
+    expect(await screen.findByRole('button', { name: i18n.t('wallet.reportCta') })).toBeInTheDocument();
+  });
+
+  it('en la app nativa el informe de dominio no se compra con créditos (24.6)', async () => {
+    cap.native = true;
+    render(<WalletScreen />);
+    expect(await screen.findByText('Comodín de racha (protege un día sin estudiar)')).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: i18n.t('wallet.reportCta') })).not.toBeInTheDocument();
   });
 });

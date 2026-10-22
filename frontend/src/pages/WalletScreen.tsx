@@ -174,7 +174,7 @@ export default function WalletScreen() {
                   )}
                 </span>
                 <span className={styles.amount}>−{s.cost}</span>
-                {s.item === 'mastery_report' && (
+                {s.item === 'mastery_report' && !native && (
                   <button
                     type="button"
                     className={styles.btnSecondary}

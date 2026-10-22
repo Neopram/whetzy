@@ -72,4 +72,15 @@ describe('guarda: sin «Cargando…» suelto (46.14)', () => {
     );
     expect(hits).toEqual([]);
   });
+
+  // Un spinner con texto («Cargando…») solo en la galería de componentes: las
+  // pantallas usan el esqueleto `Loading` con la forma de lo que viene.
+  it('ninguna pantalla importa LoadingState (salvo la galería UiKit)', () => {
+    const pages = files.filter((f) => f.includes(`${join('src', 'pages')}`) || f.includes(`${join('pages')}`));
+    const importers = pages
+      .filter((f) => !f.endsWith('UiKitScreen.tsx'))
+      .filter((f) => readFileSync(f, 'utf-8').includes("LoadingState'"))
+      .map((f) => relative(root, f));
+    expect(importers).toEqual([]);
+  });
 });
