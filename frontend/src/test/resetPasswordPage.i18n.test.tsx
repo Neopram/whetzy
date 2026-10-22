@@ -8,6 +8,13 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import i18n from '../i18n';
 import { ResetPasswordPage } from '../pages/ResetPasswordPage';
+import { auth } from '../services/api';
+
+vi.mock('../services/api', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('../services/api')>();
+  return { ...actual, auth: { ...actual.auth, resetPassword: vi.fn() } };
+});
+const resetPassword = auth.resetPassword as unknown as ReturnType<typeof vi.fn>;
 
 beforeEach(() => vi.clearAllMocks());
 afterEach(cleanup);
@@ -42,5 +49,22 @@ describe('ResetPasswordPage — ES y EN nativos, inputs con clase (23.1)', () =>
     render(<ResetPasswordPage token="tok" onSuccess={() => {}} />);
     const inputs = screen.getAllByDisplayValue('');
     for (const input of inputs) expect(input.className).not.toBe('');
+  });
+
+  it('46.15: el check se dibuja solo cuando el servidor acepta el cambio (no antes, no si falla)', async () => {
+    await i18n.changeLanguage('es');
+    resetPassword.mockRejectedValueOnce(new Error('token caducado'));
+    render(<ResetPasswordPage token="tok" onSuccess={() => {}} />);
+    fireEvent.change(screen.getByPlaceholderText('Nueva contraseña'), { target: { value: 'longenough1' } });
+    fireEvent.change(screen.getByPlaceholderText('Confirmar'), { target: { value: 'longenough1' } });
+    expect(screen.queryByTestId('drawn-check')).toBeNull();
+    fireEvent.click(screen.getByRole('button', { name: 'Cambiar' }));
+    expect(await screen.findByText(/token caducado/)).toBeInTheDocument();
+    expect(screen.queryByTestId('drawn-check')).toBeNull();
+
+    resetPassword.mockResolvedValueOnce(undefined);
+    fireEvent.click(screen.getByRole('button', { name: 'Cambiar' }));
+    expect(await screen.findByTestId('drawn-check')).toBeInTheDocument();
+    expect(screen.getByText('Contraseña cambiada.')).toBeInTheDocument();
   });
 });
