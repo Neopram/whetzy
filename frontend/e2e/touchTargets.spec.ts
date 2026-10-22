@@ -57,6 +57,11 @@ async function auditTargets(page: import('@playwright/test').Page, where: string
       // that as a <button class="term_...">.
       if (el.className && String(el.className).includes('term_')) return;
 
+      // La misma excepción para un enlace dentro de una frase: los enlaces
+      // legales de /auth («Al continuar aceptas los Términos y la Política de
+      // privacidad», #318) van en línea con el texto, como pide 2.5.8.
+      if (el.tagName === 'A' && style.display === 'inline' && el.closest('p')) return;
+
       // A checkbox/radio wrapped in its own <label> isn't the real target —
       // the label (AuthScreen.tsx's age-confirmation row) is what receives
       // the click and toggles the input; the input itself stays UA-sized.
