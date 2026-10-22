@@ -188,7 +188,7 @@ alembic current
 alembic downgrade -1
 ```
 
-Current Alembic HEAD: `20261020_admin_action_log` (66 migrations, single head —
+Current Alembic HEAD: `20261022_perfil_publico` (70 migrations, single head —
 verified 2026-10-12 with `alembic heads` and `ls backend/alembic/versions/*.py | wc -l`; chains
 after `20261012_question_elo_updates` (59), then `20261012_paddle_events` (58), which chains
 after `20261010_tutor_tokens`, which chains after `20261010_oauth_pkce` (#177: both were
@@ -265,6 +265,9 @@ PADDLE_PRICE_PRO=<pri_…>               # Pro Max 19,99 $/mes
 PADDLE_PRICE_CERTIFICATION=<pri_…>     # certificación 39,99 $, pago único
 # EMAIL_PROVIDER=auto        # por defecto; solo para forzar smtp|resend|log
 # SMTP_USER=... SMTP_PASSWORD=...   # alternativa a Resend (hacen falta las dos)
+# Correos de marketing programados: ambos apagados por defecto (39.13, 26.10); solo los enciende el dueño
+# REACTIVATION_EMAILS_ENABLED=false   # código de 200 créditos a quien lleva ≥ 14 días sin estudiar
+# NEWSLETTER_MONTHLY_ENABLED=false    # newsletter mensual a suscritos confirmados (doble opt-in) y sin baja
 ```
 
 `EMAIL_OUTBOX_DIR` **no se pone en producción**: es el buzón de prueba del e2e (45.4). Con el proveedor `log`, cada

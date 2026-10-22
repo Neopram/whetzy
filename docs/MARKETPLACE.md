@@ -25,12 +25,15 @@ Udemy tiene marketplace pero sin motor adaptativo y con revenue share de 25-37%.
 
 ## 1. Roles en el sistema
 
+Roles reales del código (`backend/app/models/user.py`): `users.role` vale `user` u `owner`, y
+`is_admin` es un booleano aparte; ser instructor es tener fila en la tabla `instructors`.
+
 | Rol | Qué puede hacer | Cómo se activa |
 |---|---|---|
-| `student` | Aprender, comprar cursos, ver certificados | Registro estándar |
-| `instructor` | Crear y vender cursos en el marketplace | Solicitud + aprobación manual |
-| `company_admin` | Gestionar empresa, asignar cursos, ver métricas del equipo | Contrato B2B activo |
-| `admin` | Ver todo, moderar, aprobar instructores, gestionar revenue | Solo dueño + staff |
+| `user` (`role = "user"`) | Aprender, comprar cursos, ver certificados | Registro estándar |
+| instructor (fila en `instructors`) | Crear y vender cursos en el marketplace | Solicitud + aprobación manual |
+| admin (`is_admin`) y dueño (`role = "owner"`) | Ver todo, moderar, aprobar instructores, gestionar revenue | Solo dueño + staff |
+| `company_admin` — **diseño futuro, no existe** (no hay modelo de empresa) | Gestionar empresa, asignar cursos, ver métricas del equipo | Contrato B2B activo |
 
 ---
 
@@ -65,7 +68,7 @@ Todo contenido de instructor pasa el mismo §7 del CATALOGO_MAESTRO.md:
 
 | Criterio | Valor mínimo | Verificado por |
 |---|---|---|
-| Preguntas por skill | ≥ 15 | `check_question_bank.py` |
+| Preguntas por skill | 10, como el catálogo propio (ADR-54; decidido el 2026-10-22, H.58). `scripts/instructor_quality_gate.py` aún exige 15: hasta alinearlo, manda el código | `check_question_bank.py` |
 | Preguntas ejecutables | ≥ 15% donde el runtime lo permita | ídem |
 | Términos de glosario | ≥ 36 por track | `check_docs.py` |
 | Lecciones con contenido | 100% (no esqueleto) | `check_docs.py` |
@@ -114,6 +117,10 @@ Todo contenido de instructor pasa el mismo §7 del CATALOGO_MAESTRO.md:
 ---
 
 ## 5. Protección de instructores y estudiantes
+
+> **Política objetivo para cuando abra el marketplace** (`INSTRUCTOR_MARKETPLACE_ENABLED=False`):
+> hoy no hay código de la regla de reembolso de cursos ni de la generación de códigos `PROF-` (§4).
+> Se mantiene como objetivo (2026-10-22, H.58).
 
 ### Para instructores
 - **Contenido propio:** El instructor mantiene los derechos de su material

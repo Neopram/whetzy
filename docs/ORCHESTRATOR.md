@@ -222,6 +222,10 @@ sigue.
 Si algo falla aquí, **arreglarlo es la primera tarea de la sesión** y va al ledger.
 
 ### 0. Continuidad — antes que nada
+
+> **Cadencia (2026-10-22, H.58):** manda la rutina vigente de `CONECTORES.md` §3 (rutina remota
+> nocturna con `create_trigger`). Los crons de 4 h y 6 h de este documento son históricos.
+
 ```
 mcp__scheduled-tasks__list_scheduled_tasks
 → localiza el task cuyo taskId empieza por "whetzy-orch"
@@ -390,7 +394,7 @@ git commit -m "<fase>.<id>: <qué cambió>
 
 <evidencia en 1-3 líneas>
 
-Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>"
+<líneas de atribución según la atribución de la sesión (las fija el arnés)>"
 git push -u origin <tu-rama>        # nunca master: lo fusiona el dueño (ADR-45)
 ```
 

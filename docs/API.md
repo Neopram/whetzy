@@ -112,7 +112,7 @@ GET    /moderation/blocked           → [{user_id, username, display_name, bloc
 ## Tutor endpoint
 
 ```
-POST /tutor/explain               → {explanation, provider, grounded, context_used} 🔒 — Pro: 429 `tutor_daily_limit` after `TUTOR_DAILY_LIMIT_PLUS` explanations OR `TUTOR_DAILY_TOKEN_LIMIT_PLUS` tokens/day UTC (41.17, engineering backstop, never applies to the ADR-49-unlimited tiers); Pro Max unlimited (38.6). Quota reserved atomically before LLM call, settled to real token count after. 403 `question_reserved` for a `pool == "simulacro"` question, 403 `exam_in_progress` for one in an unsubmitted `MockExamAttempt` of the caller's (41.5). No cupo cuando un `GuardedProvider` configurado cae en el `NullProvider` por dentro (presupuesto agotado o la cadena entera falla) — sí cuando `get_provider()` ya es `NullProvider` a secas (sin API key)
+POST /tutor/explain               → {explanation, provider, grounded, times_missed, mode} 🔒 — body `mode`: `why` (default) | `how` | `deep`; `deep` only Pro Max or higher, else 403 `deep_requires_pro_max` before any quota is reserved (ola 2, 2026-10-21; `max_tokens` 500/500/1200); `/auth/me` exposes `tutor_deep_access`. Pro: 429 `tutor_daily_limit` after `TUTOR_DAILY_LIMIT_PLUS` explanations OR `TUTOR_DAILY_TOKEN_LIMIT_PLUS` tokens/day UTC (41.17, engineering backstop, never applies to the ADR-49-unlimited tiers); Pro Max unlimited (38.6). Quota reserved atomically before LLM call, settled to real token count after. 403 `question_reserved` for a `pool == "simulacro"` question, 403 `exam_in_progress` for one in an unsubmitted `MockExamAttempt` of the caller's (41.5). No cupo cuando un `GuardedProvider` configurado cae en el `NullProvider` por dentro (presupuesto agotado o la cadena entera falla) — sí cuando `get_provider()` ya es `NullProvider` a secas (sin API key)
   Body: {question_id, conversation_history?: [...]}
 ```
 
@@ -213,7 +213,7 @@ GET  /missions             → active missions + progress 🔒
 ## League endpoints
 
 ```
-GET  /league/current       → current week's league standings 🔒
+GET  /league/current       → current week's league standings 🔒 — `last_week_movement`: `promoted` | `demoted` | `stayed` | null (top 5 / bottom 5 of a league of ≥ 10 move one tier when the new week starts; 2026-10-21)
 GET  /league/history       → past league results for current user 🔒
 PUT  /league/participation {participate: bool} → current standings + {participating} 🔒 — ligas opcionales (35.4): fuera, `standings` vacío y nadie te ve; XP, nivel y racha siguen
 ```
@@ -253,7 +253,8 @@ Admin routes require `X-Admin-Key` header.
 GET  /analytics/dashboard  → funnel + retention dashboard (admin)
 GET  /analytics/funnel     → per-step funnel counts (admin)
 GET  /analytics/fx ?days   → skip rate per fx tier + downgrade flag (admin, 46.6a)
-POST /analytics/client-events → 202 {accepted}; batch of 1–50 fx_emitted / fx_skipped / sound_toggled / haptic_toggled, closed schema (422 otherwise), stored without user_id or IP (ADR-68), 30 batches/min per user 🔒
+GET  /analytics/conversion ?days → registrations → first answer → checkout_viewed → checkout_opened (by plan; anonymous visits, `checkout_unit: "visits"`) → subscription_started, plus first-session survey answers with n and `sample_too_small` (< 30) (admin, 46.6); also in /analytics/dashboard as `conversion_steps`
+POST /analytics/client-events → 202 {accepted}; batch of 1–50 fx_emitted / fx_skipped / sound_toggled / haptic_toggled / checkout_viewed / checkout_opened (`plan`) / first_session_survey (`answer`: a_lot | somewhat | not_really, no free text), closed schema (422 otherwise), stored without user_id or IP (ADR-68), 30 batches/min per user 🔒
 ```
 
 Admin routes require `X-Admin-Key` header.

@@ -49,7 +49,7 @@ test('sin cookies de la API (Safari), registrarse llega a Hoy sin volver a la po
   await page.getByLabel('Usuario').fill(username);
   await page.getByLabel('Correo electrónico').fill(`${username}@example.com`);
   await page.getByLabel('Contraseña').fill('e2e-test-pass-123');
-  await page.getByLabel('Confirmo que tengo 13 años o más').check();
+  await page.getByLabel('Confirmo que tengo 16 años o más').check();
   await page.getByRole('button', { name: 'EMPEZAR A APRENDER' }).click();
 
   // El onboarding solo aparece si /auth/me respondió con el usuario: es la

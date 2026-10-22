@@ -84,7 +84,8 @@ describe('QuizScreen — ceremonias al cerrar (46.7)', () => {
 
   it('sin hitos de nivel 4: sin ceremonia, suena el cierre de sesión', async () => {
     await sesionDeUna([{ type: 'combo_multiplier', payload: { multiplier: 2 } }]);
-    await screen.findByText('Habilidades de esta sesión').catch(() => null);
+    // Espera opcional: si el resumen no sale, no se espera el plazo global de 5 s.
+    await screen.findByText('Habilidades de esta sesión', {}, { timeout: 1000 }).catch(() => null);
     // 46.7b: el cierre lleva la nota de la sesión (1/1 → S).
     await waitFor(() => expect(emit).toHaveBeenCalledWith({ type: 'session_end', value: fx.GRADE_RANK.S }));
     expect(screen.queryByRole('dialog')).toBeNull();

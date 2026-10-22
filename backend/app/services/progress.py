@@ -23,7 +23,7 @@ from app.schemas.progress import (
 )
 from app.services import dkt as dkt_service
 from app.services import lesson_gate
-from app.services.engine.domain_thresholds import MASTERY_THRESHOLD
+from app.services.engine.domain_thresholds import MASTERY_THRESHOLD, is_mastered
 from app.services.quiz import count_due_reviews
 
 
@@ -41,17 +41,19 @@ async def get_dashboard(db: AsyncSession, user: User) -> DashboardResponse:
     tracks = tracks_result.scalars().all()
 
     states_result = await db.execute(
-        select(UserSkillState.skill_id, UserSkillState.p_known).where(UserSkillState.user_id == user.id)
+        select(
+            UserSkillState.skill_id, UserSkillState.p_known, UserSkillState.practice_attempts
+        ).where(UserSkillState.user_id == user.id)
     )
-    mastery_by_skill = {row[0]: row[1] for row in states_result.all()}
+    evidence_by_skill = {row[0]: (row[1], row[2]) for row in states_result.all()}
 
     track_masteries: list[TrackMastery] = []
     for track in tracks:
         skill_ids = [s.id for m in track.modules for s in m.skills]
         if skill_ids:
-            values = [mastery_by_skill.get(sid, 0.0) for sid in skill_ids]
-            avg_mastery = sum(values) / len(values)
-            mastered = sum(1 for v in values if v >= MASTERY_THRESHOLD)
+            evidence = [evidence_by_skill.get(sid, (0.0, 0)) for sid in skill_ids]
+            avg_mastery = sum(p for p, _ in evidence) / len(evidence)
+            mastered = sum(1 for p, n in evidence if is_mastered(p, n))
         else:
             avg_mastery = 0.0
             mastered = 0
@@ -152,7 +154,7 @@ async def get_skill_breakdown(
                 attempts=attempts,
                 correct_count=correct_count,
                 accuracy=round(correct_count / attempts, 4) if attempts else 0.0,
-                mastered=p_known >= MASTERY_THRESHOLD,
+                mastered=is_mastered(p_known, state.practice_attempts if state else 0),
                 fsrs_due=state.fsrs_due if state else None,
                 dkt_probability=dkt_probs.get(skill.id),
             )
@@ -187,18 +189,21 @@ async def get_curriculum(db: AsyncSession, user: User, track_id: str) -> Curricu
     mastery_by_skill: dict[str, float] = {}
     attempts_by_skill: dict[str, int] = {}
     correct_by_skill: dict[str, int] = {}
+    practice_by_skill: dict[str, int] = {}
     if all_skill_ids:
         states_result = await db.execute(
             select(
                 UserSkillState.skill_id, UserSkillState.p_known,
                 UserSkillState.attempts, UserSkillState.correct_count,
+                UserSkillState.practice_attempts,
             ).where(
                 UserSkillState.user_id == user.id,
                 UserSkillState.skill_id.in_(all_skill_ids),
             )
         )
-        for skill_id, p_known, attempts, correct in states_result.all():
+        for skill_id, p_known, attempts, correct, practice in states_result.all():
             mastery_by_skill[skill_id] = p_known
+            practice_by_skill[skill_id] = practice
             attempts_by_skill[skill_id] = attempts
             correct_by_skill[skill_id] = correct
 
@@ -242,7 +247,7 @@ async def get_curriculum(db: AsyncSession, user: User, track_id: str) -> Curricu
                 name_en=s.name_en,
                 order=s.order,
                 p_known=round(mastery_by_skill.get(s.id, 0.0), 4),
-                mastered=mastery_by_skill.get(s.id, 0.0) >= MASTERY_THRESHOLD,
+                mastered=is_mastered(mastery_by_skill.get(s.id, 0.0), practice_by_skill.get(s.id, 0)),
                 attempts=attempts_by_skill.get(s.id, 0),
                 correct_count=correct_by_skill.get(s.id, 0),
                 lesson_seen=s.id in seen_skill_ids,
@@ -290,16 +295,18 @@ async def get_predictions(db: AsyncSession, user: User, track_id: str) -> Predic
     )
     skill_ids = [row[0] for row in skills_result.all()]
 
-    mastery_by_skill: dict[str, float] = {}
+    evidence_by_skill: dict[str, tuple[float, int]] = {}
     if skill_ids:
         states_result = await db.execute(
-            select(UserSkillState.skill_id, UserSkillState.p_known).where(
+            select(
+                UserSkillState.skill_id, UserSkillState.p_known, UserSkillState.practice_attempts
+            ).where(
                 UserSkillState.user_id == user.id,
                 UserSkillState.skill_id.in_(skill_ids),
             )
         )
-        mastery_by_skill = {row[0]: row[1] for row in states_result.all()}
-    mastered = sum(1 for sid in skill_ids if mastery_by_skill.get(sid, 0.0) >= MASTERY_THRESHOLD)
+        evidence_by_skill = {row[0]: (row[1], row[2]) for row in states_result.all()}
+    mastered = sum(1 for sid in skill_ids if is_mastered(*evidence_by_skill.get(sid, (0.0, 0))))
     remaining = len(skill_ids) - mastered
 
     window_start = _now() - timedelta(days=14)

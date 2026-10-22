@@ -113,8 +113,11 @@ Landing (sección career-switcher) → "¿Cuánto tiempo tienes por día?"
 4. "Necesito las certificaciones de cloud (AWS/GCP) para el cambio de rol"
 
 ### Propuesta de valor Whetzy
-> "El motor detecta que ya dominas Python en 5 preguntas y te lleva directo
+> "La prueba de nivel (20 preguntas) detecta que ya dominas Python y te lleva directo
 > a LLMs, RAG y arquitecturas de AI. Sin repetir lo que ya sabes."
+
+*Copy alineado con el motor el 2026-10-22 (H.58): la prueba pide un mínimo de 20 preguntas y 8 en
+un módulo para saltarlo (`backend/app/services/engine/placement.py`).*
 
 ### Plan y precio
 - **Pro $14.99/mo:** tutor con IA (ADR-41). *Propuesta del 2026-09-18, no aplicada: poner los tracks 6-7 y cloud tras Pro; hoy todo el contenido es gratis.*
@@ -168,11 +171,14 @@ Landing (sección "Ya sé programar") → Prueba de nivel adaptativa (20-50 preg
 ```
 Registro como instructor → Panel de creación de contenido
 → Subir lecciones + preguntas en formato JSON/MD (templates provistos)
-→ Quality gate automático (§7): mínimo 15 Q/skill, ≥ 15% exec, glosario
+→ Quality gate automático: la forma del catálogo (ADR-54, CATALOGO_MAESTRO §7): 10 Q/skill, ≥ 3 con código, glosario
 → Revisión manual si quality gate pasa
 → Publicación en marketplace → Métricas en tiempo real
 → Pago mensual vía Stripe/Paddle (ADR-16)
 ```
+
+*Umbral decidido el 2026-10-22 (H.58): la misma forma que el catálogo propio. `scripts/instructor_quality_gate.py`
+aún exige 15 por skill; hasta alinearlo, manda el código.*
 
 ### Métricas de éxito
 - Instructores activos año 1: 20+
@@ -207,6 +213,9 @@ Registro como instructor → Panel de creación de contenido
 - **Facturación:** Anual, por transferencia o tarjeta corporativa
 
 ### Flujo en la app
+
+> Objetivo de la serie 38, **no construido**: hoy no hay panel B2B (`ECONOMIA.md`). Nota del 2026-10-22 (H.58).
+
 ```
 Demo personalizada (30 min, Calendly) → Contrato piloto gratuito
 → Admin crea empresa → Importa empleados (CSV o invitación)

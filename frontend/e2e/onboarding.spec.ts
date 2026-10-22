@@ -13,7 +13,7 @@ test('onboarding: landing → first answered question in < 60 s', async ({ page 
   await page.getByLabel('Usuario').fill(username);
   await page.getByLabel('Correo electrónico').fill(`${username}@example.com`);
   await page.getByLabel('Contraseña').fill('e2e-test-pass-123');
-  await page.getByLabel('Confirmo que tengo 13 años o más').check();
+  await page.getByLabel('Confirmo que tengo 16 años o más').check();
   await page.getByRole('button', { name: 'EMPEZAR A APRENDER' }).click();
 
   // 43.3 (D2): objetivo → ruta → experiencia → prueba de nivel. Tiene que
@@ -40,7 +40,7 @@ test('onboarding is skipped for returning users', async ({ page }) => {
   await page.getByLabel('Usuario').fill(username);
   await page.getByLabel('Correo electrónico').fill(`${username}@example.com`);
   await page.getByLabel('Contraseña').fill('e2e-test-pass-123');
-  await page.getByLabel('Confirmo que tengo 13 años o más').check();
+  await page.getByLabel('Confirmo que tengo 16 años o más').check();
   await page.getByRole('button', { name: 'EMPEZAR A APRENDER' }).click();
 
   // Turn this brand-new account into a returning one: set the same
@@ -75,7 +75,7 @@ test('otro navegador no repite el onboarding (43.3, D2)', async ({ browser }) =>
   await page.getByLabel('Usuario').fill(username);
   await page.getByLabel('Correo electrónico').fill(`${username}@example.com`);
   await page.getByLabel('Contraseña').fill('e2e-test-pass-123');
-  await page.getByLabel('Confirmo que tengo 13 años o más').check();
+  await page.getByLabel('Confirmo que tengo 16 años o más').check();
   const saved = page.waitForResponse(
     (r) => r.url().endsWith('/auth/me') && r.request().method() === 'PATCH' && r.ok(),
   );

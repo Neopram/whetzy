@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from datetime import datetime
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from app.schemas.content import QuestionPublic
 
@@ -19,12 +19,18 @@ class DuelChallengeResponse(BaseModel):
     skill_id: str
     questions: list[QuestionPublic]
     opponent_username: str
+    # 42.5: quien vuelve a un duelo a medias sigue por la siguiente pregunta.
+    answered_question_ids: list[str] = []
 
 
 class DuelAnswerRequest(BaseModel):
     question_id: str
-    selected_index: int
-    response_time_ms: int
+    # The upper bound of `selected_index` depends on the question; the endpoint
+    # checks it against its options (42.4).
+    selected_index: int = Field(ge=0)
+    # Only shown to the rival and fed to FSRS; the winner is decided on the
+    # server's clock. Bounded so no one can write a negative or absurd time.
+    response_time_ms: int = Field(ge=0, le=300_000)
 
 
 class DuelRivalAnswer(BaseModel):
@@ -39,6 +45,11 @@ class DuelAnswerResponse(BaseModel):
     answers_so_far: int
     completed: bool
     opponent_completed: bool
+    # 42.4: feedback right after answering, as in practice.
+    correct: bool
+    correct_index: int | None
+    explanation_es: str = ""
+    explanation_en: str = ""
     # Solo si el rival ya terminó: quien juega segundo ve, tras contestar cada
     # pregunta, cómo le fue al otro en ella. Nunca antes de contestarla.
     rival: DuelRivalAnswer | None = None

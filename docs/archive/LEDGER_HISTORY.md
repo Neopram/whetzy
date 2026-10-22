@@ -214,6 +214,28 @@
 | Fix de 11.10 | Sólido de verdad: usa `i18n.exists()` con respaldo solo para un tier desconocido, no un mapeo frágil |
 
 ---
+### 44. Back-office de soporte (plan del dueño 2026-10-17; `PLAN_BACKOFFICE.md`)
+
+> **Estado:** `ABIERTA`. **PRI:** 0. Tras cerrar la 43 (43.8 en verde) **y la 45**, y antes del resto de la 42. Una rama y un PR por fila.
+
+| ID | PRI | Tarea | Estado | Criterio de aceptación |
+|---|---|---|---|---|
+| 44.1 | **0** | `GET /admin/users?q=` y `/admin/users/{id}`; tabla `admin_action_log`; registro de `view`; exige 2FA (B7) | DONE — #282 `6e631b7`, §7 10-21 | no-owner 403; owner sin 2FA 403; `q` de 2 caracteres 422; ficha crea fila `view`; email enmascarado |
+| 44.2 | **0** | `POST /admin/users/{id}/actions/{accion}`: las cinco acciones de B4, con motivo y fila en el registro | DONE — #283 `086f802`, §7 10-21 | un test por acción; motivo vacío 422; plan regalado > 90 días 422; suspender invalida la sesión |
+| 44.3 | **0** | Pestañas «Usuarios» y «Registro» en `AdminScreen`; i18n ES/EN | DONE — #284 `086f802`, §7 10-21 | vitest de búsqueda, ficha y acción; e2e `admin.spec.ts`; un alumno no ve la pestaña |
+| 44.4 | **1** | Docs de soporte (MAPA_PRODUCTO, ARCHITECTURE, RUNBOOK) y «queda registrado» en `legal.privacySupportAccess` | DONE — #285 `086f802`, §7 10-21 | `check_docs.py` verde |
+
+### 45. Alta con correo (plan del dueño 2026-10-17; `PLAN_CORREO_ALTA.md`; ADR-66)
+
+> **Estado:** `HECHA` (4/4 en `master`). **PRI:** 0.
+
+| ID | PRI | Tarea | Estado | Criterio de aceptación |
+|---|---|---|---|---|
+| 45.1 | **0** | E1, E6: idioma del alta (`?lang` →… | DONE — #242 → §T (6) | → §T (6) |
+| 45.2 | **0** | E2: un solo correo al registrarse (ver… | DONE — #243 → §T (6) | → §T (6) |
+| 45.3 | **0** | E4: franja «verifica tu correo» con Re… | DONE — #244 → §T (6) | → §T (6) |
+| 45.4 | **0** | E5: `VerifyEmailPage` con `lang`, «Con… | DONE — #246 → §T (6) | → §T (6) |
+
 ## C. Bloques de descripción de series activas
 
 ### 11 — Superioridad medible (cerrar las brechas honestas)

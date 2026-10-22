@@ -27,7 +27,8 @@ async def _setup(db: AsyncSession, credits: int) -> tuple[User, dict[str, str]]:
                   description_es="", description_en="", min_mastery_to_unlock=0.7))
     for i, p in enumerate((0.97, 0.5)):
         db.add(Skill(id=f"sk_mr{i}", module_id="m_mr", name_es=f"Bucles {i}", name_en=f"Loops {i}", order=i))
-        db.add(UserSkillState(user_id=uid, skill_id=f"sk_mr{i}", p_known=p, attempts=5))
+        # 42.6: dominada = p_known ≥ 0,95 y ≥ 7 respuestas de práctica (ADR-63 §3).
+        db.add(UserSkillState(user_id=uid, skill_id=f"sk_mr{i}", p_known=p, attempts=7, practice_attempts=7))
     await db.flush()
     if credits:
         await CreditsService.grant_credits(db, uid, credits, "promo_code", ref_id="seed")

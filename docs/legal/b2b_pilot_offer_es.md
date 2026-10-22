@@ -20,7 +20,6 @@ antes de comprometerse. Cada piloto incluye:
 | **Duración** | 90 días |
 | **Asientos** | Hasta 25 usuarios |
 | **Acceso** | Plan Pro Max completo (tutor IA ilimitado, todos los tracks) |
-| **Panel de equipo** | Progreso por empleado, tiempo de estudio, skills dominadas |
 | **Soporte** | Canal dedicado con el equipo de Whetzy |
 | **Coste** | $0 durante el piloto |
 
@@ -61,8 +60,7 @@ permanecen verificables.
    - Número de participantes estimado.
    - Tracks de interés (Python, SQL, Data Engineering, Cloud, etc.).
 
-2. En 48 horas enviamos acceso al panel de equipo y credenciales para los
-   participantes.
+2. En 48 horas enviamos las credenciales para los participantes.
 
 3. El piloto comienza cuando el primer usuario inicia sesión.
 

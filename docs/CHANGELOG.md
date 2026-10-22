@@ -5,6 +5,56 @@ Versioning: [Semantic Versioning](https://semver.org/)
 
 ---
 
+## [Unreleased] — 2026-10-22 (decisiones del dueño, ADR-70)
+
+**ES**
+
+- Edad mínima: 16 años (antes 13) en el alta, su error, los Términos, la Privacidad y el backend; guarda `test_edad_minima.py`.
+- Precios: plan anual Pro 149,99 $ y Pro Max 199,99 $ («2 meses gratis»), todavía apagado en el piloto; LatAm −40 % por país en Paddle.
+- ADR-61 confirmada (con la edad corregida), ADR-62 firmada (sigue la pausa de contenido), ADR-63 firmada por delegación.
+- Cola humana: H.13 y H.48 cerradas; H.20, H.25, H.27, H.35 y H.54 decididas.
+
+**EN**
+
+- Minimum age: 16 (was 13) on sign-up, its error, the Terms, the Privacy policy and the backend; guarded by `test_edad_minima.py`.
+- Pricing: annual Pro $149.99 and Pro Max $199.99 ("2 months free"), still off during the pilot; LatAm −40 % per country in Paddle.
+- ADR-61 confirmed (with the corrected age), ADR-62 signed (the content pause stays), ADR-63 signed by delegation.
+- Human queue: H.13 and H.48 closed; H.20, H.25, H.27, H.35 and H.54 decided.
+
+## [Unreleased] — 2026-10-22 (cierre de filas y ledger)
+
+**ES**
+
+- Filas cerradas con evidencia: 42.2, 42.4, 42.5, 42.6, 42.9, 42.11, 42.12, 39.13, 28.0, 28.3, 46.4.
+- 46.14: las pantallas usan el esqueleto `Loading`, sin «Cargando…» suelto; guarda que lo impide.
+- 24.6: el informe de dominio no se compra con créditos en la app nativa.
+- Ledger: series 44 y 45 (completas) pasan a `LEDGER_HISTORY` §B.
+
+**EN**
+
+- Rows closed with evidence: 42.2, 42.4, 42.5, 42.6, 42.9, 42.11, 42.12, 39.13, 28.0, 28.3, 46.4.
+- 46.14: screens use the `Loading` skeleton, with no stray «Loading…»; a guard enforces it.
+- 24.6: the domain report is not bought with credits in the native app.
+- Ledger: series 44 and 45 (complete) moved to `LEDGER_HISTORY` §B.
+
+## [Unreleased] — 2026-10-22 (PR unificado y decisiones delegadas)
+
+**ES**
+
+- **Inicio de sesión más seguro por dentro.** Los tokens de sesión y el acceso con Apple usan ahora PyJWT en lugar
+  de una librería con un fallo conocido sin arreglo.
+- **La oferta de pilotos para empresas** ya no promete un panel de equipo que todavía no existe.
+
+---
+
+**EN**
+
+- **Safer sign-in under the hood.** Session tokens and Sign in with Apple now use PyJWT instead of a library with a
+  known, unfixed flaw.
+- **The company pilot offer** no longer promises a team dashboard that doesn't exist yet.
+
+---
+
 ## [Unreleased] — 2026-10-21 (Google en producción, apps móviles y coherencia de la documentación)
 
 **ES**

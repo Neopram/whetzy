@@ -62,6 +62,9 @@ no una mitigación de un riesgo medido.
 
 ### 1. `update_ability` no sirve para recalcular una historia completa de una vez
 
+> **Nota (2026-10-22, H.58):** medido sobre la versión Newton de `update_ability`, previa a #219.
+> Hoy es EAP (`backend/app/services/engine/placement.py`), así que la medición no se reproduce tal cual.
+
 El plan inicial era reusar `PlacementEngine.update_ability` sin cambios para
 el paso de habilidad de JMLE (llamarlo una vez por respuesta, en orden,
 acumulando el historial). Medido contra datos simulados con el diseño **más

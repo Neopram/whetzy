@@ -8,11 +8,17 @@ not just the new metrics.
 
 from __future__ import annotations
 
+import os
 import uuid
+from collections.abc import AsyncGenerator
 from datetime import UTC, datetime, timedelta
 
 import pytest
+import pytest_asyncio
+from sqlalchemy import text
+from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 
+from app.core.db import Base
 from app.core.security import get_password_hash
 from app.models.analytics import AnalyticsEvent
 from app.models.content import Module, Question, Skill, Track
@@ -27,6 +33,50 @@ from app.services.analytics import (
 )
 
 NOW = datetime.now(UTC)
+
+# 31.6: estas métricas son SQL de agregación (fechas, ventanas, COUNT DISTINCT) y
+# SQLite —la base de la suite— no es Postgres. Con `WHETZY_PG_TEST_URL` apuntando a un
+# Postgres de pruebas (mismo patrón que `test_streak_shop_race_pg.py`) cada test corre
+# también contra él, en un esquema propio que se borra al terminar: la base no hace falta
+# que esté vacía ni migrada, y no se toca nada fuera de ese esquema.
+PG_URL = os.environ.get("WHETZY_PG_TEST_URL")
+
+
+@pytest_asyncio.fixture(
+    params=[
+        "sqlite",
+        pytest.param(
+            "postgres",
+            marks=pytest.mark.skipif(not PG_URL, reason="WHETZY_PG_TEST_URL no definido"),
+        ),
+    ]
+)
+async def db_session(request: pytest.FixtureRequest) -> AsyncGenerator[AsyncSession, None]:
+    """Sustituye al `db_session` de conftest en este módulo: SQLite y, si hay URL, Postgres."""
+    if request.param == "sqlite":
+        engine = create_async_engine("sqlite+aiosqlite:///:memory:", echo=False)
+        schema = None
+    else:
+        assert PG_URL is not None
+        schema = f"pm_{uuid.uuid4().hex[:12]}"
+        admin = create_async_engine(PG_URL, isolation_level="AUTOCOMMIT")
+        async with admin.connect() as conn:
+            await conn.execute(text(f'CREATE SCHEMA "{schema}"'))
+        engine = create_async_engine(PG_URL, connect_args={"server_settings": {"search_path": schema}})
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
+    factory = async_sessionmaker(bind=engine, class_=AsyncSession, expire_on_commit=False, autoflush=False)
+    try:
+        async with factory() as session:
+            expected = "sqlite" if schema is None else "postgresql"
+            assert session.get_bind().dialect.name == expected  # que el parámetro prueba lo que dice
+            yield session
+    finally:
+        await engine.dispose()
+        if schema is not None:
+            async with admin.connect() as conn:
+                await conn.execute(text(f'DROP SCHEMA "{schema}" CASCADE'))
+            await admin.dispose()
 
 
 @pytest.fixture(autouse=True)
@@ -43,7 +93,7 @@ def _now_per_test() -> None:
     NOW = datetime.now(UTC)
 
 
-def _make_user(db, *, created_at: datetime, is_premium: bool = False) -> User:
+async def _make_user(db, *, created_at: datetime, is_premium: bool = False) -> User:
     u = User(
         id=uuid.uuid4(),
         email=f"pm-{uuid.uuid4().hex[:8]}@whetzy.test",
@@ -55,6 +105,9 @@ def _make_user(db, *, created_at: datetime, is_premium: bool = False) -> User:
         is_premium=is_premium,
     )
     db.add(u)
+    # Con FK reales (Postgres) el usuario tiene que existir antes que sus sesiones: sin
+    # `relationship()` entre los modelos, el orden de INSERT entre tablas no está garantizado.
+    await db.flush()
     return u
 
 
@@ -76,7 +129,7 @@ class TestD30Return:
     @pytest.mark.asyncio
     async def test_counts_a_user_who_returned_on_day_30(self, db_session) -> None:
         registered = NOW - timedelta(days=40)
-        u = _make_user(db_session, created_at=registered)
+        u = await _make_user(db_session, created_at=registered)
         db_session.add(u)
         _make_session(db_session, u.id, started_at=registered + timedelta(days=30), duration_minutes=5)
         await db_session.commit()
@@ -91,7 +144,7 @@ class TestD30Return:
     @pytest.mark.asyncio
     async def test_does_not_count_a_user_who_never_returned(self, db_session) -> None:
         registered = NOW - timedelta(days=40)
-        u = _make_user(db_session, created_at=registered)
+        u = await _make_user(db_session, created_at=registered)
         db_session.add(u)
         # Only a day-1 session, nothing near day 30.
         _make_session(db_session, u.id, started_at=registered + timedelta(days=1), duration_minutes=5)
@@ -103,7 +156,7 @@ class TestD30Return:
     @pytest.mark.asyncio
     async def test_ineligible_user_not_counted_either_way(self, db_session) -> None:
         # Registered 10 days ago: too recent to have reached day 30 at all.
-        u = _make_user(db_session, created_at=NOW - timedelta(days=10))
+        u = await _make_user(db_session, created_at=NOW - timedelta(days=10))
         db_session.add(u)
         await db_session.commit()
 
@@ -127,7 +180,7 @@ class TestCurr:
 
     @pytest.mark.asyncio
     async def test_current_user_dau_who_returns_the_next_day_counts(self, db_session) -> None:
-        u = _make_user(db_session, created_at=NOW - timedelta(days=60))
+        u = await _make_user(db_session, created_at=NOW - timedelta(days=60))
         db_session.add(u)
         _make_session(db_session, u.id, started_at=NOW - timedelta(days=2), duration_minutes=5)  # D
         _make_session(db_session, u.id, started_at=NOW - timedelta(days=5), duration_minutes=5)  # other day in prior 7
@@ -143,7 +196,7 @@ class TestCurr:
     async def test_current_user_dau_who_does_not_return_does_not_count_as_returned(
         self, db_session
     ) -> None:
-        u = _make_user(db_session, created_at=NOW - timedelta(days=60))
+        u = await _make_user(db_session, created_at=NOW - timedelta(days=60))
         db_session.add(u)
         _make_session(db_session, u.id, started_at=NOW - timedelta(days=2), duration_minutes=5)  # D
         _make_session(db_session, u.id, started_at=NOW - timedelta(days=5), duration_minutes=5)  # other day
@@ -160,7 +213,7 @@ class TestCurr:
         """Active on D (day before yesterday) with no OTHER active day in
         the prior week — Duolingo's definition requires both, not just a
         DAU on D."""
-        u = _make_user(db_session, created_at=NOW - timedelta(days=60))
+        u = await _make_user(db_session, created_at=NOW - timedelta(days=60))
         db_session.add(u)
         _make_session(db_session, u.id, started_at=NOW - timedelta(days=2), duration_minutes=5)
         _make_session(db_session, u.id, started_at=NOW - timedelta(days=1), duration_minutes=5)
@@ -176,7 +229,7 @@ class TestCurr:
     ) -> None:
         """Active earlier in the trailing week but not on D (day before
         yesterday) itself — not a DAU on D, so not in the cohort at all."""
-        u = _make_user(db_session, created_at=NOW - timedelta(days=60))
+        u = await _make_user(db_session, created_at=NOW - timedelta(days=60))
         db_session.add(u)
         _make_session(db_session, u.id, started_at=NOW - timedelta(days=4), duration_minutes=5)
         await db_session.commit()
@@ -206,7 +259,7 @@ class TestCurr:
 
         monkeypatch.setattr("app.services.analytics.datetime", _FrozenDatetime)
 
-        u = _make_user(db_session, created_at=frozen_now - timedelta(days=60))
+        u = await _make_user(db_session, created_at=frozen_now - timedelta(days=60))
         db_session.add(u)
         _make_session(db_session, u.id, started_at=frozen_now - timedelta(days=9), duration_minutes=5)  # other day
         _make_session(db_session, u.id, started_at=frozen_now - timedelta(days=2), duration_minutes=5)  # D
@@ -232,7 +285,7 @@ class TestConversionD35:
     @pytest.mark.asyncio
     async def test_counts_a_user_who_converted_within_35_days(self, db_session) -> None:
         registered = NOW - timedelta(days=40)
-        u = _make_user(db_session, created_at=registered)
+        u = await _make_user(db_session, created_at=registered)
         db_session.add(u)
         db_session.add(
             AnalyticsEvent(
@@ -250,7 +303,7 @@ class TestConversionD35:
     @pytest.mark.asyncio
     async def test_does_not_count_a_conversion_after_day_35(self, db_session) -> None:
         registered = NOW - timedelta(days=40)
-        u = _make_user(db_session, created_at=registered)
+        u = await _make_user(db_session, created_at=registered)
         db_session.add(u)
         db_session.add(
             AnalyticsEvent(
@@ -266,7 +319,7 @@ class TestConversionD35:
 
     @pytest.mark.asyncio
     async def test_small_sample_is_flagged(self, db_session) -> None:
-        u = _make_user(db_session, created_at=NOW - timedelta(days=40))
+        u = await _make_user(db_session, created_at=NOW - timedelta(days=40))
         db_session.add(u)
         await db_session.commit()
 
@@ -280,7 +333,7 @@ class TestConversionD35:
 class TestWeekly30MinAmongPayers:
     @pytest.mark.asyncio
     async def test_payer_with_30_min_this_week_counts(self, db_session) -> None:
-        u = _make_user(db_session, created_at=NOW - timedelta(days=60), is_premium=True)
+        u = await _make_user(db_session, created_at=NOW - timedelta(days=60), is_premium=True)
         db_session.add(u)
         _make_session(db_session, u.id, started_at=NOW - timedelta(days=1), duration_minutes=30)
         await db_session.commit()
@@ -292,7 +345,7 @@ class TestWeekly30MinAmongPayers:
 
     @pytest.mark.asyncio
     async def test_payer_under_30_min_does_not_count(self, db_session) -> None:
-        u = _make_user(db_session, created_at=NOW - timedelta(days=60), is_premium=True)
+        u = await _make_user(db_session, created_at=NOW - timedelta(days=60), is_premium=True)
         db_session.add(u)
         _make_session(db_session, u.id, started_at=NOW - timedelta(days=1), duration_minutes=10)
         await db_session.commit()
@@ -303,7 +356,7 @@ class TestWeekly30MinAmongPayers:
 
     @pytest.mark.asyncio
     async def test_minutes_across_two_sessions_sum(self, db_session) -> None:
-        u = _make_user(db_session, created_at=NOW - timedelta(days=60), is_premium=True)
+        u = await _make_user(db_session, created_at=NOW - timedelta(days=60), is_premium=True)
         db_session.add(u)
         _make_session(db_session, u.id, started_at=NOW - timedelta(days=1), duration_minutes=15)
         _make_session(db_session, u.id, started_at=NOW - timedelta(days=2), duration_minutes=15)
@@ -314,7 +367,7 @@ class TestWeekly30MinAmongPayers:
 
     @pytest.mark.asyncio
     async def test_free_user_never_counted_even_with_lots_of_time(self, db_session) -> None:
-        u = _make_user(db_session, created_at=NOW - timedelta(days=60), is_premium=False)
+        u = await _make_user(db_session, created_at=NOW - timedelta(days=60), is_premium=False)
         db_session.add(u)
         _make_session(db_session, u.id, started_at=NOW - timedelta(days=1), duration_minutes=120)
         await db_session.commit()
@@ -325,7 +378,7 @@ class TestWeekly30MinAmongPayers:
 
     @pytest.mark.asyncio
     async def test_session_outside_the_week_does_not_count(self, db_session) -> None:
-        u = _make_user(db_session, created_at=NOW - timedelta(days=60), is_premium=True)
+        u = await _make_user(db_session, created_at=NOW - timedelta(days=60), is_premium=True)
         db_session.add(u)
         _make_session(db_session, u.id, started_at=NOW - timedelta(days=10), duration_minutes=60)
         await db_session.commit()
@@ -364,7 +417,7 @@ class TestCohortDenominators:
     ) -> None:
         """Alta hace 30 h: su ventana de D1 llega a las 48 h. Contarla como «no
         volvió» hundía el D1 de cualquier beta recién abierta."""
-        _make_user(db_session, created_at=NOW - timedelta(hours=30))
+        await _make_user(db_session, created_at=NOW - timedelta(hours=30))
         await db_session.commit()
         result = await funnel(db_session, period_days=30)
         assert result["d1_cohort"] == 0
@@ -373,11 +426,11 @@ class TestCohortDenominators:
     @pytest.mark.asyncio
     async def test_d1_rate_is_returned_over_the_closed_cohort(self, db_session) -> None:
         registered = NOW - timedelta(days=5)
-        came_back = _make_user(db_session, created_at=registered)
-        _make_user(db_session, created_at=registered)
+        came_back = await _make_user(db_session, created_at=registered)
+        await _make_user(db_session, created_at=registered)
         # Ruido que antes entraba en el denominador: altas de hoy.
-        _make_user(db_session, created_at=NOW - timedelta(hours=1))
-        _make_user(db_session, created_at=NOW - timedelta(hours=2))
+        await _make_user(db_session, created_at=NOW - timedelta(hours=1))
+        await _make_user(db_session, created_at=NOW - timedelta(hours=2))
         _make_session(db_session, came_back.id, started_at=registered + timedelta(days=1), duration_minutes=5)
         await db_session.commit()
         result = await funnel(db_session, period_days=30)
@@ -389,7 +442,7 @@ class TestCohortDenominators:
         """Con el periodo por defecto (30) la cohorte de D30 son las altas de los
         30 días anteriores a hace 31: nunca vacía por construcción."""
         registered = NOW - timedelta(days=45)
-        u = _make_user(db_session, created_at=registered)
+        u = await _make_user(db_session, created_at=registered)
         _make_session(db_session, u.id, started_at=registered + timedelta(days=30), duration_minutes=5)
         await db_session.commit()
         result = await funnel(db_session, period_days=30)
@@ -399,8 +452,8 @@ class TestCohortDenominators:
     async def test_activated_rate_ignores_signups_who_never_answered(self, db_session) -> None:
         qid = await _question(db_session)
         registered = NOW - timedelta(days=5)
-        tried = _make_user(db_session, created_at=registered)
-        _make_user(db_session, created_at=registered)  # se registró y no hizo nada
+        tried = await _make_user(db_session, created_at=registered)
+        await _make_user(db_session, created_at=registered)  # se registró y no hizo nada
         await db_session.flush()
         _answer(db_session, tried.id, qid, registered + timedelta(minutes=5))
         _make_session(db_session, tried.id, started_at=registered + timedelta(days=1), duration_minutes=5)
@@ -437,7 +490,7 @@ class TestH4UnseenFirstAttempt:
     @pytest.mark.asyncio
     async def test_compares_the_first_and_last_first_attempts(self, db_session) -> None:
         qs = await _bank(db_session, 20)
-        u = _make_user(db_session, created_at=NOW - timedelta(days=20))
+        u = await _make_user(db_session, created_at=NOW - timedelta(days=20))
         await db_session.flush()
         for i, qid in enumerate(qs):
             # 3/10 al principio, 8/10 al final.
@@ -451,7 +504,7 @@ class TestH4UnseenFirstAttempt:
     @pytest.mark.asyncio
     async def test_repeats_placement_and_unknown_do_not_count(self, db_session) -> None:
         qs = await _bank(db_session, 20)
-        u = _make_user(db_session, created_at=NOW - timedelta(days=20))
+        u = await _make_user(db_session, created_at=NOW - timedelta(days=20))
         await db_session.flush()
         t0 = NOW - timedelta(days=19)
         for i, qid in enumerate(qs):
@@ -467,7 +520,7 @@ class TestH4UnseenFirstAttempt:
     @pytest.mark.asyncio
     async def test_too_few_first_attempts_is_not_measured(self, db_session) -> None:
         qs = await _bank(db_session, 19)
-        u = _make_user(db_session, created_at=NOW - timedelta(days=20))
+        u = await _make_user(db_session, created_at=NOW - timedelta(days=20))
         await db_session.flush()
         for i, qid in enumerate(qs):
             _attempt(db_session, u.id, qid, True, NOW - timedelta(days=19) + timedelta(hours=i))

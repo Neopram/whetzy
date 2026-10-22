@@ -5,7 +5,7 @@ from __future__ import annotations
 import logging
 import random
 import uuid
-from datetime import UTC, datetime
+from datetime import UTC, datetime, timedelta
 from typing import Any
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
@@ -30,17 +30,46 @@ from app.schemas.duel import (
 )
 from app.services import lesson_gate
 from app.services.blocklist import blocked_user_ids, is_blocked_pair
-from app.services.quiz import apply_answer_to_skill_state
+from app.services.quiz import apply_evidence
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
 
 _EXEC_TYPES = frozenset({"fill_blank_exec", "fix_bug"})
 _DUEL_QUESTIONS = 5
+# H.52 (ADR-69 #6): un reto sin terminar caduca a los 7 días, sin ganador.
+DUEL_EXPIRY = timedelta(days=7)
+_OPEN = ("pending", "in_progress")
 
 
 def _now() -> datetime:
     return datetime.now(UTC)
+
+
+def _aware(dt: datetime) -> datetime:
+    # SQLite (tests) devuelve fechas sin zona; Postgres, con zona.
+    return dt if dt.tzinfo else dt.replace(tzinfo=UTC)
+
+
+def _expire_if_stale(duel: Duel, now: datetime) -> bool:
+    """Caducidad perezosa (42.5): no hay job; se marca al tocar el duelo."""
+    if duel.status in _OPEN and _aware(duel.created_at) + DUEL_EXPIRY <= now:
+        duel.status = "expired"
+        duel.winner_id = None
+        return True
+    return False
+
+
+def _server_time_ms(
+    started: datetime | None, completed: datetime | None, answers: list[dict[str, object]] | None
+) -> float:
+    """Tiempo de una partida según el reloj del servidor (42.4, H.52)."""
+    if started is None and answers:
+        first = answers[0].get("answered_at")
+        started = datetime.fromisoformat(first) if isinstance(first, str) else None
+    if started is None or completed is None:
+        return float("inf")
+    return (_aware(completed) - _aware(started)).total_seconds() * 1000
 
 
 def _count_correct(answers: list[dict[str, object]] | None) -> int:
@@ -149,9 +178,10 @@ def _resolve_winner(duel: Duel) -> uuid.UUID | None:
         return duel.challenger_id
     if o_correct > c_correct:
         return duel.opponent_id
-    # Tiebreak: less total time wins
-    c_time = _total_time(duel.challenger_answers)
-    o_time = _total_time(duel.opponent_answers)
+    # Tiebreak: less time on the SERVER's clock wins. The client's own
+    # `response_time_ms` is not trusted for this: it can claim 0 (H.52).
+    c_time = _server_time_ms(duel.created_at, duel.challenger_completed_at, duel.challenger_answers)
+    o_time = _server_time_ms(duel.opponent_started_at, duel.opponent_completed_at, duel.opponent_answers)
     if c_time < o_time:
         return duel.challenger_id
     if o_time < c_time:
@@ -171,6 +201,12 @@ async def challenge(
     if opponent.id == current_user.id:
         raise HTTPException(status_code=422, detail="You cannot challenge yourself")
     if await is_blocked_pair(db, current_user.id, opponent.id):
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="This challenge isn't allowed")
+    # H.52: quien salió de las ligas no reta ni es retado. Del rival no se dice
+    # el motivo, igual que con un bloqueo.
+    if current_user.leagues_opt_out:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail={"code": "duels_opt_out"})
+    if opponent.leagues_opt_out:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="This challenge isn't allowed")
 
     skill_id = await _pick_skill(db, current_user, opponent, payload.skill_id)
@@ -235,6 +271,10 @@ async def my_duels(
         .offset(offset)
     )
     duels = result.scalars().all()
+    now = _now()
+    # Every stale one, not just the first: `any()` would stop at it.
+    if [d for d in duels if _expire_if_stale(d, now)]:
+        await db.commit()
 
     summaries = []
     for duel in duels:
@@ -252,7 +292,7 @@ async def my_duels(
         their_answers = duel.opponent_answers if is_challenger else duel.challenger_answers
         my_completed_at = duel.challenger_completed_at if is_challenger else duel.opponent_completed_at
 
-        is_your_turn = duel.status != "completed" and my_completed_at is None
+        is_your_turn = duel.status in _OPEN and my_completed_at is None
 
         summaries.append(
             DuelSummary(
@@ -281,14 +321,22 @@ async def join_duel(
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ) -> DuelChallengeResponse:
-    """Return the duel questions for the opponent so they can play their side."""
+    """The duel's questions for whoever still has to play their side: the
+    opponent, or the challenger coming back to a duel left halfway (42.5)."""
     duel = await _get_duel_or_404(db, duel_id, current_user)
-    if duel.opponent_id != current_user.id:
-        raise HTTPException(status_code=403, detail="Only the opponent can join a duel")
-    if duel.opponent_completed_at is not None:
+    is_challenger = duel.challenger_id == current_user.id
+    if _expire_if_stale(duel, _now()):
+        await db.commit()
+    if duel.status == "expired":
+        raise HTTPException(status_code=status.HTTP_410_GONE, detail={"code": "duel_expired"})
+    my_completed_at = duel.challenger_completed_at if is_challenger else duel.opponent_completed_at
+    if my_completed_at is not None:
         raise HTTPException(status_code=409, detail="You already completed this duel")
     if duel.status == "completed":
         raise HTTPException(status_code=409, detail="This duel is already completed")
+    if not is_challenger and duel.opponent_started_at is None:
+        duel.opponent_started_at = _now()
+        await db.commit()
 
     questions: list[Question] = []
     for qid in duel.question_ids:
@@ -297,14 +345,16 @@ async def join_duel(
         if q is not None:
             questions.append(q)
 
-    c_result = await db.execute(select(User).where(User.id == duel.challenger_id))
-    challenger = c_result.scalar_one()
+    other_id = duel.opponent_id if is_challenger else duel.challenger_id
+    other = (await db.execute(select(User).where(User.id == other_id))).scalar_one()
+    mine = (duel.challenger_answers if is_challenger else duel.opponent_answers) or []
 
     return DuelChallengeResponse(
         duel_id=str(duel.id),
         skill_id=duel.skill_id,
         questions=[QuestionPublic.model_validate(q) for q in questions],
-        opponent_username=challenger.username,
+        opponent_username=other.username,
+        answered_question_ids=[str(a["question_id"]) for a in mine],
     )
 
 
@@ -319,6 +369,10 @@ async def answer_duel(
 ) -> DuelAnswerResponse:
     duel = await _get_duel_or_404(db, duel_id, current_user)
 
+    if _expire_if_stale(duel, _now()):
+        await db.commit()
+    if duel.status == "expired":
+        raise HTTPException(status_code=status.HTTP_410_GONE, detail={"code": "duel_expired"})
     if duel.status == "completed":
         raise HTTPException(status_code=409, detail="Duel is already completed")
 
@@ -341,24 +395,33 @@ async def answer_duel(
     question = q_result.scalar_one_or_none()
     if question is None:
         raise HTTPException(status_code=404, detail="Question not found")
+    # 42.4: con opciones, el índice tiene que ser una de ellas. Un ítem sin
+    # opciones (exec) no puntúa nunca y se graba como fallo
+    # (test_motor_wiring.test_duel_item_without_correct_index_never_scores).
+    options = question.options_es or []
+    if options and payload.selected_index >= len(options):
+        raise HTTPException(status_code=422, detail="selected_index is not one of the options")
 
     # Duels only serve items with a correct_index (`_pick_questions`). An item
     # without one can never be right here: the old `selected_index == 1` branch
     # for exec types let the client decide.
     correct = question.correct_index is not None and payload.selected_index == question.correct_index
 
-    await apply_answer_to_skill_state(
-        db, current_user.id, question, correct, payload.response_time_ms
+    # 42.9: un duelo mueve el dominio, pero no lo lleva a «dominada» ni cuenta
+    # para la puerta de evidencia (ADR-63 §3-4).
+    await apply_evidence(
+        db, current_user.id, question, correct, payload.response_time_ms, source="duel"
     )
 
+    now = _now()
     my_answers.append({
         "question_id": payload.question_id,
         "selected_index": payload.selected_index,
         "response_time_ms": payload.response_time_ms,
         "correct": correct,
+        "answered_at": now.isoformat(),
     })
 
-    now = _now()
     if is_challenger:
         duel.challenger_answers = my_answers
         if len(my_answers) == _DUEL_QUESTIONS:
@@ -399,6 +462,10 @@ async def answer_duel(
         answers_so_far=len(my_answers),
         completed=len(my_answers) == _DUEL_QUESTIONS,
         opponent_completed=opponent_completed,
+        correct=correct,
+        correct_index=question.correct_index,
+        explanation_es=question.explanation_es,
+        explanation_en=question.explanation_en,
         rival=rival,
     )
 
@@ -413,6 +480,10 @@ async def duel_result(
 ) -> DuelResultResponse:
     duel = await _get_duel_or_404(db, duel_id, current_user)
 
+    if _expire_if_stale(duel, _now()):
+        await db.commit()
+    if duel.status == "expired":
+        raise HTTPException(status_code=status.HTTP_410_GONE, detail={"code": "duel_expired"})
     if duel.status != "completed":
         raise HTTPException(
             status_code=status.HTTP_202_ACCEPTED,

@@ -79,7 +79,7 @@ describe('WhyButton', () => {
 
     expect(await screen.findByText(/Porque el bucle recorre cada elemento una vez\./)).toBeInTheDocument();
     expect(screen.getByText(/Basado en el contenido del curso/i)).toBeInTheDocument();
-    expect(explainMock).toHaveBeenCalledWith('q1');
+    expect(explainMock).toHaveBeenCalledWith('q1', 'why');
   });
 
   it('la explicación dice que es de IA antes del texto y se puede reportar con lo que se vio', async () => {

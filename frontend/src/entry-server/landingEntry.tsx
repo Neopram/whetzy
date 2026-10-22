@@ -22,7 +22,14 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import '../i18n';
 
 import LandingScreen from '../pages/LandingScreen';
+import { LegalScreen } from '../pages/LegalScreen';
 
 export function renderLandingHtml(): string {
   return renderToStaticMarkup(<LandingScreen />);
+}
+
+/** Las páginas legales, con el mismo componente que pinta el cliente (2026-10-21): la revisión
+ *  de dominio de Paddle y cualquier lector sin JS tienen que ver el texto en el HTML. */
+export function renderLegalHtml(doc: 'terms' | 'privacy' | 'refund'): string {
+  return renderToStaticMarkup(<LegalScreen doc={doc} />);
 }

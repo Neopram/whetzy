@@ -601,6 +601,31 @@ class TestCertificationDomains:
         assert learning.is_certification is False
         assert learning.exam_question_count is None
 
+    @pytest.mark.asyncio
+    async def test_certification_track_keeps_its_blueprint_identity(
+        self, db_session, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        """42.12: the exam code, the guide it was built from and a fingerprint
+        of the blueprint. Without them nothing could tell which version of
+        the vendor's guide a readiness figure was computed against."""
+        monkeypatch.delenv("CONTENT_DIR", raising=False)
+        await load_content(db_session)
+
+        track = await db_session.get(Track, "track08")
+        assert track is not None
+        assert track.cert_code == "CLF-C02"
+        assert track.exam_guide == "AWS Certified Cloud Practitioner (CLF-C02) Exam Guide, Version 1.0"
+        assert track.exam_guide_url is not None and track.exam_guide_url.startswith("https://")
+        assert track.blueprint_version is not None and len(track.blueprint_version) == 12
+        first = track.blueprint_version
+
+        await load_content(db_session)  # idempotent: same content, same fingerprint
+        assert (await db_session.get(Track, "track08")).blueprint_version == first
+
+        learning = await db_session.get(Track, "track01")
+        assert learning is not None
+        assert (learning.cert_code, learning.exam_guide, learning.blueprint_version) == (None, None, None)
+
 
 class TestRealCorpus:
     @pytest.mark.asyncio

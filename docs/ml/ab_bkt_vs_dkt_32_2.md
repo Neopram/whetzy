@@ -89,8 +89,9 @@ afirmación que esta sesión no hace sin verificarla. El script:
 "¿podemos detectar que cambió?" (de dos lados).** La diferencia no es solo de
 vocabulario: H0 pasa a ser "DKT es `margen` peor que BKT de verdad" y se
 necesita potencia para RECHAZAR eso cuando DKT es en realidad equivalente —
-no para detectar una caída hipotética de ese tamaño. Esto necesita menos
-usuarios que la pregunta de dos lados para el mismo margen, porque solo
+no para detectar una caída hipotética de ese tamaño. A 5 y 8 pp esto necesita
+menos usuarios que la pregunta de dos lados para el mismo margen (a 12 pp no:
+138 frente a 131; acotado el 2026-10-22, H.58), porque solo
 importa una dirección (que empeore) y asume equivalencia real bajo H1, no
 una tasa peor específica:
 

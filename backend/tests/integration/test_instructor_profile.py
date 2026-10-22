@@ -1,14 +1,24 @@
 """Perfil de instructor (28.8): `ProfileTab` no llamaba a nada — `GET`/`PATCH
 /instructor/profile` existen desde aquí. Publicar un curso convierte en
-instructor (`_current_instructor`), así que cualquier usuario autenticado
-tiene un perfil, creado al vuelo si hace falta.
+instructor (`_current_instructor`). Desde 28.3 (dueño, 2026-10-16: «solo para
+creadores») el perfil se crea al vuelo solo a quien `can_create_courses`; aquí el
+usuario es admin. El caso del usuario normal está en
+`test_instructor_solo_creadores.py`.
 """
 
 from __future__ import annotations
 
+import pytest_asyncio
 from httpx import AsyncClient
 
 BASE = "/api/v1/instructor/profile"
+
+
+@pytest_asyncio.fixture(autouse=True)
+async def _creator(db_session, user) -> None:
+    user.is_admin = True
+    db_session.add(user)
+    await db_session.commit()
 
 
 async def test_profile_requires_auth(client: AsyncClient) -> None:

@@ -54,9 +54,9 @@ async def test_learned_elo_survives_two_content_syncs(db_session, user, content_
     assert question.elo_rating == 1650.0
     assert question.elo_updates == 0
 
-    # Duelo (quiz.apply_answer_to_skill_state) y examen (quiz.apply_exam_evidence):
+    # Duelo (quiz.apply_evidence) y examen (quiz.apply_exam_evidence):
     # los dos escritores que no dejan fila en `responses`.
-    await quiz.apply_answer_to_skill_state(db_session, user.id, question, True, 4000)
+    await quiz.apply_evidence(db_session, user.id, question, True, 4000, source="duel")
     await quiz.apply_exam_evidence(db_session, user, question, False, response_time_ms=4000)
     await db_session.flush()
     learned = question.elo_rating
@@ -83,10 +83,10 @@ async def test_item_k_decays_with_real_interactions(db_session, user, content_se
     siempre). La primera respuesta a una pregunta nueva mueve más que la vigésima."""
     question = await _sync(db_session, _q(content_seed["skill_id"], tier="medium"))
     before = question.elo_rating
-    await quiz.apply_answer_to_skill_state(db_session, user.id, question, True, 4000)
+    await quiz.apply_evidence(db_session, user.id, question, True, 4000, source="duel")
     first_move = abs(question.elo_rating - before)
     question.elo_updates = 25
     before = question.elo_rating
-    await quiz.apply_answer_to_skill_state(db_session, user.id, question, True, 4000)
+    await quiz.apply_evidence(db_session, user.id, question, True, 4000, source="duel")
     late_move = abs(question.elo_rating - before)
     assert first_move > late_move

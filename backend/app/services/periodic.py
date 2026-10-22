@@ -27,6 +27,7 @@ from sqlalchemy import and_, func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import settings
+from app.models.newsletter import NewsletterSubscriber
 from app.models.user import User
 
 logger = logging.getLogger("whetzy.periodic")
@@ -132,15 +133,67 @@ async def send_renewal_reminders(db: AsyncSession, now: datetime | None = None) 
     return sent
 
 
+async def send_monthly_newsletter(db: AsyncSession, now: datetime | None = None) -> int:
+    """Newsletter mensual (26.10) a quien se suscribió, confirmó el doble opt-in y no
+    se ha dado de baja. Detrás de ``NEWSLETTER_MONTHLY_ENABLED`` (apagado por defecto).
+
+    Una vez por mes natural (UTC): ``last_sent_at`` guarda el último correo que salió
+    hacia esa dirección (confirmación o newsletter), así que no hace falta columna
+    nueva y quien acaba de confirmar no recibe otro correo ese mismo mes. Se confirma
+    cada envío (commit) para que un fallo posterior no deshaga la marca de lo ya enviado
+    y la vuelta siguiente no lo repita. Returns the number sent."""
+    from app.core.security import create_unsubscribe_token
+    from app.services import email as email_service
+
+    if not settings.NEWSLETTER_MONTHLY_ENABLED:
+        return 0
+    # Sin proveedor (H.30) el correo no sale de la máquina: no se gasta el mes.
+    if not email_service.is_configured():
+        logger.warning("newsletter_monthly skipped: email_not_configured")
+        return 0
+    now = now or datetime.now(UTC)
+    month_start = datetime(now.year, now.month, 1, tzinfo=UTC)
+    due = (
+        await db.execute(
+            select(NewsletterSubscriber).where(
+                NewsletterSubscriber.confirmed.is_(True),
+                NewsletterSubscriber.unsubscribed_at.is_(None),
+                (NewsletterSubscriber.last_sent_at.is_(None))
+                | (NewsletterSubscriber.last_sent_at < month_start),
+            )
+        )
+    ).scalars().all()
+    sent = 0
+    for sub in due:
+        lang = sub.language if sub.language in ("es", "en") else "es"
+        token = create_unsubscribe_token(sub.id)
+        email_service.send_newsletter_monthly(
+            to=sub.email,
+            unsubscribe_url=(
+                f"{settings.API_PUBLIC_BASE_URL}{settings.API_V1_PREFIX}"
+                f"/newsletter/unsubscribe?token={token}&lang={lang}"
+            ),
+            lang=lang,
+        )
+        sub.last_sent_at = now
+        await db.commit()
+        sent += 1
+    return sent
+
+
 async def send_reactivation_offers(db: AsyncSession, now: datetime | None = None) -> int:
     """Código de 200 créditos (72 h) a quien lleva ≥ 14 días sin estudiar, uno
     cada 60 días. Es marketing: solo a emails verificados y a quien no se ha dado
-    de baja, y lleva enlace de baja de un clic. Returns the number sent."""
+    de baja, y lleva enlace de baja de un clic. Detrás de
+    ``REACTIVATION_EMAILS_ENABLED`` (apagado por defecto, 39.13). Returns the number sent."""
     from app.core.security import create_unsubscribe_token
     from app.models.economy import PromoCode
     from app.services.economy import PromoCodeService
     from app.services.email import send_reactivation
 
+    if not settings.REACTIVATION_EMAILS_ENABLED:
+        # 39.13: apagado por defecto; ni correo ni código promocional.
+        return 0
     now = now or datetime.now(UTC)
     cutoff = now - timedelta(days=REACTIVATION_INACTIVE_DAYS)
     inactive = (
@@ -358,6 +411,7 @@ async def run_periodic_jobs(db: AsyncSession, now: datetime | None = None) -> di
     for name, job in (
         ("renewal_reminders", send_renewal_reminders),
         ("reactivation_offers", send_reactivation_offers),
+        ("newsletter_monthly", send_monthly_newsletter),
         ("payouts", process_monthly_payouts),
         ("credits_expired", expire_credits),
         ("credit_expiry_warnings", send_credit_expiry_warnings),

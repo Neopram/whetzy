@@ -58,7 +58,7 @@ async function payAndComplete() {
   const { CheckoutScreen } = await import('../pages/CheckoutScreen');
   render(<CheckoutScreen />);
   fireEvent.click(await screen.findByRole('checkbox'));
-  fireEvent.click(screen.getByRole('button', { name: 'Ir al pago' }));
+  fireEvent.click(screen.getByRole('button', { name: /^Pagar / }));
   vi.useFakeTimers({ toFake: ['setTimeout'] });
   act(() => emit({ name: 'checkout.completed' }));
 }

@@ -45,8 +45,7 @@ plain `whetzy.com` is the right link, no query string needed.
 > — Python and SQL via WebAssembly (Pyodide/sql.js), JS in a sandboxed Web Worker
 > — no server round-trip to execute a snippet.
 >
-> It's free to use — the free tier's current limit is 5 lessons and 30 new
-> questions a day; spaced-repetition reviews are unlimited for everyone. I'd genuinely like the
+> It's free to use; spaced-repetition reviews are unlimited for everyone. I'd genuinely like the
 > HN read on where the adaptive-learning space is thin, what you'd want from a
 > "serious" coding platform that a bootcamp or a YouTube series doesn't give you,
 > and where this breaks for you if you try it. Happy to answer anything about the
@@ -78,10 +77,10 @@ result — there is no live HN post yet to measure.
 ## Checklist before the owner posts
 
 - [ ] HN account aged — a brand-new account for this is a known red flag (community rule, see above)
-- [ ] whetzy.com loads clean, no broken onboarding (same CI check that gated 31.8's kit)
+- [ ] whetzy.com loads clean, no broken onboarding (local gate: `.githooks/pre-push` + `scripts/ci_local.sh`; GitHub Actions gets no runner since 2026-10-01, H.13)
 - [ ] Owner has 2–3 hours free right after posting to answer comments — HN's algorithm
       rewards early engagement, and a dead thread looks worse than no thread
-- [ ] Reconfirm the free-tier limit cited above (5 lessons / 30 questions a day)
-      still matches both production's `FREE_DAILY_QUOTA_ENABLED`
-      (`backend/app/core/config.py:299`) and the landing page
-      (`frontend/src/i18n/{es,en}/common.json`) before posting
+- [ ] The free-tier limit (5 lessons / 30 questions a day, `plans.ts`) was removed from the first
+      comment on 2026-10-22 (H.58) while the quota is off; add it back only once production's
+      `FREE_DAILY_QUOTA_ENABLED` (`backend/app/core/config.py:299`) is on and the landing page
+      (`frontend/src/i18n/{es,en}/common.json`) shows it

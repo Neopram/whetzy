@@ -47,6 +47,10 @@ const REQUIRED = [
     why: 'the per-domain readiness bands (ADR-60) — the landing promises bands, not a percentage, and the static HTML must show them',
   },
   {
+    needle: '"@type":"SoftwareApplication"',
+    why: 'the schema.org JSON-LD (ola 2, 2026-10-21) — search engines read it from the static HTML, so it must be prerendered, not injected by JS',
+  },
+  {
     needle: 'LandingScreen',
     why: "the route-level stylesheet link — without it the hero paints at the browser's default size and repaints larger once the JS applies the real CSS, and Chrome reports that second, bigger paint as the LCP",
   },
@@ -67,12 +71,35 @@ const missing = REQUIRED.filter(({ needle }) => !html.includes(needle));
 
 console.log(`\n[prerender] checking dist/landing/index.html (${html.length} bytes)\n`);
 
+/*
+ * Las páginas legales (2026-10-21). La revisión de dominio de Paddle exige Términos, Privacidad y
+ * Reembolsos accesibles, y un revisor o una herramienta que no ejecuta JS veía el shell vacío
+ * (3.289 B sin texto). Cada una tiene que llegar con su título y con el texto de su primera sección.
+ */
+const LEGAL = [
+  { file: 'terms', needles: ['Términos de Servicio', '1. Aceptación'] },
+  { file: 'privacy', needles: ['Política de Privacidad', '1. Información que recopilamos'] },
+  { file: 'refund', needles: ['Política de reembolsos'] },
+];
+for (const { file, needles } of LEGAL) {
+  const path = resolve(process.cwd(), 'dist', file, 'index.html');
+  const page = existsSync(path) ? readFileSync(path, 'utf-8') : '';
+  for (const needle of needles) {
+    if (!page.includes(needle)) {
+      missing.push({
+        needle: `dist/${file}/index.html: ${needle}`,
+        why: 'the legal page must carry its text in the static HTML — Paddle\'s domain review (and any crawler) reads it without running JS',
+      });
+    }
+  }
+}
+
 if (missing.length > 0) {
   for (const { needle, why } of missing) {
     console.error(`  FAIL  missing ${JSON.stringify(needle)}\n        ${why}`);
   }
-  console.error(`\n[prerender] FAIL — ${missing.length} missing marker(s) in the prerendered landing.\n`);
+  console.error(`\n[prerender] FAIL — ${missing.length} missing marker(s) in the prerendered pages.\n`);
   process.exit(1);
 }
 
-console.log(`[prerender] PASS — hero, copy, FAQ, bands and route stylesheet all present\n`);
+console.log(`[prerender] PASS — hero, copy, FAQ, bands, route stylesheet and the three legal pages all present\n`);

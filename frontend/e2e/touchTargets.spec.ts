@@ -15,12 +15,39 @@ import { registerUser, markLessonSeen, answerCurrentQuestion, uniqueUsername } f
 const VIEWPORT = { width: 390, height: 844 };
 const MIN = 44;
 
-type Finding = { where: string; role: string; name: string; width: number; height: number };
+type Finding = { where: string; role: string; name: string; width: number; height: number; layout: string };
 
 async function auditTargets(page: import('@playwright/test').Page, where: string): Promise<Finding[]> {
+  // getBoundingClientRect incluye los transform: si una transición de pantalla
+  // sigue a medias (App.tsx entra con `scale: 0.985`, un muelle de
+  // framer-motion), un botón de 44 px mide 43,x. El CI de 8fa7180 (#316),
+  // 13f38c9 (#317) y b80a872 (#312) dio 147x44 en las pestañas de /auth con
+  // `min-height: 44px` servido. Una tolerancia de 0,5 px no bastaba (b80a872:
+  // maquetación 147x44, pantalla 43,x): el muelle pasa mucho rato cerca de 1.
+  // Se espera a que ningún ancestro de un objetivo tenga escala distinta de 1;
+  // un objetivo pequeño de verdad sigue siendo pequeño sin transform.
+  await page.waitForFunction(() => {
+    const scaled = (el: Element | null): boolean => {
+      for (let n = el; n; n = n.parentElement) {
+        const cs = getComputedStyle(n);
+        // La propiedad `scale` va aparte de `transform` y no sale en él.
+        if (cs.scale && cs.scale !== 'none' && cs.scale !== '1') return true;
+        const t = cs.transform;
+        if (t && t !== 'none') {
+          const m = new DOMMatrixReadOnly(t);
+          if (m.a !== 1 || m.d !== 1) return true;
+        }
+      }
+      return false;
+    };
+    for (const el of document.querySelectorAll<HTMLElement>('button, a[href], input, select, textarea, [role="button"]')) {
+      if (scaled(el)) return false;
+    }
+    return true;
+  }, undefined, { timeout: 5_000 }).catch(() => { /* se mide igual y el informe lleva los dos tamaños */ });
   return page.evaluate(({ where, min }) => {
     const selectors = 'button, a[href], input, select, textarea, [role="button"]';
-    const out: { where: string; role: string; name: string; width: number; height: number }[] = [];
+    const out: { where: string; role: string; name: string; width: number; height: number; layout: string }[] = [];
     document.querySelectorAll<HTMLElement>(selectors).forEach((el) => {
       const style = getComputedStyle(el);
       if (style.display === 'none' || style.visibility === 'hidden' || Number(style.opacity) === 0) return;
@@ -33,19 +60,29 @@ async function auditTargets(page: import('@playwright/test').Page, where: string
       // that as a <button class="term_...">.
       if (el.className && String(el.className).includes('term_')) return;
 
+      // La misma excepción para un enlace dentro de una frase: los enlaces
+      // legales de /auth («Al continuar aceptas los Términos y la Política de
+      // privacidad», #318) van en línea con el texto, como pide 2.5.8.
+      if (el.tagName === 'A' && style.display === 'inline' && el.closest('p')) return;
+
       // A checkbox/radio wrapped in its own <label> isn't the real target —
       // the label (AuthScreen.tsx's age-confirmation row) is what receives
       // the click and toggles the input; the input itself stays UA-sized.
       const input = el as HTMLInputElement;
       if ((input.type === 'checkbox' || input.type === 'radio') && el.closest('label')) return;
 
-      if (rect.width < min || rect.height < min) {
+      // 0,05 px de margen solo para el redondeo subpíxel (CI de #322 en 3b08648:
+      // «exacto 147.00x44.00», es decir 43,99x); un objetivo pequeño de verdad
+      // se queda muy por debajo.
+      const EPS = 0.05;
+      if (rect.width < min - EPS || rect.height < min - EPS) {
         out.push({
           where,
           role: el.tagName.toLowerCase(),
           name: el.getAttribute('aria-label') || el.textContent?.trim().slice(0, 40) || '(sin nombre)',
           width: Math.round(rect.width),
           height: Math.round(rect.height),
+          layout: `${el.offsetWidth}x${el.offsetHeight}; exacto ${rect.width.toFixed(3)}x${rect.height.toFixed(3)}`,
         });
       }
     });
@@ -92,7 +129,7 @@ test.describe('34.3: objetivos tactiles >= 44x44px a 390px', () => {
     allFindings.push(...await auditTargets(page, 'Quiz — feedback'));
 
     const summary = allFindings
-      .map((f) => `  ${f.where}: <${f.role}> "${f.name}" — ${f.width}x${f.height}px`)
+      .map((f) => `  ${f.where}: <${f.role}> "${f.name}" — ${f.width}x${f.height}px (maquetación ${f.layout})`)
       .join('\n');
     console.log(allFindings.length === 0
       ? 'Sin objetivos por debajo de 44x44px.'

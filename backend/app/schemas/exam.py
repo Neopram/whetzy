@@ -129,6 +129,11 @@ class CertificationReadiness(BaseModel):
     domains: list[DomainReadiness]
     overall_p_known: float | None
     ready_for_simulacro: bool
+    # 42.12: the blueprint these figures are measured against.
+    cert_code: str | None = None
+    exam_guide: str | None = None
+    exam_guide_url: str | None = None
+    blueprint_version: str | None = None
 
 
 # ── Track final exam and module test-out (17.2) ─────────────────────────────

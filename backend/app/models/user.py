@@ -60,6 +60,11 @@ class User(Base):
     marketing_emails_opt_out: Mapped[bool] = mapped_column(
         Boolean, default=False, server_default=false(), nullable=False
     )
+    # 24.8: el perfil público `/u/<handle>` es privado por defecto; solo existe
+    # si la persona lo activa (y el flag global PUBLIC_PROFILES_ENABLED lo permite).
+    public_profile_opt_in: Mapped[bool] = mapped_column(
+        Boolean, default=False, server_default=false(), nullable=False
+    )
     # Fin de periodo para el que ya salió el recordatorio de renovación (los
     # Términos lo prometen 7 días antes): uno por periodo, no uno por vuelta.
     renewal_reminder_for: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
@@ -107,6 +112,21 @@ class User(Base):
         return self.role == "owner"
 
     @property
+    def public_profiles_enabled(self) -> bool:
+        """Si el servidor publica perfiles (flag global). El interruptor de
+        Perfil solo se enseña con esto en True."""
+        from app.core.config import settings
+
+        return settings.PUBLIC_PROFILES_ENABLED
+
+    @property
+    def tutor_deep_access(self) -> bool:
+        """«A fondo» del tutor: solo Pro Max o superior (dueño, 2026-10-21)."""
+        from app.core.entitlements import user_meets_tier
+
+        return user_meets_tier(self, "pro")
+
+    @property
     def can_create_courses(self) -> bool:
         """«Instructor» es para creadores (dueño, 2026-10-16): plan Creador, o el
         dueño y los admins, que montan el catálogo propio. La misma regla que
@@ -150,7 +170,7 @@ class User(Base):
         Boolean, default=False, server_default=false(), nullable=False
     )
 
-    # Age gate (19.11): user confirmed they are ≥13 years old at registration.
+    # Age gate (19.11): user confirmed they are ≥16 years old at registration (ADR-70).
     age_confirmed: Mapped[bool] = mapped_column(
         Boolean, default=False, server_default=false(), nullable=False
     )
@@ -196,6 +216,12 @@ class UserSkillState(Base):
     # Counted apart from wrong answers so accuracy never reads an honest
     # "I don't know" as a failure the learner made.
     unknown_count: Mapped[int] = mapped_column(
+        Integer, default=0, nullable=False, server_default="0"
+    )
+    # 42.9 / ADR-63: the share of `attempts` that came from practice — the only
+    # source that counts for the evidence gate (`domain_thresholds.is_mastered`).
+    # Duels, test-outs and the placement test add to `attempts` only.
+    practice_attempts: Mapped[int] = mapped_column(
         Integer, default=0, nullable=False, server_default="0"
     )
 

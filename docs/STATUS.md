@@ -2946,3 +2946,40 @@ Rama `claude/youthful-allen-i8k7zb-auditoria-tracks`, desde `origin/master` (no 
 - **Decisiones tomadas por defecto (la fase 0 pide al dueño):** rúbrica con los pesos propuestos sin firmar; análisis sí, contenido no (ADR-62); piloto con track01, track12 y track16.
 - **Ledger:** sin fila nueva; falta decidir la serie. El ledger está al límite de su tope (61440 bytes).
 - **Pendiente:** fase 2 completa (32 + 19 tracks), sección en `competitive-teardown.md`, corrección de los defectos, decisión del dueño sobre la rúbrica.
+## 2026-10-22 — PR unificado y decisiones delegadas (ADR-69)
+
+- **Encargo del dueño.** Tomar todas las decisiones salvo H.12, H.35, tiendas, H.10 y el contenido, y concluir lo
+  demás en un PR unificado (#322).
+- **Integración.** #321 (base de CI) y los PR #309–#314 y #316–#320 en una sola rama. Los conflictos eran de unión
+  (inventario de docs, claves i18n hermanas, una regla CSS con tokens y ancho a la vez). En local: tsc y oxlint a
+  0, vitest 1219/1219, `check_docs.py` y `ledger.py check` en verde. #315 cerrado: su commit va en #321.
+- **ADR-69.** 13 decisiones con el valor recomendado del ledger: python-jose → PyJWT, ADR-63 firmada, duelos (H.52),
+  `exam_pass_predictor` a `app/ml`, fuera la promesa de «panel de equipo» en la oferta B2B, entre otras.
+- **Incidente de Railway (21-10).** Builds en pausa y aviso de seguridad sobre variables de entorno. Producción
+  sigue respondiendo (`/health` 200 el 22-10). El despliegue automático desde GitHub necesita reconectar GitHub
+  en Railway cuando vuelvan los builds; es paso del dueño.
+- **H.16** (proteger `master`): la integración de la sesión recibe 403 en la protección de ramas; queda para el
+  dueño en Settings → Branches.
+
+## 2026-10-22 — Cierre de filas verificadas y ledger (continuación del PR unificado)
+
+- **Cerradas con evidencia ejecutada** (hash en el ledger): 42.4, 42.5, 42.6, 42.9, 42.11, 42.12, 39.13, 28.0, 28.3, 46.4 y
+  42.2. Cada una tiene su test en rojo antes del arreglo o una mutación de la guarda.
+- **Parciales, con el motivo escrito en su fila:** 42.3 (la traza de los colgados no está probada), 42.10 (Android
+  sin prueba en dispositivo: cola humana), 26.10 (el envío mensual real depende de H.30), 31.6 (ningún gate define
+  `WHETZY_PG_TEST_URL`), 46.14, 24.6, 24.8 y 34.2.
+- **CI de `8435112`:** verde en backend, frontend, e2e, android y Cloudflare Pages. Nivel 2 local: 14 de 14 pasos.
+- **Antes en rojo, ya corregido:** `test_motor_wiring` (cota de `selected_index` solo con opciones), la guarda de
+  instructor que había subido mutada en `cd5f725`, y `offline.spec` (abría la cola de IndexedDB sin versión).
+- **Ledger:** las series 44 y 45 están completas y pasan a `LEDGER_HISTORY` §B; el fichero vuelve a tener margen
+  bajo su límite de 60 KB.
+- **Decisiones de criterio abiertas para el dueño:** si el informe de dominio se compra con créditos en la app
+  nativa (ahora no, `601b5bb`), y el modo claro (34.2).
+
+## 2026-10-22 — Decisiones del dueño (ADR-70)
+
+- El dueño decidió lo que ADR-69 le había dejado: anual «2 meses gratis» (Pro 149,99 $, Pro Max 199,99 $; sigue apagado en el piloto), LatAm −40 % y España a precio pleno, titular persona física hasta constituir la empresa, ADR-61 fiel con la edad mínima en **16**, y se mantiene la pausa de contenido (ADR-62).
+- Edad 16 aplicada: i18n ES/EN (casilla, error, `termsP2`, `privacyCoppaDesc`), mensaje del backend, 19 líneas de e2e y la checklist de App Store. `test_edad_minima.py` sale en rojo con los textos viejos (visto) y en verde ahora.
+- Regresión visual de `/auth`: las 8 capturas de Linux no coinciden en este entorno, ni con el texto viejo (3-7 % de píxeles; Chromium 1194 frente al 1248 del proyecto). No se regeneran aquí; toca regenerarlas en el nivel 2 local con el Chromium del proyecto (`npx playwright test -c playwright.visual.config.ts -u`).
+- Ledger: H.13 y H.48 cerradas; H.20, H.25, H.27, H.35 y H.54 decididas; H.55 sigue en pausa. Falta el nombre legal del dueño para los Términos.
+

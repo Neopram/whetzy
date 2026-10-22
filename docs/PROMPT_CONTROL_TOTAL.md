@@ -18,7 +18,8 @@
 > un residuo, y la línea roja «ningún precio publicado» cede ante ADR-45: la landing los
 > muestra con «el cobro abre pronto»; lo que sigue prohibido es **cobrar** antes de H.19 y
 > publicar testimonios o cifras de usuarios. (2) La serie de esa sesión, «competencia →
-> producto», es la **37** (no la 35) y su bloqueo de precio anual/regional es **H.38**.
+> producto», es la **37** (no la 35) y su bloqueo de precio anual/regional es **H.38**
+> (sustituido: hoy es la serie 35 y H.35; aclaración del 2026-10-22, H.58).
 > (3) La FASE 1 la cerró la sesión del 2026-09-25 (entrada en `STATUS.md`); una sesión
 > nueva empieza en la FASE 2. (4) «docs/CLAUDE.md» significa `CLAUDE.md` en la raíz.
 >

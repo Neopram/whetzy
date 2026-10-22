@@ -20,15 +20,32 @@ about under motor-owned names, read-only).
 `tests/unit/test_domain_thresholds_guard.py` fails if a threshold-shaped
 literal shows up in a motor file outside this one.
 
-NOT in scope here: `backend/app/services/gamification/service.py:315`
-hardcodes the same `0.95` independently (`UserSkillState.p_known >= 0.95`)
-but is S1's file, not the motor's (SESIONES.md §4.3) — flagged as a
-NECESITO to S1 rather than fixed here.
+`gamification/service.py` hardcoded the same `0.95` on its own until 42.6
+(2026-10-22); it now asks `is_mastered`, like progress.
+
+42.6 / ADR-63 §3: there is ONE definition of a mastered skill, `is_mastered`
+— mastery at or above the threshold AND `MIN_EVIDENCE_ANSWERS` practice
+answers. It lives in `app/core/mastery.py`, below the motor and gamification,
+and is re-exported here. A duel, a test-out or the placement test move `p_known` but never
+count as that evidence (`evidence_policy.py`).
 """
 
 from __future__ import annotations
 
 from app.core.config import settings
+from app.core.mastery import (  # re-exported: the motor's names for the shared definition
+    MASTERY_THRESHOLD,
+    MIN_EVIDENCE_ANSWERS,
+    is_mastered,
+    mastered_clause,
+)
 
-MASTERY_THRESHOLD: float = settings.MASTERY_THRESHOLD
 DEFAULT_MODULE_UNLOCK_MASTERY: float = settings.DEFAULT_MODULE_UNLOCK_MASTERY
+
+__all__ = [
+    "DEFAULT_MODULE_UNLOCK_MASTERY",
+    "MASTERY_THRESHOLD",
+    "MIN_EVIDENCE_ANSWERS",
+    "is_mastered",
+    "mastered_clause",
+]

@@ -95,6 +95,17 @@ export function ProfileScreen() {
     }
   }
 
+  // 24.8: igual que el de ofertas: se aplica al momento y se deshace si falla.
+  async function handlePublicProfileToggle() {
+    const next = !user.publicProfileOptIn;
+    updateUser({ publicProfileOptIn: next });
+    try {
+      await auth.updateMe({ public_profile_opt_in: next });
+    } catch {
+      updateUser({ publicProfileOptIn: !next });
+    }
+  }
+
   async function handleCancel() {
     setCancelState('busy');
     try {
@@ -404,6 +415,25 @@ export function ProfileScreen() {
               <span className={styles.track}><span className={styles.toggleThumb} /></span>
             </button>
           </div>
+          {user.publicProfilesEnabled && (
+            <div className={styles.setting}>
+              <div>
+                <span className={styles.settingLabel}>{t('profile.publicProfile')}</span>
+                <p className={styles.settingHint} id="public-profile-hint">{t('profile.publicProfileHint', { handle: user.username })}</p>
+              </div>
+              <button
+                className={`${styles.toggle} ${user.publicProfileOptIn ? styles.toggleOn : ''}`}
+                type="button"
+                onClick={() => void handlePublicProfileToggle()}
+                role="switch"
+                aria-checked={user.publicProfileOptIn}
+                aria-label={t('profile.publicProfile')}
+                aria-describedby="public-profile-hint"
+              >
+                <span className={styles.track}><span className={styles.toggleThumb} /></span>
+              </button>
+            </div>
+          )}
           {push.supported && (
             <div className={styles.setting}>
               <span className={styles.settingLabel}>{t('profile.streakReminders')}</span>

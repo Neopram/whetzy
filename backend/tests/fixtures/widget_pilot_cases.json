@@ -1,0 +1,45 @@
+{
+  "_comment": "40.2: un ítem de demostración por widget del piloto (búsqueda binaria, CIDR, JOIN) con un estado correcto y uno incorrecto. NO es contenido: no se persiste en content/ (ADR-62, ADR-67 D1). Lo leen test_widget_pilot.py (servidor), widgetsPiloto.test.tsx (contrato del widget: interacción -> serialize -> checker del cliente) y e2e/widgets-piloto.spec.ts (la demo que contesta el alumno).",
+  "items": [
+    {
+      "widget": "binarySearch",
+      "question_es": "Busca el 5 en la lista ordenada sondeando siempre la posición central del tramo que queda.",
+      "question_en": "Find 5 in the sorted list, always probing the middle position of the range that is left.",
+      "params": {"items": [1, 3, 5, 7, 9, 11, 13, 15], "goal": 5},
+      "checker": "exact",
+      "target": [7, 3, 5],
+      "cases": [
+        {"state": [7, 3, 5], "expected": true, "why": "sondeos centrales: 7, 3 y 5"},
+        {"state": [7, 5], "expected": false, "why": "salta el sondeo central de 3"}
+      ]
+    },
+    {
+      "widget": "cidr",
+      "question_es": "Para 192.168.10.77/26, ¿cuáles son las direcciones de red y de broadcast?",
+      "question_en": "For 192.168.10.77/26, what are the network and broadcast addresses?",
+      "params": {"cidr": "192.168.10.77/26"},
+      "checker": "exact",
+      "target": {"network": "192.168.10.64", "broadcast": "192.168.10.127"},
+      "cases": [
+        {"state": {"network": "192.168.10.64", "broadcast": "192.168.10.127"}, "expected": true, "why": "bloque de 64 que empieza en .64"},
+        {"state": {"network": "192.168.10.64", "broadcast": "192.168.10.255"}, "expected": false, "why": "broadcast de un /24, no de un /26"}
+      ]
+    },
+    {
+      "widget": "sqlJoin",
+      "question_es": "Marca las filas que devuelve el INNER JOIN de users con orders.",
+      "question_en": "Check the rows the INNER JOIN of users and orders returns.",
+      "params": {
+        "left": {"name": "users", "columns": ["id", "name"], "rows": [[1, "Ana"], [2, "Luis"], [3, "Marta"]]},
+        "right": {"name": "orders", "columns": ["id", "user_id", "total"], "rows": [[10, 1, 30], [11, 1, 15], [12, 3, 40], [13, 4, 5]]},
+        "on": {"left": "id", "right": "user_id"}
+      },
+      "checker": "unordered",
+      "target": [[1, 10], [1, 11], [3, 12]],
+      "cases": [
+        {"state": [[3, 12], [1, 10], [1, 11]], "expected": true, "why": "las tres coincidencias, en otro orden"},
+        {"state": [[1, 10], [3, 12]], "expected": false, "why": "falta el segundo pedido de Ana"}
+      ]
+    }
+  ]
+}

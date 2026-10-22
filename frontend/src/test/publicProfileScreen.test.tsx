@@ -83,3 +83,26 @@ describe('PublicProfileScreen — real o 404 (0.3)', () => {
     expect(screen.getByText('Todavía sin proyectos')).toBeInTheDocument();
   });
 });
+
+describe('PublicProfileScreen — noindex mientras no haya perfil público (24.8)', () => {
+  const robots = () => document.head.querySelector('meta[name="robots"]')?.getAttribute('content') ?? null;
+
+  it('lleva noindex si el perfil no existe o no es público (404)', async () => {
+    await i18n.changeLanguage('es');
+    getMock.mockRejectedValueOnce(new ApiError('Profile not found', 404));
+    render(<PublicProfileScreen handle="privado" />);
+    await waitFor(() => expect(screen.getByText(/No existe ningún perfil/)).toBeInTheDocument());
+    expect(robots()).toBe('noindex');
+  });
+
+  it('lleva noindex mientras carga y lo quita cuando hay un perfil público cargado', async () => {
+    await i18n.changeLanguage('es');
+    let resolve!: (p: typeof PROFILE) => void;
+    getMock.mockReturnValueOnce(new Promise((r) => { resolve = r; }));
+    render(<PublicProfileScreen handle="ada" />);
+    expect(robots()).toBe('noindex');
+    resolve(PROFILE);
+    await waitFor(() => expect(screen.getByText('Ada Lovelace')).toBeInTheDocument());
+    expect(robots()).toBeNull();
+  });
+});

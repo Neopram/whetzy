@@ -43,6 +43,12 @@ Enable in **Cloudflare Dashboard** → **whetzy.com** → **Security** → **WAF
 
 ## Rate Limiting Rules
 
+> **Decisión del 2026-10-22 (H.58; 22.5 / `RUNBOOK.md` §C):** la API pasa detrás de Cloudflare con
+> `api.whetzy.com` en modo proxied y **una sola regla**, que es lo que permite el plan Free. Hasta
+> que el dueño lo active en su cuenta, `api.whetzy.com` es un CNAME sin proxy a Railway y los
+> límites reales los pone el backend (AUTH 60/min, resto 120/min). Las cuatro reglas de abajo son el
+> diseño original; en Free solo cabe una.
+
 Create rules in **Cloudflare Dashboard** → **Security** → **Rate limiting**:
 
 ### Rule 1: Authentication Endpoints (12 req/min per IP)
@@ -158,43 +164,10 @@ TTL: 0 (no cache)
 
 **Reason**: Private data must never be cached.
 
-## Turnstile CAPTCHA (Optional, Trigger-Based)
+## Turnstile CAPTCHA
 
-Enable only if automated abuse is detected (e.g., spike in failed login attempts).
-
-### Setup
-
-1. **Cloudflare Dashboard** → **Turnstile** → Create a new site
-   - Domain: `whetzy.com`
-   - Subdomain: None
-   - Mode: Managed (Cloudflare decides when to challenge)
-
-2. **Backend code** (see `backend/app/core/security.py`):
-   ```python
-   if abuse_detected:  # e.g., spike in 401 responses
-       return {"error": "Please complete Turnstile", "turnstile_required": True}
-   ```
-
-3. **Frontend code** (see `frontend/src/components/Turnstile.tsx`):
-   ```typescript
-   import Turnstile from 'react-turnstile';
-   <Turnstile sitekey={process.env.REACT_APP_TURNSTILE_SITEKEY} />
-   ```
-
-4. **Environment variables**:
-   - Backend: `TURNSTILE_SECRET_KEY` (server-side verification)
-   - Frontend: `REACT_APP_TURNSTILE_SITEKEY` (public key for widget)
-
-5. **Verification** (backend):
-   ```python
-   response = requests.post(
-       "https://challenges.cloudflare.com/turnstile/v0/siteverify",
-       json={"secret": settings.TURNSTILE_SECRET_KEY, "response": token}
-   )
-   is_valid = response.json().get("success")
-   ```
-
-**Deployment**: Turnstile is disabled by default. Activate only if abuse threshold is crossed (ver `docs/RUNBOOK.md` § Incident Management).
+Sección retirada el 2026-10-22 (H.58): describía código que no existe y la CSP `script-src 'self'`
+bloquearía el widget. Se reescribe solo si hay abuso medido.
 
 ## DDoS Protection (Always-On)
 

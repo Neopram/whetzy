@@ -27,12 +27,12 @@ describe('offlineQueue — IDB unavailable fallback', () => {
     await expect(enqueue(makeAnswer('a1'))).resolves.toBeUndefined();
   });
 
-  it('dequeueAll returns [] when IDB throws', async () => {
+  it('peekAll returns [] when IDB throws', async () => {
     vi.stubGlobal('indexedDB', {
       open: () => { throw new Error('IDB blocked'); },
     });
-    const { dequeueAll } = await import('../services/offlineQueue');
-    expect(await dequeueAll()).toEqual([]);
+    const { peekAll } = await import('../services/offlineQueue');
+    expect(await peekAll()).toEqual([]);
   });
 
   it('pendingCount returns 0 when IDB throws', async () => {

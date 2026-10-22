@@ -22,6 +22,8 @@
 
 ## ADR-3 — Alembic with auto-stamp in start.sh (2026-09-08)
 
+> **Sustituida:** el arranque ya no hace `alembic stamp head`; solo `alembic upgrade head` (`backend/scripts/boot_tasks.sh`). Nota añadida el 2026-10-22 por ADR-69 #13 (H.58).
+
 **Decision:** `start.sh` runs `alembic stamp head && alembic upgrade head` at startup.
 
 **Reason:** Pre-existing production DB had no `alembic_version` row. Stamp avoids "target database is not up to date" on first deploy.
@@ -1590,7 +1592,7 @@ simulacro activo, y un mínimo de 100 alumnos con datos reales de uso (condició
 
 ---
 
-## ADR-61 — Decisiones del dueño tras la auditoría de integración y de docs (DUEÑO, 2026-10-09; transcrito el 2026-10-16 por la Oleada 0, pendiente de que el dueño confirme que es fiel)
+## ADR-61 — Decisiones del dueño tras la auditoría de integración y de docs (DUEÑO, 2026-10-09; transcrito el 2026-10-16 por la Oleada 0; **confirmado fiel por el dueño el 2026-10-22, salvo la edad mínima: 16 años**, ADR-70)
 
 **Origen.** Texto propuesto «para S5 como ADR-61» en el issue #89
 (<https://github.com/Neopram/whetzy/issues/89#issuecomment-6075139738>, 2026-10-09 05:48 UTC,
@@ -1609,7 +1611,7 @@ del 2026-10-04/05 que el texto original le atribuía.
 > (`backend/app/services/payment_service.py:22`) y la Oleada 0 no lo toca. Lo decide el dueño.
 
 **Seguridad, dinero y cumplimiento**
-1. Edad mínima en el alta por OAuth: pantalla de confirmación en el primer inicio con Google o GitHub. Edad mínima: 13 años, sujeta a la revisión de S4 y del abogado (H.20).
+1. Edad mínima en el alta por OAuth: pantalla de confirmación en el primer inicio con Google o GitHub. Edad mínima: 13 años, sujeta a la revisión de S4 y del abogado (H.20). **Corrección del dueño del 2026-10-22: 16 años (ADR-70).**
 2. Analítica: los eventos individuales se borran a los 30 días y se conservan solo agregados. Así se cumple lo publicado en el DPA.
 3. Paddle sigue en producción a propósito. La certificación no se cobra hasta cumplir el punto 4 y 37.24. Los flags `CERTIFICATION_PAYWALL`, `CREATOR_PLAN_REQUIRED`, `FREE_DAILY_QUOTA_ENABLED` y `ANNUAL_PLAN_ENABLED` siguen **apagados** durante el piloto.
 4. AZ-900, AI-901 y DP-900: simulacro gratuito con «formato Whetzy» declarado y la duración oficial. Su examen certificador **no se vende** hasta tener la cifra oficial de preguntas.
@@ -1643,7 +1645,7 @@ del 2026-10-04/05 que el texto original le atribuía.
 
 ---
 
-## ADR-62 — Contenido nuevo en espera por consumo de tokens; el contenido de estudio queda como deuda registrada (PROPUESTA de la sesión, 2026-10-16; pendiente de firma del DUEÑO)
+## ADR-62 — Contenido nuevo en espera por consumo de tokens; el contenido de estudio queda como deuda registrada (PROPUESTA de la sesión, 2026-10-16; **firmada por el dueño el 2026-10-22: se mantiene la pausa**, ADR-70)
 
 **Origen.** Petición del dueño del 2026-10-16 (plan ultracode, `PLAN_ULTRACODE.md` §7). Enmienda
 ADR-59 y el punto «el contenido corre en paralelo» de ADR-54.
@@ -1657,7 +1659,9 @@ ADR-59 y el punto «el contenido corre en paralelo» de ADR-54.
 
 ---
 
-## ADR-63 — Política de evidencia por fuente y prior del onboarding (PROPUESTA de la sesión, 2026-10-16; pendiente de firma del DUEÑO)
+## ADR-63 — Política de evidencia por fuente y prior del onboarding (PROPUESTA de la sesión, 2026-10-16; **firmada por delegación el 2026-10-22**, ADR-69 #5)
+
+**Firmada por delegación el 2026-10-22 (ADR-69 #5)** con los valores recomendados: prior 0,10/0,20/0,30, k = 4 y tope 0,94, puerta solo con práctica.
 
 **Origen.** Plan ultracode del dueño (`PLAN_ULTRACODE.md` §7). Subordinada a ADR-60 UX-DEC-01.
 
@@ -1777,3 +1781,55 @@ opciones, el dueño eligió **levantar el veto entero**.
 
 **Lo que no cambia.** `legal.*` lo fija el dueño (ADR-55); la mascota espera al ilustrador (ADR-67 D2); ninguna
 ceremonia celebra un ascenso de liga que el servidor no aplique.
+
+## ADR-69 — Decisiones delegadas del 2026-10-22: cola humana con su valor recomendado (DECIDIDO por delegación expresa del dueño)
+
+**Origen.** Sesión del 2026-10-22. El dueño: «toma todas las decisiones excepto: rotar la clave de Groq (H.12);
+Paddle T1, anual y tarifa regional (H.35); tiendas; cohorte beta (H.10); contenido. Concluye todo lo demás en un
+PR unificado». La sesión toma, en cada fila, el valor recomendado que ya estaba escrito en el ledger. Ninguna
+decisión de esta tabla reabre una ADR del dueño.
+
+| # | Fila | Decisión |
+|---|---|---|
+| 1 | PYSEC-2026-4298 | Se cambia python-jose por **PyJWT** (sin ignorar el aviso en el CI). La guarda de confusión de algoritmo se queda. |
+| 2 | #318 | Los enlaces legales de `/auth` siguen **en línea dentro de la frase** (excepción de WCAG 2.5.8); `touchTargets` la reconoce. |
+| 3 | #315 | Se cierra: su único commit va en #321. |
+| 4 | PR unificado | Los PR #309–#314 y #316–#321 se integran en un solo PR; los individuales se cierran como sustituidos cuando el unificado esté en verde. |
+| 5 | H.51 | **Se firma ADR-63** con los valores recomendados: prior 0,10/0,20/0,30 por experiencia, encogimiento k = 4 con tope 0,94, y la puerta de «dominada» (≥ 0,95 y ≥ 7 respuestas) solo con práctica. |
+| 6 | H.52 | Duelos: con el opt-out de ligas no se reta ni se es retado; un reto caduca a los 7 días; los duelos no dan XP; el desempate es por tiempo de servidor. |
+| 7 | H.53 | `exam_pass_predictor` sale de `backend/app/services/` a `backend/app/ml/` (ningún código de la app lo importa; solo su test y un script de calibración). |
+| 8 | H.56 | Se retira de `docs/legal/b2b_pilot_offer_*.md` la promesa de un «panel de equipo» que no existe. |
+| 9 | H.57 | La tabla de modelos de `CLAUDE.md` no cambia. |
+| 10 | H.44 | Firecrawl, Amplitude, Mailchimp y Lusha se quitan. Desconectarlos es un paso del dueño en los ajustes de conectores de claude.ai; ningún código los usa. |
+| 11 | H.46 | No se activa el monitor de uptime de Sentry: puede gastar cuota de pago. |
+| 12 | H.47 | El correo de contacto de `/evidence` se queda hasta que exista un alias (`support@`), que depende de Cloudflare Email Routing (cuenta del dueño). |
+| 13 | H.58 | Las preguntas escaladas por el barrido de la Oleada 0 se resuelven con su opción recomendada, que es la primera de cada una. |
+
+**Lo que sigue en manos del dueño.**
+- Lo que él mismo excluyó: H.12, H.35, tiendas (H.2, H.3, H.5, H.14), H.10 y el contenido.
+- H.54 (jurisdicción): depende de la entidad legal, la misma cuestión que Paddle T1.
+- H.16 (proteger `master` en GitHub): la integración de esta sesión no tiene permiso sobre la protección de ramas (`GET …/branches/master/protection` → 403); se hace en Settings → Branches.
+- Lo que exige cuentas o personas: publicar en redes (H.23), la revisión legal profesional (H.20), los pagos a instructores (H.25), el staging con coste (31.1) y reconectar GitHub en Railway tras su incidente del 2026-10-21.
+
+## ADR-70 — Decisiones del dueño del 2026-10-22: precios que faltaban, titular, edad mínima y contenido (DUEÑO; y por delegación lo marcado)
+
+**Origen.** Sesión del 2026-10-22. El dueño contestó a las preguntas que ADR-69 dejó en sus manos. Lo marcado «por delegación» lo decide la sesión con el valor que ya estaba escrito en el ledger, como en ADR-69.
+
+| # | Fila | Decisión | Quién |
+|---|---|---|---|
+| 1 | H.35 (1) | **Plan anual = «2 meses gratis»:** Pro 149,99 $/año y Pro Max 199,99 $/año (`app/core/prices.py`). La bandera `ANNUAL_PLAN_ENABLED` sigue apagada en el piloto (ADR-61 §3). | Dueño |
+| 2 | H.35 (2) | **Tarifa regional:** LatAm −40 % (Pro ≈ 8,99 $, Pro Max ≈ 11,99 $), con precios por país en Paddle. España y el resto de la UE, precio pleno. | Dueño |
+| 3 | Paddle T1 / H.54 | **Titular: persona física** hasta constituir la empresa (destino: Chipre, ADR-61 §22). Entonces cambian titular y código (`payment_service.py`). Falta que el dueño dé su nombre legal para los Términos. | Dueño |
+| 4 | ADR-61 | **Fiel**, con una corrección: **edad mínima 16 años**, no 13. Cambia la casilla del alta, su error, los Términos (`termsP2`), la Privacidad (`privacyCoppaDesc`), el mensaje del backend y los e2e. Lo vigila `tests/unit/test_edad_minima.py`. | Dueño |
+| 5 | ADR-62 / H.55 | **Se mantiene la pausa de contenido.** Nada nuevo, tampoco correcciones de los defectos del piloto de auditoría, hasta después del piloto con usuarios. | Dueño |
+| 6 | H.35 (4) | El 80 % del creador se sigue calculando como hoy: tras la comisión de la pasarela y la retención de H.29. | Delegación |
+| 7 | H.35 (5) | Cupo del tutor en Pro: 20 al día (valor de ADR-47). | Delegación |
+| 8 | H.35 (6) | Certificación a 39,99 $ con los valores de ADR-49. | Delegación |
+| 9 | H.13 | **Cerrada:** Actions vuelve a tener runner desde el 2026-10-21. El CI del PR unificado salió verde (run 39763272777). | Delegación |
+| 10 | H.20 | La revisión legal profesional se aplaza hasta tener ingresos; los textos siguen marcados como borrador. | Delegación |
+| 11 | H.25 | Los pagos a instructores se aplazan hasta su primera venta; la venta del marketplace sigue cerrada. | Delegación |
+| 12 | H.27 | Certificados solo como Open Badges, sin cNFT. | Delegación |
+| 13 | H.48 | No hace falta clave de API de Anthropic: ningún código la usa. | Delegación |
+
+**Sigue en manos del dueño.** Su nombre legal (T1); dar de alta los precios anual y regional en Paddle; rotar la clave de Groq (H.12); las tiendas (H.2, H.3, H.5, H.14); la cohorte beta (H.10); y las acciones con cuentas personales (H.23, 26.7, 27.5, 27.6, H.38–H.40, H.28).
+

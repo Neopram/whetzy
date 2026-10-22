@@ -46,10 +46,10 @@
 ## 3. Visual Anchors Únicos
 
 ### BKT Territory Map
-Skill landscape explorable: cian `#06B6D4` (frontera; paleta Obsidian de la serie 34, ADR-47 — antes «azul cielo») + verde (dominado 15%+) + naranja (parcial)
+Skill landscape explorable: cian (frontera; la paleta la fijan `design/brand/README.md` y `frontend/src/styles/design-tokens.css`: hoy `#00BFFF`, antes `#06B6D4`) + verde (dominado 15%+) + naranja (parcial)
 
 ### FSRS Repaso Timeline
-Calendario con próximos repasos como eventos; fechas próximas en cian `#06B6D4` (paleta Obsidian, ADR-47)
+Calendario con próximos repasos como eventos; fechas próximas en el cian de `design/brand/README.md` y `design-tokens.css`
 
 ### Elo Level Badges
 Nivel como rank visual (icono + número + barra hacia siguiente nivel)

@@ -3,13 +3,14 @@ import { motion, useReducedMotion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { Player } from '@lottiefiles/react-lottie-player';
 import { useAppStore } from '../stores/useAppStore';
-import { quiz as quizApi, progress as progressApi, gamification, isQuotaError, type ServerFxEvent, type GlossaryTerm, type QuestionPublic, type QuizAnswerResponse, type QuizEndResponse, type SelectionReason, type SkillMasteryDetail, type AnswerEvidence } from '../services/api';
+import { ApiError, quiz as quizApi, progress as progressApi, gamification, isQuotaError, type ServerFxEvent, type GlossaryTerm, type QuestionPublic, type QuizAnswerResponse, type QuizEndResponse, type SelectionReason, type SkillMasteryDetail, type AnswerEvidence } from '../services/api';
 import { enqueue, offlineEventId } from '../services/offlineQueue';
 import { Button } from '../components/common/Button';
 import { ProgressBar } from '../components/common/ProgressBar';
 import { showToast } from '../components/common/Toast';
 import { ComboRing, COMBO_STEPS } from '../components/quiz/ComboRing';
 import { Ceremony, CeremonyCards, pickCeremony, type CeremonyEvent } from '../components/quiz/Ceremony';
+import { trackFxSkipped } from '../lib/fxAnalytics';
 import { cancelFx, COUNT_MS, emit as emitFx, emitMany as emitFxMany, GRADE_RANK } from '../lib/feedbackFx';
 import { CountUp } from '../components/quiz/CountUp';
 import { GameIcon } from '../components/common/AppIcon';
@@ -30,6 +31,7 @@ import { parseQuestion } from '../lib/question';
 import { useBackGuard } from '../lib/screenHistory';
 import styles from './QuizScreen.module.css';
 import { Loading } from '../components/common/Loading';
+import { FirstSessionSurvey } from '../components/quiz/FirstSessionSurvey';
 
 // Monaco is ~2 MB — lazy-load so the initial bundle stays small.
 const MonacoCodeEditor = lazy(() =>
@@ -273,7 +275,11 @@ export function QuizScreen() {
           showToast(t('quiz.incorrect'), 'error');
         }
       } catch (e) {
-        const isNetworkError = !navigator.onLine || (e instanceof TypeError);
+        // 42.11: `request()` convierte el fallo de `fetch` en un `ApiError` con
+        // `status` null, nunca en `TypeError`; sin mirarlo, con el navegador
+        // «en línea» y la red caída (o un 502 de deploy) la respuesta se perdía.
+        const isNetworkError =
+          !navigator.onLine || e instanceof TypeError || (e instanceof ApiError && e.esTransitorio);
         if (isNetworkError && sessionId && question) {
           await enqueue({
             id: offlineEventId(),
@@ -282,6 +288,7 @@ export function QuizScreen() {
             selectedIndex,
             responseTimeMs: rt,
             timestamp: Date.now(),
+            declaredUnknown,
             ...evidence,
           });
           setFeedback({
@@ -645,7 +652,7 @@ export function QuizScreen() {
       <h2 className={styles.questionText}>
         <GlossaryText text={prose} terms={glossaryTerms} lang={viewLang} onPick={setPickedTerm} />
       </h2>
-      {code && !isExecType && <pre className={styles.codeBlock}><code>{code}</code></pre>}
+      {code && !isExecType && <pre className={styles.codeBlock} tabIndex={0}><code>{code}</code></pre>}
       {pickedTerm && (
         <TermCard term={pickedTerm} lang={viewLang} onClose={() => setPickedTerm(null)} />
       )}
@@ -751,7 +758,7 @@ export function QuizScreen() {
             <>
               {/* «¿Qué imprime?» con respuesta escrita: el código tiene que verse.
                   Antes no se pintaba y 11 preguntas pedían adivinar un código oculto. */}
-              {code && <pre className={styles.codeBlock}><code>{code}</code></pre>}
+              {code && <pre className={styles.codeBlock} tabIndex={0}><code>{code}</code></pre>}
               <input
                 className={styles.blankInput}
                 type="text"
@@ -789,7 +796,7 @@ export function QuizScreen() {
 
           {(question.type === 'fill_blank_exec' || question.type === 'js_exec') && code && (
             <>
-              <pre className={styles.codeBlock}>
+              <pre className={styles.codeBlock} tabIndex={0}>
                 <code>{code.replace('___', `[${t('quiz.yourAnswer')}]`)}</code>
               </pre>
               <input
@@ -806,7 +813,7 @@ export function QuizScreen() {
 
           {question.type === 'sql_exec' && code && (
             <>
-              <pre className={styles.codeBlock}>
+              <pre className={styles.codeBlock} tabIndex={0}>
                 <code>{code.replace('___', `[${t('quiz.yourAnswer')}]`)}</code>
               </pre>
               <label htmlFor="sql-exec-answer" className="visually-hidden">
@@ -860,7 +867,7 @@ export function QuizScreen() {
                       ? t('quiz.outputError')
                       : t('quiz.output')}
               </span>
-              <pre className={styles.outputPre}>
+              <pre className={styles.outputPre} tabIndex={0}>
                 {runResult.timedOut
                   ? t('quiz.timeoutMsg')
                   : runResult.error
@@ -967,7 +974,7 @@ export function QuizScreen() {
           {verifyOutput != null ? (
             <div className={styles.outputBox}>
               <span className={styles.outputLabel}>{t('quiz.actualOutput')}</span>
-              <pre className={styles.outputPre}>{verifyOutput}</pre>
+              <pre className={styles.outputPre} tabIndex={0}>{verifyOutput}</pre>
             </div>
           ) : (
             <button
@@ -1071,6 +1078,8 @@ function SessionSummary({
   }, [phase]);
   const skip = () => {
     cancelFx();
+    // 46.6a: «Saltar recuento» cuenta para la tasa de salto del nivel 3 (plan §6.0 punto 5).
+    trackFxSkipped('session_end');
     setSkipped(true);
     setPhase('done');
   };
@@ -1155,6 +1164,9 @@ function SessionSummary({
       )}
 
       {extra}
+
+      {/* 46.6: una pregunta, una vez por navegador, sin usuario. */}
+      <FirstSessionSurvey />
 
       {moved.length > 0 && (
         <section className={styles.moved} aria-label={t('quiz.skillsMoved')}>

@@ -27,6 +27,14 @@ def test_precio_de_la_certificacion_coincide() -> None:
     assert float(_const("CERTIFICATION_PRICE_USD")) == settings.CERTIFICATION_PRICE_USD
 
 
+def test_precios_mensuales_de_los_datos_estructurados_coinciden() -> None:
+    """La landing publica Pro y Pro Max en su JSON-LD (ola 2) desde `plans.ts`."""
+    from app.core.prices import PRO_MAX_MONTHLY_USD, PRO_MONTHLY_USD
+
+    assert _const("PRO_MONTHLY_USD") == str(PRO_MONTHLY_USD)
+    assert _const("PRO_MAX_MONTHLY_USD") == str(PRO_MAX_MONTHLY_USD)
+
+
 def test_cupo_free_coincide() -> None:
     """Plan Free (39.4, ADR-50a): lo que promete la UI es lo que aplica el backend."""
     assert int(_const("FREE_DAILY_NEW_QUESTIONS")) == settings.FREE_DAILY_NEW_QUESTIONS
@@ -46,7 +54,9 @@ def test_precios_adr41_unica_fuente() -> None:
     allowed |= {"0.00", "0.99"}  # edge values that are not plan prices
 
     src = Path(__file__).resolve().parents[2] / "frontend" / "src"
-    price_re = re.compile(r"\$(\d+\.\d{2})")
+    # «$14.99» (EN) y «14,99 $» (ES, 2026-10-21): la guarda solo miraba la forma inglesa,
+    # y el checkout pinta ya el precio en español desde `landing.*`.
+    price_re = re.compile(r"\$(\d+\.\d{2})|(\d+),(\d{2})\s*\$")
 
     violations = []
     for f in src.rglob("*"):
@@ -56,7 +66,7 @@ def test_precios_adr41_unica_fuente() -> None:
             if line.lstrip().startswith("//") or line.lstrip().startswith("*"):
                 continue
             for m in price_re.finditer(line):
-                val = m.group(1)
+                val = m.group(1) or f"{m.group(2)}.{m.group(3)}"
                 if val not in allowed:
                     violations.append(f"{f.relative_to(src)}:{n} → ${val}")
     assert violations == [], f"Prices not from ADR-41: {violations}"

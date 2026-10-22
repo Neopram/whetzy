@@ -13,7 +13,7 @@ Presentar Whetzy como plataforma de aprendizaje adaptativo en 2 minutos. Target:
 ### Problema (0:15-0:35)
 - **Visual:** Montaje rápido: Competidor 1 genérico, Competidor 2 lento, Competidor 3 superficial
 - **Narración:** "La mayoría de plataformas te enseñan igual a todos. Gastan tu tiempo en lo que ya sabes, y te saltan lo que necesitas."
-- **Dato en pantalla:** "47% abandono en primer mes"
+- **Dato en pantalla:** ninguno (la cifra «47% abandono en primer mes» se retiró el 2026-10-22, H.58: sin fuente en el repo)
 
 ### Solución (0:35-1:20)
 - **Visual:** Dashboard de Whetzy, mapa de habilidades (territorio), racha activa

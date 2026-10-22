@@ -10,11 +10,11 @@ from datetime import timedelta
 from unittest.mock import patch
 from uuid import uuid4
 
+import jwt
 import pytest
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
 from fastapi import HTTPException
-from jose import jwt
 
 from app.core.security import (
     _create_token,

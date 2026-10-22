@@ -5,7 +5,7 @@
  * 90 % del criterio); cada literal encontrado o era ya el mismo valor de un
  * token `--le-*`/`--color-*` existente, o necesitaba uno nuevo (marca de
  * lenguaje, editor de código, tarjeta Pro — fijos, no siguen el tema:
- * `--brand-*`, `--le-code-*`, `--editor-loading-*`, `--le-pro-card-*`).
+ * `--brand-*`, `--le-code-*`, `--le-editor-loading-*`, `--le-pro-card-*`).
  *
  * Los comentarios CSS no cuentan: citar un valor histórico en prosa (`/* el
  * #1a1a2e que había *\/`) no es una regresión de estilo, así que este test

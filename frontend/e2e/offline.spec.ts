@@ -35,12 +35,15 @@ function pendingCount(page: Page): Promise<number> {
   return page.evaluate(
     ({ name, store }: { name: string; store: string }) =>
       new Promise<number>((resolve) => {
-        const req = indexedDB.open(name, 1);
+        // Sin versión: la cola va por la v2 (42.11) y abrir una versión
+        // menor que la existente da VersionError (antes contaba 0 siempre).
+        const req = indexedDB.open(name);
         req.onsuccess = () => {
           try {
             const tx = req.result.transaction(store, 'readonly');
             const c = tx.objectStore(store).count();
-            c.onsuccess = () => resolve(c.result as number);
+            // Cerrar: una conexión abierta bloquea la subida de versión de la app.
+            c.onsuccess = () => { resolve(c.result as number); req.result.close(); };
             c.onerror = () => resolve(0);
           } catch {
             resolve(0); // store not created yet — nothing queued
@@ -118,7 +121,9 @@ test.describe('offline', () => {
     await page.waitForFunction(
       ({ name, store }: { name: string; store: string }) =>
         new Promise<boolean>((resolve) => {
-          const req = indexedDB.open(name, 1);
+          // Sin versión: la cola va por la v2 (42.11) y abrir una versión
+        // menor que la existente da VersionError (antes contaba 0 siempre).
+        const req = indexedDB.open(name);
           req.onsuccess = () => {
             try {
               const tx = req.result.transaction(store, 'readonly');

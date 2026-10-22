@@ -27,11 +27,17 @@ interface UserProfile {
   grantedUntil: string | null;
   /** Recibir correos de ofertas (la baja se hace desde Ajustes o desde el correo). */
   marketingEmails: boolean;
+  /** 24.8: perfil público activado por la persona (privado por defecto). */
+  publicProfileOptIn: boolean;
+  /** 24.8: el servidor permite perfiles públicos; sin esto no se ve el interruptor. */
+  publicProfilesEnabled: boolean;
   /** «Instructor» en Perfil: solo creadores (plan Creador, dueño o admin). */
   canCreateCourses: boolean;
   /** «Admin» en Perfil: solo el dueño. `/auth/me` no mandaba `is_admin`, así
    *  que el enlace no se veía nunca (auditoría de pantallas, 2026-10-16). */
   isOwner: boolean;
+  /** Ola 2: «A fondo» del tutor (Pro Max o superior), lo decide el servidor. */
+  tutorDeepAccess: boolean;
   /** 45.3 (ADR-66 E4): false → franja «verifica tu correo» (`VerifyEmailBanner`). */
   emailVerified: boolean;
   /** 43.3 (D2): el servidor guarda que terminó el onboarding (`onboarding_completed_at`). */
@@ -190,8 +196,11 @@ function mapApiUser(u: UserRead): UserProfile {
     grantedTier: u.granted_tier ?? null,
     grantedUntil: u.granted_tier_expires_at ?? null,
     marketingEmails: !u.marketing_emails_opt_out,
+    publicProfileOptIn: u.public_profile_opt_in ?? false,
+    publicProfilesEnabled: u.public_profiles_enabled ?? false,
     canCreateCourses: u.can_create_courses ?? false,
     isOwner: u.is_owner ?? false,
+    tutorDeepAccess: u.tutor_deep_access ?? false,
     emailVerified: u.email_verified ?? true,
     onboardingCompleted: Boolean(u.onboarding_completed_at),
     weeklyTime: u.onboarding_weekly_time ?? null,
@@ -224,8 +233,11 @@ const defaultUser: UserProfile = {
   grantedTier: null,
   grantedUntil: null,
   marketingEmails: true,
+  publicProfileOptIn: false,
+  publicProfilesEnabled: false,
   canCreateCourses: false,
   isOwner: false,
+  tutorDeepAccess: false,
   emailVerified: true,
   onboardingCompleted: false,
   weeklyTime: null,

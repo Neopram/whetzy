@@ -35,6 +35,10 @@ return <button style={{ backgroundColor: ctaColor }}>Start Free</button>
 ### 3. Admin: Metrics
 
 In admin panel (22.1), under **Experiments** tab:
+
+> **Ejemplo ilustrativo** (2026-10-22, H.58): `landing_cta` nunca existió; no hay código ni fila.
+> Las cifras de abajo son inventadas para mostrar el formato.
+
 ```
 Experiment: landing_cta
 ├─ Variant A (Blue): 142 users, 18 signups, 12.7% conversion
@@ -42,7 +46,7 @@ Experiment: landing_cta
 └─ Stats: χ² p-value = 0.42 (not significant)
 ```
 
-## First Experiment: Landing CTA Color
+## First Experiment: Landing CTA Color (ejemplo, no realizado)
 
 ### Setup
 

@@ -51,7 +51,8 @@ describe('Duelo — partida grabada', () => {
       .mockResolvedValueOnce({ duel_id: 'd1', answers_so_far: 2, completed: true, opponent_completed: true, rival: { correct: false, response_time_ms: 9000 } });
     await startAndAnswerFirst();
     expect(screen.getByTestId('duel-rival')).toHaveTextContent('rival acertó esta en 4,2 s');
-    expect(screen.getByRole('status')).toBe(screen.getByTestId('duel-rival'));
+    // 42.4: una sola región viva, con el veredicto propio y el del rival.
+    expect(screen.getByRole('status')).toContainElement(screen.getByTestId('duel-rival'));
 
     // Siguiente pregunta: lo de la anterior no se arrastra.
     fireEvent.click(screen.getByRole('button', { name: 'Siguiente' }));

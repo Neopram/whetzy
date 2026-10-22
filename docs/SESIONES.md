@@ -16,7 +16,7 @@ puerta (bcrypt 5, typescript 7, redis 8) y sesiones paralelas editando los mismo
 
 | Sesión | Rol | Rama asignada | Fichero de textos |
 |---|---|---|---|
-| S1 | Full stack | `claude/loving-galileo-60vp6g` | `producto.json` (y la única que edita `common.json`) |
+| S1 | Full stack | `claude/loving-galileo-60vp6g` | `producto.json` e `instructor.json` (y la única que edita `common.json`) |
 | S2 | Contenido y certificaciones | `claude/pensive-ride-ddce6s` | `contenido.json` |
 | S3 | Matemático del motor | `claude/loving-fermi-oow6if` | `motor.json` |
 | S4 | Abogado y cumplimiento | `claude/vibrant-carson-iult4i` | `legal.json` |
@@ -85,6 +85,7 @@ antes de aplicarlo; si no se reproduce, no lo aplica. Tras tocar filas corre
 frontend/src/**  salvo: frontend/src/i18n/{es,en}/{contenido,motor,legal,marketing}.json,
                         frontend/src/pages/marketing/**
 frontend/src/i18n/{es,en}/common.json      (la ÚNICA sesión que lo edita) y producto.json
+frontend/src/i18n/{es,en}/instructor.json  (asignado a S1 el 2026-10-22, H.58)
 frontend/src/App.tsx                       (tras la fase 0)
 frontend/src/widgets/**                    (ampliado por [COORD] en el #89: 40.1/40.2)
 frontend/.env.production                   (paso 2 del dominio propio de la API, #101)

@@ -42,9 +42,9 @@ Deep-dive into Whetzy's tech: BKT, FSRS, adaptive selection. Target: technical a
 - **Visual:** Quiz screen with 3 question options visible
 - **Narration:** "Now that we know Johan's state in each skill, which question do we ask?"
 - **Options visible:**
-  - "Option A: Easy (p_known=0.9) — Boring"
-  - "Option B: Medium (p_known=0.5) — Just right"
-  - "Option C: Hard (p_known=0.2) — Frustrating"
+  - "Option A: Easy (95% success) — Boring"
+  - "Option B: Medium (~75% success) — Just right"
+  - "Option C: Hard (30% success) — Frustrating"
 - **Narration:** "We select the one that's challenging but not impossible. That maximizes learning. Whetzy targets a 75% success rate."
 
 ### 5. Verification: E2E Testing (4:30-4:55)

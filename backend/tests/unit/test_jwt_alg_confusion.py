@@ -1,13 +1,11 @@
-"""PYSEC-2026-4298 (python-jose ≤ 3.5.0, sin versión arreglada): con una clave
-pública DER, python-jose deja firmar HS256 con ella y la verificación lo acepta
-si el servicio no restringe los algoritmos. Aquí nunca se llega:
+"""Confusión de algoritmo (la de PYSEC-2026-4298 en python-jose ≤ 3.5.0): firmar
+HS256 con la clave pública y que la verificación lo acepte. Desde ADR-69
+(2026-10-22) el backend usa PyJWT y ya no lleva python-jose, pero la guarda se
+queda porque el ataque no depende de la librería:
 
 - la clave pública solo se usa con `["RS256"]` y el secreto HS256 es
   `SECRET_KEY`, no una clave pública (`_verification_keys`);
 - Apple se verifica solo con `["RS256"]` (`apple_signin.py`).
-
-Estos tests vigilan las dos cosas; con ellos en verde, `pip-audit` ignora el
-aviso en el CI hasta que python-jose publique arreglo o se cambie de librería.
 """
 
 from __future__ import annotations

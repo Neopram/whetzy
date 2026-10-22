@@ -52,7 +52,7 @@ test.describe('390px, sin scroll horizontal (34.4)', () => {
     await page.getByLabel('Usuario').fill(username);
     await page.getByLabel('Correo electrónico').fill(`${username}@example.com`);
     await page.getByLabel('Contraseña').fill('e2e-test-pass-123');
-    await page.getByLabel('Confirmo que tengo 13 años o más').check();
+    await page.getByLabel('Confirmo que tengo 16 años o más').check();
     await page.getByRole('button', { name: 'EMPEZAR A APRENDER' }).click();
 
     // 43.3 (D2): cada paso, sobre todo la rejilla de 24 rutas agrupadas.
@@ -77,7 +77,7 @@ test.describe('390px, sin scroll horizontal (34.4)', () => {
     await page.getByLabel('Username').fill(username);
     await page.getByLabel('Email').fill(`${username}@example.com`);
     await page.getByLabel('Password').fill('e2e-test-pass-123');
-    await page.getByLabel('I confirm I am 13 years old or older').check();
+    await page.getByLabel('I confirm I am 16 years old or older').check();
     await page.getByRole('button', { name: 'START LEARNING' }).click();
 
     const onboarding = page.getByTestId('onboarding');
@@ -101,7 +101,7 @@ test.describe('390px, sin scroll horizontal (34.4)', () => {
     await page.getByLabel('Usuario').fill(username);
     await page.getByLabel('Correo electrónico').fill(`${username}@example.com`);
     await page.getByLabel('Contraseña').fill('e2e-test-pass-123');
-    await page.getByLabel('Confirmo que tengo 13 años o más').check();
+    await page.getByLabel('Confirmo que tengo 16 años o más').check();
     await page.getByRole('button', { name: 'EMPEZAR A APRENDER' }).click();
 
     // 43.3 (D2): «empiezo de cero» va a Hoy.

@@ -24,10 +24,10 @@ lo exige: el resumen cuadra con las filas y todo `.md` vivo tiene la suya. Antes
 |---|---|
 | normativo-vivo | 25 |
 | referencia-viva | 67 |
-| histórico | 68 |
+| histórico | 77 |
 | legal | 39 |
 | obsoleto | 6 |
-| **Total** | **205** |
+| **Total** | **214** |
 
 ## Raíz del repo y otras carpetas
 
@@ -171,6 +171,10 @@ lo exige: el resumen cuadra con las filas y todo `.md` vivo tiene la suya. Antes
 | `docs/ui-snapshots/44.3/README.md` | histórico | evidencia de capturas de la fila 44.3 (pestaña «Usuarios» del back-office: ficha y diálogo de regalar plan) | se queda (junto a sus PNG) | 2026-10-20 |
 | `docs/ui-snapshots/46.12/README.md` | histórico | evidencia de capturas de la fila 46.12 (Hoy cuenta misiones y rutas desde la última visita) | se queda (junto a sus PNG) | 2026-10-20 |
 | `docs/ui-snapshots/46.7b/README.md` | histórico | evidencia de capturas de la fila 46.7b (recuento del resumen de sesión, saltable, y la versión con movimiento reducido) | se queda (junto a sus PNG) | 2026-10-19 |
+| `docs/ui-snapshots/landing-ola2/README.md` | histórico | evidencia de la landing de la ola 2: banderas en SVG, contenedor de 80rem, JSON-LD y tabla comparativa con foco; axe 0 | se queda (junto a sus PNG) | 2026-10-21 |
+| `docs/ui-snapshots/auth-ola2/README.md` | histórico | evidencia de /auth en la ola 2: Apple y Google antes del formulario con colores de marca, enlaces legales y tuteo; axe 0 | se queda (junto a sus PNG) | 2026-10-21 |
+| `docs/ui-snapshots/catalogo-campos/README.md` | histórico | evidencia del catálogo por los cinco campos del onboarding, combinado con Aprender/Certificaciones; axe 0 | se queda (junto a sus PNG) | 2026-10-21 |
+| `docs/ui-snapshots/tutor-modos/README.md` | histórico | evidencia del tutor por modos (¿Por qué?, ¿Cómo?, A fondo solo Pro Max) y del contraste del aviso info; axe 0 | se queda (junto a sus PNG) | 2026-10-21 |
 | `docs/ui-snapshots/46.3c/README.md` | histórico | evidencia de capturas de la fila 46.3c (prueba de nivel en el onboarding y «Tu mayor palanca» como primera tarjeta de Hoy) | se queda (junto a sus PNG) | 2026-10-19 |
 | `docs/ui-snapshots/46.10/README.md` | histórico | evidencia de capturas de la fila 46.10 (la opción late o tiembla y el «+XP» vuela al marcador) | se queda (junto a sus PNG) | 2026-10-20 |
 | `docs/ui-snapshots/46.11/README.md` | histórico | evidencia de capturas de la fila 46.11 (la llama de la racha en tres tamaños y el escudo del comodín) | se queda (junto a sus PNG) | 2026-10-20 |
@@ -181,8 +185,13 @@ lo exige: el resumen cuadra con las filas y todo `.md` vivo tiene la suya. Antes
 | `docs/ui-snapshots/46.15c/README.md` | histórico | evidencia de capturas de la fila 46.15 bloque C (reloj de examen a 5 minutos, veredicto, desenlace del duelo) | se queda (junto a sus PNG) | 2026-10-20 |
 | `docs/ui-snapshots/46.15d/README.md` | histórico | evidencia de capturas de la fila 46.15 bloque D (insignia nueva, barras que crecen, listas escalonadas, sello del certificado) | se queda (junto a sus PNG) | 2026-10-20 |
 | `docs/ui-snapshots/46.15e/README.md` | histórico | evidencia de capturas de la fila 46.15 bloque E (catálogo escalonado; éxito del checkout solo con el servidor) | se queda (junto a sus PNG) | 2026-10-20 |
+| `docs/ui-snapshots/46.15f/README.md` | histórico | evidencia de capturas de la fila 46.15 cierre (tabla de §7.5 rehecha a 390 px; check de Restablecer, páginas sueltas con transición) | se queda (junto a sus PNG) | 2026-10-21 |
+| `docs/ui-snapshots/46.4/README.md` | histórico | evidencia de capturas de la fila 46.4 (un solo sistema de tokens: antes/después de migrar `--color-*` a `--le-*`) | se queda (junto a sus PNG) | 2026-10-21 |
 | `docs/ui-snapshots/certificado-idioma/README.md` | histórico | evidencia del certificado público (y legales) en el idioma del visitante sin cuenta | se queda (junto a sus PNG) | 2026-10-20 |
 | `docs/ui-snapshots/editor-contraste/README.md` | histórico | evidencia del tema propio del editor de código: cada token a ≥ 4,5:1 y axe sin excluir Monaco | se queda (junto a sus PNG) | 2026-10-20 |
+| `docs/ui-snapshots/legal-prerender/README.md` | histórico | evidencia de /terms, /privacy y /refund pre-renderizadas (revisión de dominio de Paddle) y axe 0 | se queda (junto a sus PNG) | 2026-10-21 |
+| `docs/ui-snapshots/checkout-rediseno/README.md` | histórico | evidencia del rediseño de /checkout: plan, precio, selector, confianza y errores en palabras; axe 0 | se queda (junto a sus PNG) | 2026-10-21 |
+| `docs/ui-snapshots/46.6/README.md` | histórico | evidencia de la encuesta de la primera sesión (46.6): tres respuestas cerradas, sin usuario, una vez por navegador; axe 0 | se queda (junto a sus PNG) | 2026-10-21 |
 | `docs/ui-snapshots/duelo-grabado/README.md` | histórico | evidencia del duelo con la partida grabada del rival (acierto y tiempo tras cada pregunta) | se queda (junto a sus PNG) | 2026-10-20 |
 | `docs/ui-snapshots/design-v2/README.md` | histórico | evidencia de capturas de los pasos 4 y 5 del port design/v2 (Rutas y Lección) | se queda (junto a sus PNG) | 2026-10-01 |
 | `docs/MAPA_PRODUCTO.md` | referencia-viva | inventario de rutas, pantallas y subvistas con el documento que especifica cada una y sus huecos; `check_docs.py` exige que nombre todo lo que existe | se queda | 2026-10-01 |

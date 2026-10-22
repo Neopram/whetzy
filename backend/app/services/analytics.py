@@ -638,3 +638,70 @@ async def fx_skip_rates(db: AsyncSession, days: int = 7) -> dict[str, object]:
         "tiers": tiers,
         "rule": {"max_skip_rate": FX_MAX_SKIP_RATE, "min_emitted": FX_MIN_EMITTED},
     }
+
+
+# ---------------------------------------------------------------------------
+# 46.6: embudo de pago y encuesta de la primera sesión
+# ---------------------------------------------------------------------------
+
+CHECKOUT_STEPS = ("checkout_viewed", "checkout_opened")
+SURVEY_ANSWERS = ("a_lot", "somewhat", "not_really")
+SURVEY_MIN_N = 30
+
+
+async def conversion_steps(db: AsyncSession, days: int = 30) -> dict[str, object]:
+    """Registro → primera respuesta → ver el pago → abrir Paddle → suscripción.
+
+    Los dos pasos de pago llegan del cliente sin `user_id` (ADR-68 punto 3):
+    cuentan **visitas**, no personas, y `checkout_unit` lo dice para que nadie
+    divida una cosa entre la otra como si fuera una tasa por usuario.
+    """
+    since = datetime.now(UTC) - timedelta(days=days)
+    registrations: int = (
+        await db.scalar(select(func.count(User.id)).where(User.created_at >= since))
+    ) or 0
+
+    async def _count(event_type: str) -> int:
+        n = await db.scalar(
+            select(func.count(AnalyticsEvent.id)).where(
+                AnalyticsEvent.event_type == event_type, AnalyticsEvent.created_at >= since
+            )
+        )
+        return int(n or 0)
+
+    plan = AnalyticsEvent.properties["plan"].as_string()
+    rows = (
+        await db.execute(
+            select(AnalyticsEvent.event_type, plan, func.count())
+            .where(AnalyticsEvent.event_type.in_(CHECKOUT_STEPS), AnalyticsEvent.created_at >= since)
+            .group_by(AnalyticsEvent.event_type, plan)
+        )
+    ).all()
+    steps: dict[str, dict[str, object]] = {}
+    for step in CHECKOUT_STEPS:
+        by_plan = {str(p): int(n) for t, p, n in rows if t == step}
+        steps[step] = {"total": sum(by_plan.values()), "by_plan": dict(sorted(by_plan.items()))}
+
+    answer = AnalyticsEvent.properties["answer"].as_string()
+    survey_rows = (
+        await db.execute(
+            select(answer, func.count())
+            .where(AnalyticsEvent.event_type == "first_session_survey", AnalyticsEvent.created_at >= since)
+            .group_by(answer)
+        )
+    ).all()
+    answers = {a: 0 for a in SURVEY_ANSWERS}
+    for a, n in survey_rows:
+        if a in answers:
+            answers[a] = int(n)
+    survey_n = sum(answers.values())
+
+    return {
+        "days": days,
+        "registrations": registrations,
+        "first_quiz": await _count("first_quiz_answer"),
+        **steps,
+        "subscription_started": await _count("subscription_started"),
+        "checkout_unit": "visits",
+        "survey": {"n": survey_n, "answers": answers, "sample_too_small": survey_n < SURVEY_MIN_N},
+    }
