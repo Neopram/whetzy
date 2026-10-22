@@ -321,6 +321,10 @@ export interface UserRead {
   granted_tier_expires_at?: string | null;
   /** true si se dio de baja de los correos de ofertas. */
   marketing_emails_opt_out?: boolean;
+  /** 24.8: la persona publicó su perfil (`/u/<handle>`); privado por defecto. */
+  public_profile_opt_in?: boolean;
+  /** 24.8: el servidor permite perfiles públicos (flag global); sin esto no se ofrece el interruptor. */
+  public_profiles_enabled?: boolean;
   /** «Instructor» en Perfil: plan Creador, o dueño/admin (2026-10-16). */
   can_create_courses?: boolean;
   /** «Admin» en Perfil: el panel es solo del dueño (#202). */
@@ -355,6 +359,8 @@ export interface RegisterPayload {
 }
 
 export interface UpdateMePayload {
+  /** 24.8: publicar (true) o quitar (false) el perfil público. */
+  public_profile_opt_in?: boolean;
   display_name?: string;
   avatar_emoji?: string;
   language?: 'es' | 'en';

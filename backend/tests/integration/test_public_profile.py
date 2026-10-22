@@ -27,6 +27,8 @@ def _perfiles_publicos_encendidos(monkeypatch: pytest.MonkeyPatch) -> None:
 
 
 async def _user(db: AsyncSession, **kw: object) -> User:
+    """Alumno con el perfil público activado: lo que prueban los demás tests."""
+    kw.setdefault("public_profile_opt_in", True)
     tag = uuid.uuid4().hex[:8]
     u = User(
         id=uuid.uuid4(),
@@ -58,6 +60,48 @@ async def test_flag_off_hides_an_existing_profile(client, db_session, monkeypatc
     monkeypatch.setattr(settings, "PUBLIC_PROFILES_ENABLED", False)
     res = await client.get(f"{BASE}/{user.username}")
     assert res.status_code == 404
+
+
+@pytest.mark.asyncio
+async def test_sin_opt_in_es_404_con_el_flag_encendido(client, db_session) -> None:
+    """24.8: privado por defecto. Sin opt-in de la persona no se publica nada."""
+    user = await _user(db_session, public_profile_opt_in=False)
+    res = await client.get(f"{BASE}/{user.username}")
+    assert res.status_code == 404
+
+
+@pytest.mark.asyncio
+async def test_el_404_es_el_mismo_con_y_sin_cuenta(client, db_session) -> None:
+    """No se puede saber si la cuenta existe: mismo código y mismo cuerpo."""
+    privado = await _user(db_session, public_profile_opt_in=False)
+    a = await client.get(f"{BASE}/{privado.username}")
+    b = await client.get(f"{BASE}/no-such-user-anywhere")
+    assert (a.status_code, a.json()) == (b.status_code, b.json()) == (404, {"detail": "Profile not found"})
+
+
+@pytest.mark.asyncio
+async def test_con_opt_in_y_flag_apagado_es_404(client, db_session, monkeypatch) -> None:
+    from app.core.config import settings
+
+    user = await _user(db_session, public_profile_opt_in=True)
+    monkeypatch.setattr(settings, "PUBLIC_PROFILES_ENABLED", False)
+    res = await client.get(f"{BASE}/{user.username}")
+    assert res.status_code == 404
+
+
+@pytest.mark.asyncio
+async def test_por_defecto_un_alumno_nuevo_no_es_publico(db_session) -> None:
+    user = await _user(db_session, public_profile_opt_in=False)
+    await db_session.refresh(user)
+    assert user.public_profile_opt_in is False
+    default = User(
+        id=uuid.uuid4(), email="d-default@whetzy.test", username="dflt" + uuid.uuid4().hex[:6],
+        display_name="D", language="es",
+    )
+    db_session.add(default)
+    await db_session.commit()
+    await db_session.refresh(default)
+    assert default.public_profile_opt_in is False
 
 
 @pytest.mark.asyncio

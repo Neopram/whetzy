@@ -60,6 +60,11 @@ class User(Base):
     marketing_emails_opt_out: Mapped[bool] = mapped_column(
         Boolean, default=False, server_default=false(), nullable=False
     )
+    # 24.8: el perfil público `/u/<handle>` es privado por defecto; solo existe
+    # si la persona lo activa (y el flag global PUBLIC_PROFILES_ENABLED lo permite).
+    public_profile_opt_in: Mapped[bool] = mapped_column(
+        Boolean, default=False, server_default=false(), nullable=False
+    )
     # Fin de periodo para el que ya salió el recordatorio de renovación (los
     # Términos lo prometen 7 días antes): uno por periodo, no uno por vuelta.
     renewal_reminder_for: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
@@ -105,6 +110,14 @@ class User(Base):
     def is_owner(self) -> bool:
         """El panel de administración es solo del dueño (#202)."""
         return self.role == "owner"
+
+    @property
+    def public_profiles_enabled(self) -> bool:
+        """Si el servidor publica perfiles (flag global). El interruptor de
+        Perfil solo se enseña con esto en True."""
+        from app.core.config import settings
+
+        return settings.PUBLIC_PROFILES_ENABLED
 
     @property
     def tutor_deep_access(self) -> bool:

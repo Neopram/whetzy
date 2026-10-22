@@ -68,6 +68,8 @@ class UpdateProfileRequest(BaseModel):
     display_name: str | None = Field(default=None, min_length=1, max_length=100)
     avatar_emoji: str | None = Field(default=None, max_length=16)
     language: str | None = Field(default=None, pattern="^(es|en)$")
+    # 24.8: publicar o quitar el perfil público. False es un valor, no «ausente».
+    public_profile_opt_in: bool | None = None
     # Respuestas del onboarding (índice de opción, 0-2). 34.11.
     onboarding_experience: int | None = Field(default=None, ge=0, le=2)
     # 0-3: el onboarding anterior; 43.3 (D2) usa 0 aprender, 3 certificarme, 4 ambos.
@@ -440,6 +442,8 @@ async def update_profile(
         current_user.avatar_emoji = payload.avatar_emoji
     if payload.language is not None:
         current_user.language = payload.language
+    if payload.public_profile_opt_in is not None:
+        current_user.public_profile_opt_in = payload.public_profile_opt_in
     for field in ("onboarding_experience", "onboarding_goal", "onboarding_weekly_time"):
         value = getattr(payload, field)
         if value is not None:

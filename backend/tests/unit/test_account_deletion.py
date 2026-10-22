@@ -146,6 +146,7 @@ async def test_purge_erases_personal_data_and_keeps_nothing_identifying(db_sessi
     user.subscription_provider = "revenuecat"
     user.subscription_expires_at = datetime.now(UTC) + timedelta(days=20)
     user.eu_withdrawal_waiver_at = datetime.now(UTC)
+    user.public_profile_opt_in = True
     db_session.add_all([
         UserSkillState(user_id=user.id, skill_id="sk1", attempts=3),
         LessonCompletion(user_id=user.id, skill_id="sk1"),
@@ -165,6 +166,7 @@ async def test_purge_erases_personal_data_and_keeps_nothing_identifying(db_sessi
     assert user.display_name == "—"
     assert user.hashed_password is None
     assert user.is_active is False
+    assert user.public_profile_opt_in is False  # 24.8: nada queda publicado
     assert user.is_premium is False
     assert (user.subscription_status, user.subscription_tier, user.subscription_provider) == (None, None, None)
     assert user.subscription_expires_at is None and user.eu_withdrawal_waiver_at is None
