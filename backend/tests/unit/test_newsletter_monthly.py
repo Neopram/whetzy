@@ -40,6 +40,24 @@ def enabled(monkeypatch: pytest.MonkeyPatch) -> None:
     from app.core.config import settings
 
     monkeypatch.setattr(settings, "NEWSLETTER_MONTHLY_ENABLED", True)
+    monkeypatch.setattr(email_service, "is_configured", lambda: True)
+
+
+@pytest.mark.asyncio
+async def test_without_an_email_provider_the_month_is_not_spent(
+    db_session: AsyncSession, outbox: list, enabled: None, monkeypatch: pytest.MonkeyPatch
+):
+    """Con el flag encendido pero sin proveedor (H.30), el correo no sale de la
+    máquina: no se marca `last_sent_at`, o ese mes se perdería en silencio."""
+    monkeypatch.setattr(email_service, "is_configured", lambda: False)
+    sub = _sub("on@example.com")
+    db_session.add(sub)
+    await db_session.commit()
+
+    assert await send_monthly_newsletter(db_session, NOW) == 0
+    await db_session.refresh(sub)
+    assert sub.last_sent_at is None
+    assert outbox == []
 
 
 @pytest.mark.asyncio

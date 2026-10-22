@@ -395,7 +395,11 @@ async def answer_duel(
     question = q_result.scalar_one_or_none()
     if question is None:
         raise HTTPException(status_code=404, detail="Question not found")
-    if payload.selected_index >= len(question.options_es or []):
+    # 42.4: con opciones, el índice tiene que ser una de ellas. Un ítem sin
+    # opciones (exec) no puntúa nunca y se graba como fallo
+    # (test_motor_wiring.test_duel_item_without_correct_index_never_scores).
+    options = question.options_es or []
+    if options and payload.selected_index >= len(options):
         raise HTTPException(status_code=422, detail="selected_index is not one of the options")
 
     # Duels only serve items with a correct_index (`_pick_questions`). An item

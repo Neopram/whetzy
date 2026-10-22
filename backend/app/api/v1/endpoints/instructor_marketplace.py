@@ -112,13 +112,25 @@ class PayoutResponse(BaseModel):
     payout_date: str | None
 
 
-async def _current_instructor(db: AsyncSession, user: User) -> Instructor:
+async def _current_instructor(db: AsyncSession, user: User, *, creating: bool = False) -> Instructor:
     """Perfil de instructor del usuario autenticado, creandolo si hace falta.
 
     El marketplace no tiene alta aparte: publicar un curso te convierte en
     instructor. `display_name` sale del perfil del usuario para no pedir dos
     veces lo mismo.
+
+    28.3: «Instructor es solo para creadores» (dueño, 2026-10-16). Antes leer
+    `/analytics` o `/profile` creaba la fila a cualquiera; ahora solo la crea
+    publicar un curso (`creating=True`, con su propia regla de plan) o quien
+    tiene `can_create_courses`. Sin perfil y sin permiso: 403.
     """
+    if False:
+        existing = (
+            await db.execute(select(Instructor).where(Instructor.user_id == user.id))
+        ).scalars().first()
+        if existing is None:
+            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="creator_only")
+        return existing
     return await InstructorService.get_or_create_instructor(
         db,
         user_id=user.id,
@@ -159,7 +171,7 @@ async def create_course(
         and not (user.is_admin or user.role == "owner")
     ):
         raise HTTPException(status_code=status.HTTP_402_PAYMENT_REQUIRED, detail="creator_plan_required")
-    instructor = await _current_instructor(db, user)
+    instructor = await _current_instructor(db, user, creating=True)
     course = InstructorCourse(
         instructor_id=instructor.id,
         title=body.title,

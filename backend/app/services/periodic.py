@@ -143,9 +143,13 @@ async def send_monthly_newsletter(db: AsyncSession, now: datetime | None = None)
     cada envío (commit) para que un fallo posterior no deshaga la marca de lo ya enviado
     y la vuelta siguiente no lo repita. Returns the number sent."""
     from app.core.security import create_unsubscribe_token
-    from app.services.email import send_newsletter_monthly
+    from app.services import email as email_service
 
     if not settings.NEWSLETTER_MONTHLY_ENABLED:
+        return 0
+    # Sin proveedor (H.30) el correo no sale de la máquina: no se gasta el mes.
+    if not email_service.is_configured():
+        logger.warning("newsletter_monthly skipped: email_not_configured")
         return 0
     now = now or datetime.now(UTC)
     month_start = datetime(now.year, now.month, 1, tzinfo=UTC)
@@ -163,7 +167,7 @@ async def send_monthly_newsletter(db: AsyncSession, now: datetime | None = None)
     for sub in due:
         lang = sub.language if sub.language in ("es", "en") else "es"
         token = create_unsubscribe_token(sub.id)
-        send_newsletter_monthly(
+        email_service.send_newsletter_monthly(
             to=sub.email,
             unsubscribe_url=(
                 f"{settings.API_PUBLIC_BASE_URL}{settings.API_V1_PREFIX}"
