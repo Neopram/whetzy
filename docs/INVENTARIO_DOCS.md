@@ -184,6 +184,7 @@ lo exige: el resumen cuadra con las filas y todo `.md` vivo tiene la suya. Antes
 | `docs/ui-snapshots/certificado-idioma/README.md` | histórico | evidencia del certificado público (y legales) en el idioma del visitante sin cuenta | se queda (junto a sus PNG) | 2026-10-20 |
 | `docs/ui-snapshots/editor-contraste/README.md` | histórico | evidencia del tema propio del editor de código: cada token a ≥ 4,5:1 y axe sin excluir Monaco | se queda (junto a sus PNG) | 2026-10-20 |
 | `docs/ui-snapshots/legal-prerender/README.md` | histórico | evidencia de /terms, /privacy y /refund pre-renderizadas (revisión de dominio de Paddle) y axe 0 | se queda (junto a sus PNG) | 2026-10-21 |
+| `docs/ui-snapshots/checkout-rediseno/README.md` | histórico | evidencia del rediseño de /checkout: plan, precio, selector, confianza y errores en palabras; axe 0 | se queda (junto a sus PNG) | 2026-10-21 |
 | `docs/ui-snapshots/duelo-grabado/README.md` | histórico | evidencia del duelo con la partida grabada del rival (acierto y tiempo tras cada pregunta) | se queda (junto a sus PNG) | 2026-10-20 |
 | `docs/ui-snapshots/design-v2/README.md` | histórico | evidencia de capturas de los pasos 4 y 5 del port design/v2 (Rutas y Lección) | se queda (junto a sus PNG) | 2026-10-01 |
 | `docs/MAPA_PRODUCTO.md` | referencia-viva | inventario de rutas, pantallas y subvistas con el documento que especifica cada una y sus huecos; `check_docs.py` exige que nombre todo lo que existe | se queda | 2026-10-01 |
