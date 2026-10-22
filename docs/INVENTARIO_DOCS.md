@@ -182,6 +182,7 @@ lo exige: el resumen cuadra con las filas y todo `.md` vivo tiene la suya. Antes
 | `docs/ui-snapshots/46.15d/README.md` | histórico | evidencia de capturas de la fila 46.15 bloque D (insignia nueva, barras que crecen, listas escalonadas, sello del certificado) | se queda (junto a sus PNG) | 2026-10-20 |
 | `docs/ui-snapshots/46.15e/README.md` | histórico | evidencia de capturas de la fila 46.15 bloque E (catálogo escalonado; éxito del checkout solo con el servidor) | se queda (junto a sus PNG) | 2026-10-20 |
 | `docs/ui-snapshots/46.15f/README.md` | histórico | evidencia de capturas de la fila 46.15 cierre (tabla de §7.5 rehecha a 390 px; check de Restablecer, páginas sueltas con transición) | se queda (junto a sus PNG) | 2026-10-21 |
+| `docs/ui-snapshots/46.4/README.md` | histórico | evidencia de capturas de la fila 46.4 (un solo sistema de tokens: antes/después de migrar `--color-*` a `--le-*`) | se queda (junto a sus PNG) | 2026-10-21 |
 | `docs/ui-snapshots/certificado-idioma/README.md` | histórico | evidencia del certificado público (y legales) en el idioma del visitante sin cuenta | se queda (junto a sus PNG) | 2026-10-20 |
 | `docs/ui-snapshots/editor-contraste/README.md` | histórico | evidencia del tema propio del editor de código: cada token a ≥ 4,5:1 y axe sin excluir Monaco | se queda (junto a sus PNG) | 2026-10-20 |
 | `docs/ui-snapshots/legal-prerender/README.md` | histórico | evidencia de /terms, /privacy y /refund pre-renderizadas (revisión de dominio de Paddle) y axe 0 | se queda (junto a sus PNG) | 2026-10-21 |

@@ -176,3 +176,39 @@ describe('tema claro (Perfil → tema claro)', () => {
     expect(ratio(t[texto], t[fondo])).toBeGreaterThanOrEqual(4.5)
   })
 })
+
+describe('46.4: pares de los ficheros que dejaron theme/tokens.css', () => {
+  // `--le-surface-2` sustituye a `--bg-dark-tertiary`: cabecera de tabla, pestaña
+  // activa, tarjeta de perfil y onboarding pintan texto encima.
+  const temas: Array<[string, Record<string, string>]> = [
+    ['oscuro', tokens()],
+    ['claro', tokensClaro()],
+  ]
+
+  describe.each(temas)('tema %s', (_tema, t) => {
+    const TEXTOS = ['--le-text', '--le-text-secondary', '--le-text-muted']
+    it.each(TEXTOS)('%s sobre --le-surface-2 cumple AA', (texto) => {
+      expect(ratio(t[texto], t['--le-surface-2'])).toBeGreaterThanOrEqual(4.5)
+    })
+
+    // `color: var(--le-brand)` (enlaces al pasar el ratón, pestaña activa),
+    // `--le-red` (errores del playground y admin), `--le-blue` (degradado del
+    // avatar): como glifo sobre fondo y superficie. Sobre --le-surface-2 el
+    // cian claro se queda en 4,39:1, pero ningún texto de marca se pinta ahí:
+    // las pestañas y opciones activas llevan un tinte translúcido sobre --le-bg.
+    const GLIFOS = ['--le-brand', '--le-red']
+    const SUPERFICIES = ['--le-bg', '--le-surface']
+    it.each(GLIFOS.flatMap((g) => SUPERFICIES.map((s) => [g, s])))('%s sobre %s cumple AA', (g, s) => {
+      expect(ratio(t[g], t[s])).toBeGreaterThanOrEqual(4.5)
+    })
+
+    it('el texto del banner (blanco) se lee sobre --le-brand-deep', () => {
+      expect(ratio('#FFFFFF', t['--le-brand-deep'])).toBeGreaterThanOrEqual(4.5)
+    })
+  })
+
+  it('el placeholder de Monaco (fijo, igual en los dos temas) cumple AA', () => {
+    const t = tokens()
+    expect(ratio(t['--le-editor-loading-text'], t['--le-editor-loading-bg'])).toBeGreaterThanOrEqual(4.5)
+  })
+})
