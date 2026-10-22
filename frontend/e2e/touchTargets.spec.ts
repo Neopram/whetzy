@@ -29,7 +29,10 @@ async function auditTargets(page: import('@playwright/test').Page, where: string
   await page.waitForFunction(() => {
     const scaled = (el: Element | null): boolean => {
       for (let n = el; n; n = n.parentElement) {
-        const t = getComputedStyle(n).transform;
+        const cs = getComputedStyle(n);
+        // La propiedad `scale` va aparte de `transform` y no sale en él.
+        if (cs.scale && cs.scale !== 'none' && cs.scale !== '1') return true;
+        const t = cs.transform;
         if (t && t !== 'none') {
           const m = new DOMMatrixReadOnly(t);
           if (m.a !== 1 || m.d !== 1) return true;
@@ -68,14 +71,18 @@ async function auditTargets(page: import('@playwright/test').Page, where: string
       const input = el as HTMLInputElement;
       if ((input.type === 'checkbox' || input.type === 'radio') && el.closest('label')) return;
 
-      if (rect.width < min || rect.height < min) {
+      // 0,05 px de margen solo para el redondeo subpíxel (CI de #322 en 3b08648:
+      // «exacto 147.00x44.00», es decir 43,99x); un objetivo pequeño de verdad
+      // se queda muy por debajo.
+      const EPS = 0.05;
+      if (rect.width < min - EPS || rect.height < min - EPS) {
         out.push({
           where,
           role: el.tagName.toLowerCase(),
           name: el.getAttribute('aria-label') || el.textContent?.trim().slice(0, 40) || '(sin nombre)',
           width: Math.round(rect.width),
           height: Math.round(rect.height),
-          layout: `${el.offsetWidth}x${el.offsetHeight}; exacto ${rect.width.toFixed(2)}x${rect.height.toFixed(2)}`,
+          layout: `${el.offsetWidth}x${el.offsetHeight}; exacto ${rect.width.toFixed(3)}x${rect.height.toFixed(3)}`,
         });
       }
     });
