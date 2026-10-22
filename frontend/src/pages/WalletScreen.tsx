@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Capacitor } from '@capacitor/core';
 
 import {
   economy,
@@ -14,6 +15,9 @@ import { Loading } from '../components/common/Loading';
 
 export default function WalletScreen() {
   const { t, i18n } = useTranslation();
+  // Las tiendas (App Store / Google Play) no permiten comprar ni canjear valor
+  // fuera de su propio pago: en la app nativa no se enseña el canje (24.6).
+  const native = Capacitor.isNativePlatform();
   const [balance, setBalance] = useState<CreditBalance | null>(null);
   const [prices, setPrices] = useState<CreditPrices | null>(null);
   const [referral, setReferral] = useState<ReferralCodeInfo | null>(null);
@@ -206,29 +210,31 @@ export default function WalletScreen() {
         </section>
       )}
 
-      <section className={styles.section}>
-        <h2 className={styles.sectionTitle}>{t('wallet.promo')}</h2>
-        <form className={styles.promoForm} onSubmit={handleRedeem}>
-          <label htmlFor="promo-code" className="visually-hidden">{t('wallet.promoPlaceholder')}</label>
-          <input
-            id="promo-code"
-            className={styles.promoInput}
-            type="text"
-            value={promoCode}
-            onChange={(e) => setPromoCode(e.target.value)}
-            placeholder={t('wallet.promoPlaceholder')}
-            autoComplete="off"
-          />
-          <button className={styles.btnSecondary} type="submit" disabled={promoLoading || !promoCode.trim()}>
-            {t('wallet.redeem')}
-          </button>
-        </form>
-        {promoMsg && (
-          <p className={promoMsg.ok ? styles.promoSuccess : styles.promoError} role="status">
-            {promoMsg.text}
-          </p>
-        )}
-      </section>
+      {!native && (
+        <section className={styles.section}>
+          <h2 className={styles.sectionTitle}>{t('wallet.promo')}</h2>
+          <form className={styles.promoForm} onSubmit={handleRedeem}>
+            <label htmlFor="promo-code" className="visually-hidden">{t('wallet.promoPlaceholder')}</label>
+            <input
+              id="promo-code"
+              className={styles.promoInput}
+              type="text"
+              value={promoCode}
+              onChange={(e) => setPromoCode(e.target.value)}
+              placeholder={t('wallet.promoPlaceholder')}
+              autoComplete="off"
+            />
+            <button className={styles.btnSecondary} type="submit" disabled={promoLoading || !promoCode.trim()}>
+              {t('wallet.redeem')}
+            </button>
+          </form>
+          {promoMsg && (
+            <p className={promoMsg.ok ? styles.promoSuccess : styles.promoError} role="status">
+              {promoMsg.text}
+            </p>
+          )}
+        </section>
+      )}
     </div>
   );
 }

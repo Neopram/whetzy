@@ -1,5 +1,6 @@
 import { useState, useCallback, useEffect, useRef, lazy, Suspense } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Loading } from '../components/common/Loading';
 import { motion } from 'framer-motion';
 import { useRuntime, type RuntimeType } from '../hooks/useRuntime';
 import { useAppStore } from '../stores/useAppStore';
@@ -211,7 +212,7 @@ export function PlaygroundScreen() {
       </div>
 
       <div className={styles.editorContainer}>
-        <Suspense fallback={<div className={styles.editorLoading}>{t('playground.loadingEditor')}</div>}>
+        <Suspense fallback={<div className={styles.editorLoading}><Loading label={t('playground.loadingEditor')} shape="line" /></div>}>
           <MonacoCodeEditor
             value={codes[activeRuntime]}
             onChange={handleCodeChange}
