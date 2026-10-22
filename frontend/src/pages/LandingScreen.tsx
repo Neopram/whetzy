@@ -15,6 +15,7 @@ import { LangFlag } from '../components/common/LangFlag';
 import { landingJsonLd, serializeJsonLd } from '../lib/structuredData';
 import { HeroQuizMock } from '../components/landing/HeroQuizMock';
 import { ReadinessBandsMock } from '../components/landing/ReadinessBandsMock';
+import { NewsletterForm } from '../components/landing/NewsletterForm';
 
 /* La landing (30.1, 2026-09-24) solo afirma lo que el producto hace hoy:
    cifras de lib/catalog.ts (vigiladas por scripts/check_docs.py), maquetas de
@@ -466,6 +467,9 @@ export default function LandingScreen() {
             <a href="/terms" className={styles.navLink}>{t('landing.terms')}</a>
             <a href="/refund" className={styles.navLink}>{t('landing.refund')}</a>
           </nav>
+        </div>
+        <div className={styles.footerNewsletter}>
+          <NewsletterForm />
         </div>
         <p className={styles.footerCopyright}>{t('landing.footer')}</p>
       </footer>

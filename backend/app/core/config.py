@@ -203,6 +203,11 @@ class Settings(BaseSettings):
     # en esta carpeta para que el e2e lea el enlace. Vacío = apagado; en producción
     # no escribe nunca (`email._send_log`).
     EMAIL_OUTBOX_DIR: str = ""
+    # 39.13: oferta de reactivación (código de 200 créditos a quien lleva ≥ 14 días sin
+    # estudiar). Es marketing a usuarios reales: apagada hasta que el dueño la encienda.
+    REACTIVATION_EMAILS_ENABLED: bool = False
+    # 26.10: newsletter mensual a los suscritos con doble opt-in. Apagado por defecto.
+    NEWSLETTER_MONTHLY_ENABLED: bool = False
     FRONTEND_BASE_URL: str = "https://whetzy.com"
     # Base pública de esta API: el enlace de baja de un correo (RFC 8058) tiene
     # que aceptar un POST, así que apunta aquí y no al frontend.
