@@ -1,4 +1,13 @@
 import '@testing-library/jest-dom';
+import { configure } from '@testing-library/react';
+
+// `findBy*`/`waitFor` esperan 1 s por defecto. Con la máquina cargada (vitest
+// corre ficheros en paralelo; 4 núcleos) el primer render de un fichero, que
+// paga la importación en frío, tarda más: `homeScreen.lever46` salió rojo 2 de
+// 2 con la CPU saturada (1,4 y 1,7 s) y verde solo. Un test que falla al azar
+// no puede ser una puerta (CLAUDE.md), así que el plazo sube a 5 s: lo que de
+// verdad no aparece sigue fallando, solo que tarda 5 s en decirlo.
+configure({ asyncUtilTimeout: 5000 });
 
 // Polyfill localStorage for jsdom
 const store: Record<string, string> = {};
