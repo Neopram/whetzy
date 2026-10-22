@@ -24,6 +24,7 @@ import {
   type TrackRead,
 } from '../services/api';
 import { canPractice } from '../lib/nextStep';
+import { TRACK_GROUPS, fieldOf, type TrackGroupId } from '../lib/trackGroups';
 import styles from './TracksScreen.module.css';
 import { TrackIcon } from '../components/common/AppIcon';
 import { Loading } from '../components/common/Loading';
@@ -104,14 +105,17 @@ function Catalogue({
   const dash = useApi(() => progressApi.dashboard(), []);
   // ADR-60: la ruta se resume en skills dominadas, no en un % del modelo.
   const masteredById = new Map((dash.data?.tracks ?? []).map((m) => [m.track_id, { mastered: m.skills_mastered, total: m.total_skills }]));
+  // Ola 2: además del tipo, el campo (los cinco grupos del onboarding).
+  const [field, setField] = useState<TrackGroupId | 'all'>('all');
+  const inField = (tr: TrackRead) => field === 'all' || fieldOf(tr.id) === field;
+  const ofType = (tr: TrackRead, f: Filter) => (f === 'all' ? true : f === 'cert' ? Boolean(tr.is_certification) : !tr.is_certification);
   const counts: Record<Filter, number> = {
-    all: tracks.length,
-    learn: tracks.filter((tr) => !tr.is_certification).length,
-    cert: tracks.filter((tr) => tr.is_certification).length,
+    all: tracks.filter(inField).length,
+    learn: tracks.filter((tr) => inField(tr) && ofType(tr, 'learn')).length,
+    cert: tracks.filter((tr) => inField(tr) && ofType(tr, 'cert')).length,
   };
-  const shown = tracks.filter((tr) =>
-    filter === 'all' ? true : filter === 'cert' ? tr.is_certification : !tr.is_certification,
-  );
+  const fieldCount = (id: TrackGroupId) => tracks.filter((tr) => fieldOf(tr.id) === id && ofType(tr, filter)).length;
+  const shown = tracks.filter((tr) => inField(tr) && ofType(tr, filter));
 
   return (
     <div className={styles.screen}>
@@ -135,7 +139,27 @@ function Catalogue({
         ))}
       </div>
 
+      <div className={styles.fields} role="group" aria-label={t('tracks.fieldLabel')}>
+        {(['all', ...TRACK_GROUPS.map((g) => g.id)] as const).map((id) => {
+          const n = id === 'all' ? tracks.filter((tr) => ofType(tr, filter)).length : fieldCount(id);
+          // Un campo sin rutas del tipo elegido no se ofrece, salvo el que está puesto.
+          if (id !== 'all' && n === 0 && field !== id) return null;
+          return (
+            <button
+              key={id}
+              type="button"
+              aria-pressed={field === id}
+              className={`${styles.fieldChip} ${field === id ? styles.filterActive : ''}`}
+              onClick={() => setField(id)}
+            >
+              {id === 'all' ? t('tracks.field_all') : t(`onboarding.groups.${id}`)} <span className={styles.filterCount}>{n}</span>
+            </button>
+          );
+        })}
+      </div>
+
       {loading && <Loading label={t('tracks.loading')} shape="line" />}
+      {!loading && shown.length === 0 && <p className={styles.subtitle}>{t('tracks.fieldEmpty')}</p>}
 
       <ul className={styles.catalogue}>
         {shown.map((tr) => {
