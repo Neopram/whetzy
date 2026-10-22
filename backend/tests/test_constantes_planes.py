@@ -27,6 +27,14 @@ def test_precio_de_la_certificacion_coincide() -> None:
     assert float(_const("CERTIFICATION_PRICE_USD")) == settings.CERTIFICATION_PRICE_USD
 
 
+def test_precios_mensuales_de_los_datos_estructurados_coinciden() -> None:
+    """La landing publica Pro y Pro Max en su JSON-LD (ola 2) desde `plans.ts`."""
+    from app.core.prices import PRO_MAX_MONTHLY_USD, PRO_MONTHLY_USD
+
+    assert _const("PRO_MONTHLY_USD") == str(PRO_MONTHLY_USD)
+    assert _const("PRO_MAX_MONTHLY_USD") == str(PRO_MAX_MONTHLY_USD)
+
+
 def test_cupo_free_coincide() -> None:
     """Plan Free (39.4, ADR-50a): lo que promete la UI es lo que aplica el backend."""
     assert int(_const("FREE_DAILY_NEW_QUESTIONS")) == settings.FREE_DAILY_NEW_QUESTIONS
