@@ -17,7 +17,7 @@ test('el ejemplo de la lección se abre en el playground y el fragmento reaparec
   await page.getByLabel('Usuario').fill(username);
   await page.getByLabel('Correo electrónico').fill(`${username}@example.com`);
   await page.getByLabel('Contraseña').fill('e2e-test-pass-123');
-  await page.getByLabel('Confirmo que tengo 13 años o más').check();
+  await page.getByLabel('Confirmo que tengo 16 años o más').check();
   await page.getByRole('button', { name: 'EMPEZAR A APRENDER' }).click();
   await completeOnboarding(page); // Python Básico, empiezo de cero → Hoy
 

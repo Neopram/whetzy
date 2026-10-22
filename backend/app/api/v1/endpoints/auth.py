@@ -112,7 +112,7 @@ async def register(
     if not payload.age_confirmed:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Age confirmation is required (must be 13 or older)",
+            detail="Age confirmation is required (must be 16 or older)",
         )
 
     # 43.2: el 409 dice qué campo choca (la UI lo traduce), y el email se

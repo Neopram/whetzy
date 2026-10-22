@@ -170,7 +170,7 @@ class User(Base):
         Boolean, default=False, server_default=false(), nullable=False
     )
 
-    # Age gate (19.11): user confirmed they are ≥13 years old at registration.
+    # Age gate (19.11): user confirmed they are ≥16 years old at registration (ADR-70).
     age_confirmed: Mapped[bool] = mapped_column(
         Boolean, default=False, server_default=false(), nullable=False
     )

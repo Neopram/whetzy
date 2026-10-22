@@ -5,6 +5,22 @@ Versioning: [Semantic Versioning](https://semver.org/)
 
 ---
 
+## [Unreleased] — 2026-10-22 (decisiones del dueño, ADR-70)
+
+**ES**
+
+- Edad mínima: 16 años (antes 13) en el alta, su error, los Términos, la Privacidad y el backend; guarda `test_edad_minima.py`.
+- Precios: plan anual Pro 149,99 $ y Pro Max 199,99 $ («2 meses gratis»), todavía apagado en el piloto; LatAm −40 % por país en Paddle.
+- ADR-61 confirmada (con la edad corregida), ADR-62 firmada (sigue la pausa de contenido), ADR-63 firmada por delegación.
+- Cola humana: H.13 y H.48 cerradas; H.20, H.25, H.27, H.35 y H.54 decididas.
+
+**EN**
+
+- Minimum age: 16 (was 13) on sign-up, its error, the Terms, the Privacy policy and the backend; guarded by `test_edad_minima.py`.
+- Pricing: annual Pro $149.99 and Pro Max $199.99 ("2 months free"), still off during the pilot; LatAm −40 % per country in Paddle.
+- ADR-61 confirmed (with the corrected age), ADR-62 signed (the content pause stays), ADR-63 signed by delegation.
+- Human queue: H.13 and H.48 closed; H.20, H.25, H.27, H.35 and H.54 decided.
+
 ## [Unreleased] — 2026-10-22 (cierre de filas y ledger)
 
 **ES**

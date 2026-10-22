@@ -2964,3 +2964,11 @@ La comparación del §6 del plan con el código (`master` `00e52a5`) dejó en `P
   bajo su límite de 60 KB.
 - **Decisiones de criterio abiertas para el dueño:** si el informe de dominio se compra con créditos en la app
   nativa (ahora no, `601b5bb`), y el modo claro (34.2).
+
+## 2026-10-22 — Decisiones del dueño (ADR-70)
+
+- El dueño decidió lo que ADR-69 le había dejado: anual «2 meses gratis» (Pro 149,99 $, Pro Max 199,99 $; sigue apagado en el piloto), LatAm −40 % y España a precio pleno, titular persona física hasta constituir la empresa, ADR-61 fiel con la edad mínima en **16**, y se mantiene la pausa de contenido (ADR-62).
+- Edad 16 aplicada: i18n ES/EN (casilla, error, `termsP2`, `privacyCoppaDesc`), mensaje del backend, 19 líneas de e2e y la checklist de App Store. `test_edad_minima.py` sale en rojo con los textos viejos (visto) y en verde ahora.
+- Regresión visual de `/auth`: las 8 capturas de Linux no coinciden en este entorno, ni con el texto viejo (3-7 % de píxeles; Chromium 1194 frente al 1248 del proyecto). No se regeneran aquí; toca regenerarlas en el nivel 2 local con el Chromium del proyecto (`npx playwright test -c playwright.visual.config.ts -u`).
+- Ledger: H.13 y H.48 cerradas; H.20, H.25, H.27, H.35 y H.54 decididas; H.55 sigue en pausa. Falta el nombre legal del dueño para los Términos.
+

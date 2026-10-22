@@ -76,7 +76,7 @@ Legend: ✅ Compliant · ⚠️ Action needed · ❌ Blocker · N/A Not applicab
 | 5.1.2.1 | Data collection & use | ✅ | Privacy policy lists all data types; see play-store-data-safety.md for inventory |
 | 5.1.2.2 | App Tracking Transparency (ATT) | ✅ | Whetzy does NOT use IDFA or cross-app tracking → ATT prompt not required |
 | 5.1.2.4 | Data minimization | ✅ | Only email + username + quiz performance collected |
-| 5.1.2.5 | Age gates / minors | ✅ | Registration requires age confirmation ("I am 13 or older" / parental consent per jurisdiction); 19.11 DONE |
+| 5.1.2.5 | Age gates / minors | ✅ | Registration requires age confirmation ("I am 16 or older" / parental consent per jurisdiction); 19.11 DONE |
 | 5.1.3 | Health and health research | N/A | No HealthKit |
 | 5.1.5 | Location services | N/A | Not used |
 | 5.2 | Intellectual Property | ⚠️ | All questions must have `source` field populated with citable reference (task P.8 criterion). Verify 100% source coverage before submission |

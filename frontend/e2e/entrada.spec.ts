@@ -78,7 +78,7 @@ test('alta: cada paso entra desplazándose (es, 390 px)', async ({ page }) => {
   await page.getByLabel('Usuario').fill(username);
   await page.getByLabel('Correo electrónico').fill(`${username}@example.com`);
   await page.getByLabel('Contraseña').fill('e2e-test-pass-123');
-  await page.getByLabel('Confirmo que tengo 13 años o más').check();
+  await page.getByLabel('Confirmo que tengo 16 años o más').check();
   await page.getByRole('button', { name: 'EMPEZAR A APRENDER' }).click();
   const step = page.getByTestId('onboarding-step');
   await expect(step).toHaveAttribute('data-fx', 'slide', { timeout: 15_000 });
@@ -114,7 +114,7 @@ test('prueba de nivel: un punto por pregunta respondida (es, 390 px)', async ({ 
   await page.getByLabel('Usuario').fill(username);
   await page.getByLabel('Correo electrónico').fill(`${username}@example.com`);
   await page.getByLabel('Contraseña').fill('e2e-test-pass-123');
-  await page.getByLabel('Confirmo que tengo 13 años o más').check();
+  await page.getByLabel('Confirmo que tengo 16 años o más').check();
   await page.getByRole('button', { name: 'EMPEZAR A APRENDER' }).click();
   await completeOnboarding(page, { takeTest: true });
   await page.getByRole('button', { name: 'COMENZAR EXAMEN' }).click();

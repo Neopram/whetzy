@@ -59,7 +59,7 @@ test.describe('puerta 45: alta en español con el navegador en inglés', () => {
     await page.getByLabel('Usuario').fill(username);
     await page.getByLabel('Correo electrónico').fill(email);
     await page.getByLabel('Contraseña').fill('e2e-test-pass-123');
-    await page.getByLabel('Confirmo que tengo 13 años o más').check();
+    await page.getByLabel('Confirmo que tengo 16 años o más').check();
     const registered = page.waitForResponse(
       (r) => r.url().endsWith('/auth/register') && r.request().method() === 'POST',
     );

@@ -64,7 +64,7 @@ test('A. Onboarding y B-D con sesión: Hoy, Rutas, Perfil, Stats, Cartera, Liga,
   await page.getByLabel('Usuario').fill(username);
   await page.getByLabel('Correo electrónico').fill(`${username}@example.com`);
   await page.getByLabel('Contraseña').fill('e2e-test-pass-123');
-  await page.getByLabel('Confirmo que tengo 13 años o más').check();
+  await page.getByLabel('Confirmo que tengo 16 años o más').check();
   await page.getByRole('button', { name: 'EMPEZAR A APRENDER' }).click();
   await expect(page.getByRole('heading', { level: 1 }).first()).toBeVisible({ timeout: 15_000 });
   await shot(page, 'onboarding');

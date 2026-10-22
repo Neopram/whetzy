@@ -604,7 +604,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 
 | H.16 | **DECIDIDA** (ADR-50p) — dueño: proteger `master` (PR obligatorio) en GitHub → Branches; staging (31.1) aprobado, alta con coste por el dueño |
 | H.12 | PRI 0 de seguridad — rotar la `GROQ_API_KEY`. Estuvo commite… |
-| H.13 | PRI 0 — Actions: corrió verde el 2026-10-01 y desde ~12:52 UTC ningún job recibe runner (`runner_id: 0`). Dueño: GitHub → Billing → Actions (ADR-50o). Puerta real: la local |
+| H.13 | **CERRADA** 2026-10-22 (ADR-70): runners de vuelta desde el 2026-10-21; CI verde en #322 |
 | H.2 | Apple Developer Program — y desde 2026-09-18 también bloquea… |
 | H.3 | Google Play Console |
 | H.5 | Submisión a stores |
@@ -615,13 +615,13 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | H.10 | Cohorte beta ≥ 30 usuarios reales (11.8) |
 | H.17 | Ver H.13 |
 | H.18 | La cadena solo corre con la app Claude abierta y el PC despi… |
-| H.20 | Revisión profesional de los textos legales antes de publicar… |
+| H.20 | DECIDIDO (ADR-70): se aplaza hasta tener ingresos; textos con marca de borrador |
 | H.23 | Abrir la Serie 26 (distribución ES) cuando 24.14 esté DONE |
-| H.25 | Activar payouts de instructores en producción (28.7) |
-| H.27 | cNFT de certificados en Solana (29.10, opcional; ADR-37): wa… |
+| H.25 | DECIDIDO (ADR-70): se aplaza a la primera venta de un instructor (28.7) |
+| H.27 | DECIDIDO (ADR-70): solo Open Badges, sin cNFT (29.10) |
 | H.28 | Grant / bounty de la Solana Foundation o Superteam para trac… |
-| H.29 | DECIDIDO 2026-10-01 (web = Paddle, tiendas = RevenueCat, sin Stripe). Web: `/checkout` hecho; falta alta Paddle y dominio. Entidad: ADR-61 §22 (2026-10-09) pasa de Grecia a Chipre como destino, sin entidad constituida; el código sigue en Grecia → H.54 | Dueño |
-| H.35 | **PARCIAL** (2026-09-25): mensuales fijados (ADR-41, ADR-49); faltan anual, tarifa regional, base del 80 %, cupo de Pro y la cert 39,99 $ → §J |
+| H.29 | DECIDIDO 2026-10-01 (web = Paddle, tiendas = RevenueCat, sin Stripe). Web: `/checkout` hecho; falta alta Paddle y dominio. Entidad: ADR-61 §22 (2026-10-09) pasa de Grecia a Chipre como destino, sin entidad constituida; el código sigue en Grecia → H.54. T1: persona física (ADR-70); falta el nombre legal | Dueño |
+| H.35 | **DECIDIDO** (ADR-70): anual Pro 149,99 $ y Pro Max 199,99 $ (apagado en piloto); LatAm −40 % en Paddle, España pleno; 80 % tras comisión; Pro 20/día; cert 39,99 $ |
 | H.38 | Afiliación con Python Institute y CompTIA (38.3) |
 | H.39 | 3 pilotos B2B gratuitos (38.2, ADR-22) |
 | H.40 | Reclutar 5 instructores fundadores (28.9) |
@@ -630,14 +630,14 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | H.45 | Conectar redes (X, LinkedIn…) en Metricool/Typefully para que la distribución deje de ser solo borradores |
 | H.46 | ¿Monitor de uptime de Sentry para `/health`? (puede consumir cuota de pago) |
 | H.49 | **DECIDIDA 2026-09-28** — dueño: la voz a texto del tutor (40.6) usa el mismo proveedor que el tutor (Groq, `/audio/transcriptions`) |
-| H.48 | Clave de API de Anthropic con gasto para un pipeline por **Batch API** de rellenos con Haiku 4.5 (ADR-52); hoy ningún código del repo llama a la API | Dueño |
+| H.48 | CERRADA (ADR-70): no hace falta; ningún código llama a la API | Dueño |
 | H.47 | ¿Mantener el correo personal del dueño como contacto en la página pública `/evidence` (`EvidenceScreen.tsx:340`)? Por defecto (ADR-47) se deja y se propone un alias tipo `support@whetzy.com` | Dueño |
 | H.50 | Descarga del corpus (`scripts/corpus/`) en el setup script del entorno cloud, para que `corpus/` exista en cada sesión de autoría (ADR-59, `PLAN_CONTENIDO.md` §3) | Dueño |
 | H.51 | Firmar ADR-63 (evidencia por fuente) y los valores del prior. Recomendado: 0,10/0,20/0,30; k = 4; puerta de 7 solo con práctica | Dueño |
 | H.52 | Duelos: opt-out de ligas ⇒ no retar ni ser retado; caducidad a 7 días; sin XP; desempate por tiempo de servidor. El copy ya dice «por turnos» | DECIDIDO por delegación (ADR-69 #6, 2026-10-22) |
 | H.53 | `exam_pass_predictor` (sin importadores en `backend/app`): retirarlo a `ml/` (recomendado) o conectarlo tras una bandera | Dueño |
-| H.54 | ADR-61 (transcrito del #89): ¿es fiel? Y la jurisdicción: §22 dice Chipre, pero `payment_service.py:22` sigue en Grecia. Recomendado: confirmar Chipre y tocar el código al constituir la entidad | Dueño |
-| H.55 | Deuda de contenido de estudio: 12.037 preguntas frente a 730 lecciones y 1.058 términos. Opciones: lecciones largas, ejemplos resueltos, laboratorios guiados; reabre «1 lección por skill» (ADR-54). Sin diseño | Dueño |
+| H.54 | DECIDIDO (ADR-70): ADR-61 fiel, edad mínima 16; titular persona física; Chipre y el código al constituir la entidad | Dueño |
+| H.55 | Deuda de contenido de estudio: 12.037 preguntas frente a 730 lecciones y 1.058 términos. Opciones: lecciones largas, ejemplos resueltos, laboratorios guiados; reabre «1 lección por skill» (ADR-54). Sin diseño. Pausa mantenida por el dueño (ADR-70) | Dueño |
 | H.56 | «Panel de equipo» prometido en `docs/legal/b2b_pilot_offer_*.md` sin producto. Recomendado: retirar la promesa (S4) | Dueño |
 | H.57 | Modelos: CLAUDE.md dice Haiku 4.5 y prohíbe Fable; el entorno ofrece otros. La tabla no se cambia hasta que decidas | Dueño |
 | H.58 | Las 119 preguntas del barrido de la Oleada 0 (`docs/archive/verificacion/claims-2026-10-16.md`, «Escalados»), con la opción recomendada primero | Dueño |
