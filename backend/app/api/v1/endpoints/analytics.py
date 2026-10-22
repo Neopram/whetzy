@@ -14,6 +14,7 @@ from app.schemas.client_events import ClientEventBatch
 from app.services.analytics import (
     PRODUCT_METRIC_TARGETS,
     conversion_d35,
+    conversion_steps,
     curr,
     engagement,
     funnel,
@@ -58,6 +59,8 @@ async def get_dashboard(
     - engagement — DAU trend, sessions/user, avg session duration
     - skill_mastery — top/bottom 5 skills by average p_known
     - curr — of the last 7 days' active users, % also active today
+    - conversion_steps — registration → first answer → checkout viewed →
+      checkout opened → subscription (46.6; checkout steps are anonymous visits)
     - conversion_d35 — % converted to paid within 35 days of registering
       (only accurate for users who registered after `subscription_started`
       instrumentation shipped, 37.20; `sample_too_small` says so)
@@ -77,6 +80,7 @@ async def get_dashboard(
     conversion_data = await conversion_d35(db)
     weekly_30min_data = await weekly_30min_rate_among_payers(db)
     h4_data = await unseen_first_attempt_accuracy(db)
+    steps_data = await conversion_steps(db, days=period_days)
 
     return {
         "funnel": funnel_data,
@@ -99,6 +103,8 @@ async def get_dashboard(
         "skill_mastery": mastery_data,
         "curr": curr_data,
         "conversion_d35": conversion_data,
+        # 46.6: los pasos de pago son visitas anónimas, no personas.
+        "conversion_steps": steps_data,
         "weekly_30min_among_payers": weekly_30min_data,
         # H4: acierto al primer intento en preguntas no vistas, principio vs final.
         "learning_unseen_first_attempt": h4_data,
@@ -116,7 +122,7 @@ async def post_client_events(
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ) -> dict[str, int]:
-    """46.6a (ADR-68): efectos del cliente, en lote.
+    """46.6a y 46.6 (ADR-68): efectos, pasos de pago y encuesta del cliente, en lote.
 
     La sesión solo sirve para limitar el ritmo: las filas se guardan **sin
     `user_id`** ni IP (ADR-68 punto 3).
@@ -130,6 +136,15 @@ async def post_client_events(
         await track(db, e.type, user_id=None, properties=props)
     await db.commit()
     return {"accepted": len(batch.events)}
+
+
+@router.get("/conversion", dependencies=[Depends(_require_admin_key)])
+async def get_conversion(
+    days: int = Query(default=30, ge=1, le=365),
+    db: AsyncSession = Depends(get_db),
+) -> dict[str, object]:
+    """46.6: embudo de pago y encuesta de la primera sesión, cada número con su `n`."""
+    return await conversion_steps(db, days=days)
 
 
 @router.get("/fx", dependencies=[Depends(_require_admin_key)])

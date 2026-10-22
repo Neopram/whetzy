@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import i18n from '../i18n';
 import { ApiError, auth, billing, exams, type PaddleConfig, type UserRead } from '../services/api';
+import { trackCheckout } from '../lib/fxAnalytics';
 import { loadPaddle, parseCheckoutRequest, type PaddleEvent, type PaddlePlan } from '../lib/paddle';
 import { CATALOG_TRACKS } from '../lib/catalog';
 import { TUTOR_DAILY_LIMIT_PRO } from '../lib/plans';
@@ -170,6 +171,7 @@ export function CheckoutScreen() {
         const current = request.current?.plan ?? req.plan;
         const chosen = paddleConfig.current?.prices[current] ?? priceId;
         setPhase('open');
+        trackCheckout('checkout_opened', current);
         paddle.Checkout.open({
           items: [{ priceId: chosen, quantity: 1 }],
           customer: { email: me.email },
@@ -178,6 +180,7 @@ export function CheckoutScreen() {
         });
       };
       setPhase('consent');
+      trackCheckout('checkout_viewed', req.plan);
     })();
     return () => {
       cancelled = true;

@@ -31,6 +31,7 @@ import { parseQuestion } from '../lib/question';
 import { useBackGuard } from '../lib/screenHistory';
 import styles from './QuizScreen.module.css';
 import { Loading } from '../components/common/Loading';
+import { FirstSessionSurvey } from '../components/quiz/FirstSessionSurvey';
 
 // Monaco is ~2 MB — lazy-load so the initial bundle stays small.
 const MonacoCodeEditor = lazy(() =>
@@ -1158,6 +1159,9 @@ function SessionSummary({
       )}
 
       {extra}
+
+      {/* 46.6: una pregunta, una vez por navegador, sin usuario. */}
+      <FirstSessionSurvey />
 
       {moved.length > 0 && (
         <section className={styles.moved} aria-label={t('quiz.skillsMoved')}>
