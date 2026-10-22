@@ -313,7 +313,7 @@ function ProjectRunner({ slug, onBack }: { slug: string; onBack: () => void }) {
 
         <div className={styles.editorArea}>
           <div className={styles.editorContainer}>
-            <Suspense fallback={<p className={styles.loading}>{t('playground.loadingEditor')}</p>}>
+            <Suspense fallback={<div className={styles.loading}><Loading label={t('playground.loadingEditor')} shape="line" /></div>}>
               <MonacoCodeEditor
                 value={getCode(currentStep)}
                 onChange={(val) => setCodes((prev) => ({ ...prev, [currentStep]: val ?? '' }))}
