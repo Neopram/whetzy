@@ -208,7 +208,22 @@ export function setOnSessionExpired(cb: (() => void) | null): void {
   onSessionExpired = cb;
 }
 
-async function tryRefresh(): Promise<boolean> {
+/** 42.3: el refresh en curso, compartido. Con el access token caducado, Home
+ *  pide varias cosas a la vez y cada 401 lanzaba su propio `POST
+ *  /auth/refresh` con el mismo refresh token; si el backend lo rota, el
+ *  segundo llega con uno gastado, da 401 y `forgetTokens()` tira la sesión que
+ *  el primero acababa de renovar. Ahora todas esperan al mismo, y se suelta al
+ *  terminar (bien o mal) para que el próximo 401 vuelva a intentarlo. */
+let refreshInFlight: Promise<boolean> | null = null;
+
+function tryRefresh(): Promise<boolean> {
+  refreshInFlight ??= doRefresh().finally(() => {
+    refreshInFlight = null;
+  });
+  return refreshInFlight;
+}
+
+async function doRefresh(): Promise<boolean> {
   try {
     // Sin cookie de refresh (Safari, 43.1) el refresh va en el cuerpo; el
     // backend acepta las dos vías (`auth.py`, `POST /auth/refresh`).

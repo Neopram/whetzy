@@ -220,6 +220,9 @@ trap 'interrumpido INT' INT
 trap 'interrumpido TERM' TERM
 
 FALLOS=()
+# Pasos que no corrieron por falta de algo (hoy, el e2e sin BD). No son rojo,
+# pero tampoco verde: el veredicto los nombra para que no pasen por corridos.
+SALTADOS=()
 # Todo paso que se ANUNCIA tiene que dar un VEREDICTO. El 2026-09-20 el paso
 # «backend: contenido» se anuncio, reviento (el script estaba en CRLF y la
 # continuacion de linea se rompio), no imprimio ni [ok] ni [FALLA]... y el run
@@ -366,6 +369,42 @@ if [ -d "$ARBOL/frontend/node_modules" ]; then
   else
     echo "[--] regresión visual: sin baselines de $VIS_PLAT en e2e/__screenshots__/; me la salto"
   fi
+  # 42.2: la suite e2e (Playwright), lo mismo que el job `e2e` de ci.yml, que
+  # desde el 2026-10-01 no recibe runner (H.13): hasta aquí no corría en ningún
+  # sitio automático. Va la última: es la más lenta y la única que necesita BD.
+  # Variables:
+  #   WHETZY_E2E_DATABASE_URL  OBLIGATORIA. postgresql+asyncpg://usuario:clave@host:puerto/db
+  #                            de un Postgres DEDICADO: se migra, se siembra y se
+  #                            llena de usuarios de prueba. Nunca la de desarrollo
+  #                            (:5433) ni la de producción. Sin ella, o si no
+  #                            responde en 5 s, el paso se salta.
+  #   PW_CHROMIUM_EXECUTABLE   opcional: un Chromium propio (playwright.config.ts).
+  # Las demás las fija el paso como el job de ci.yml: ENVIRONMENT=test,
+  # SECRET_KEY de prueba, GROQ_API_KEY vacía, y CI=1 (servidores siempre nuevos
+  # contra esta BD, nunca uno que ya estuviera escuchando en :8000).
+  # Saltarlo NO es un verde: queda apuntado en SALTADOS y el veredicto lo dice.
+  E2E_BD="${WHETZY_E2E_DATABASE_URL:-}"
+  if [ -z "$E2E_BD" ]; then
+    echo "[--] frontend: e2e (Playwright): sin WHETZY_E2E_DATABASE_URL; me lo salto (no cuenta como verde)"
+    SALTADOS+=("frontend: e2e (Playwright) — sin WHETZY_E2E_DATABASE_URL")
+  elif ! DATABASE_URL="$E2E_BD" "$PY" -c '
+import asyncio, os, asyncpg
+async def tocar():
+    c = await asyncio.wait_for(asyncpg.connect(os.environ["DATABASE_URL"].replace("+asyncpg", "", 1)), 5)
+    await c.close()
+asyncio.run(tocar())' >/dev/null 2>&1; then
+    echo "[--] frontend: e2e (Playwright): el Postgres de WHETZY_E2E_DATABASE_URL no responde; me lo salto (no cuenta como verde)"
+    SALTADOS+=("frontend: e2e (Playwright) — Postgres sin respuesta")
+  else
+    # El webServer arranca `python -m uvicorn` del PATH: que sea el intérprete de $PY.
+    _py_dir="$(dirname "$(command -v "$PY")")"
+    correr "frontend: e2e (Playwright)" "$ARBOL" \
+      env PATH="$_py_dir:$PATH" DATABASE_URL="$E2E_BD" ENVIRONMENT=test \
+        SECRET_KEY=e2e-test-secret-for-ci GROQ_API_KEY= CI=1 \
+      bash -c 'cd backend && python -m alembic upgrade head \
+        && python -m app.services.content_loader && python -m app.services.seed \
+        && cd ../frontend && npm run -s test:e2e'
+  fi
 else
   titulo "frontend"; echo "[--] sin node_modules; me lo salto"
 fi
@@ -389,7 +428,12 @@ FIN="$(date '+%Y-%m-%d %H:%M')"
 {
   if [ ${#FALLOS[@]} -eq 0 ]; then
     echo "VERDE"
-    echo "$FIN · $SHA · todo en verde"
+    if [ ${#SALTADOS[@]} -eq 0 ]; then
+      echo "$FIN · $SHA · todo en verde"
+    else
+      echo "$FIN · $SHA · en verde lo que corrió; SIN CORRER: ${#SALTADOS[@]}"
+      for s in "${SALTADOS[@]}"; do echo "  - $s"; done
+    fi
   else
     echo "ROJO"
     echo "$FIN · $SHA · en rojo: ${#FALLOS[@]}"
