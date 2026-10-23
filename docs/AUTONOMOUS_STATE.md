@@ -632,7 +632,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | H.49 | **DECIDIDA 2026-09-28** — dueño: la voz a texto del tutor (40.6) usa el mismo proveedor que el tutor (Groq, `/audio/transcriptions`) |
 | H.48 | CERRADA (ADR-70): no hace falta; ningún código llama a la API | Dueño |
 | H.47 | ¿Mantener el correo personal del dueño como contacto en la página pública `/evidence` (`EvidenceScreen.tsx:340`)? Por defecto (ADR-47) se deja y se propone un alias tipo `support@whetzy.com` | Dueño |
-| H.50 | Descarga del corpus (`scripts/corpus/`) en el setup script del entorno cloud, para que `corpus/` exista en cada sesión de autoría (ADR-59, `PLAN_CONTENIDO.md` §3) | Dueño |
+| H.50 | **CÓDIGO HECHO** (rama `claude/youthful-allen-i8k7zb-h50`): `scripts/corpus/sesion_nube.sh` descarga y verifica las 15 fuentes que son repo de GitHub; es idempotente y tiene test (`tests/unit/test_corpus_nube.py`). **Quedan fuera 48 sitios web**: `fetch --kind http` baja un fichero, no un sitio, y `verify_license` no encuentra licencia en una web. **Falta del dueño:** pegar `bash scripts/corpus/sesion_nube.sh` en Setup script del entorno (menú del entorno → Edit) | Dueño |
 | H.51 | Firmar ADR-63 (evidencia por fuente) y los valores del prior. Recomendado: 0,10/0,20/0,30; k = 4; puerta de 7 solo con práctica | Dueño |
 | H.52 | Duelos: opt-out de ligas ⇒ no retar ni ser retado; caducidad a 7 días; sin XP; desempate por tiempo de servidor. El copy ya dice «por turnos» | DECIDIDO por delegación (ADR-69 #6, 2026-10-22) |
 | H.53 | `exam_pass_predictor` (sin importadores en `backend/app`): retirarlo a `ml/` (recomendado) o conectarlo tras una bandera | Dueño |

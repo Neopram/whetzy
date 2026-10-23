@@ -63,8 +63,9 @@ reutilizan: se citan y se enlazan.
    python -m scripts.corpus.index --name <n> [--alias <url>]   # solo si la fuente es nueva
    ```
    El contenedor de una sesión en la nube es efímero: hay que descargar el corpus en cada
-   sesión. Para no repetirlo, el dueño puede añadir el paso al setup script del entorno
-   (cola humana).
+   sesión. Para no repetirlo, el dueño pega `bash scripts/corpus/sesion_nube.sh` en el setup
+   script del entorno (cola humana, H.50). Cubre las 15 fuentes que son repo git; las 48 webs
+   no tienen descarga automática todavía.
    **Corte en fragmentos (local, sin agentes, desde el track44):** un script parte cada
    artículo por encabezados `##`/`###` en trozos de 40 a 600 palabras, con
    `{id, repo, file, title, url, heading, text}`. A cada escritor le llega en el prompt solo el
