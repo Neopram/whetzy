@@ -1,5 +1,10 @@
 # Plan — Experiencia avanzada: interfaz y experiencia al nivel de Brilliant y Duolingo (serie 46)
 
+> **Nota del 2026-10-23 (revisión completa de la UI, PR #327).** La línea base del §1 describe `master` del 17 al 20 de
+> octubre y ya no es cierta en varios puntos: existen `frontend/src/widgets/` (tres widgets, 40.2), sonido y
+> vibración (`lib/feedbackFx.ts`), un solo sistema de tokens (46.4) y la regresión visual (`e2e/visual.spec.ts`,
+> 64 capturas). D3 se decidió **encendido** (ADR-67, 46.9). El estado de cada fila lo dice el ledger, no este plan.
+
 > **Normativo-vivo.** Pedido del dueño del 2026-10-17 («plan brutal» de interfaz y experiencia). Lo
 > ejecuta la sesión «Progreso del proyecto y oportunidades de mercado» con el prompt de
 > `docs/PROMPT_UI_AVANZADA.md`, **después** de la serie 45 (`PLAN_CORREO_ALTA.md`) y sin competir
@@ -155,7 +160,7 @@ un ilustrador a partir del brief de la fila 46.8, con la guía enmendada; D3 son
 - **D2 — Mascota o personaje.** Sí o no. Si sí: SVG + Lottie, que ya están en el bundle; **no Rive**
   (dependencia y binarios nuevos, licencia sin verificar). Sin mascota, 46.1 y 46.7 usan el icono de la racha y el check (§6.4).
 - **D3 — Sonido por defecto.** Propuesta: apagado (Duolingo lo lleva encendido; aquí el alumno lo
-  enciende en Perfil).
+  enciende en Perfil). **Decidido al revés: encendido** (ADR-67 D3; hecho en 46.9).
 - **D4 — `@capacitor/haptics`.** Único paquete nuevo del plan; `package.json` es compartido.
 
 ## 5. Lo que este plan no promete
