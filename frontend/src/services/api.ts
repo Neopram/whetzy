@@ -421,6 +421,10 @@ export const auth = {
     return tokens;
   },
 
+  /** Borrado de cuenta (RGPD). Pasa por `request` para llevar el Bearer del
+   *  puente cuando el navegador bloquea las cookies, como el resto de la app. */
+  deleteAccount: () => request<unknown>('/auth/me/account', { method: 'DELETE' }),
+
   twoFactor: {
     status: () => request<{ enabled: boolean; backup_codes_left: number }>('/auth/2fa/status'),
     setup: () =>

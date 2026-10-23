@@ -9,6 +9,7 @@ import { StaggerItem, StaggerList } from '../components/common/Stagger';
 import styles from './StatsScreen.module.css';
 import { TrackIcon } from '../components/common/AppIcon';
 import { Loading } from '../components/common/Loading';
+import { ErrorState } from '../components/common/ErrorState';
 
 // ADR-60: ni la ruta ni la skill se enseñan como % del modelo mientras no
 // esté calibrado. La ruta, por skills dominadas (un hecho); la skill, por banda.
@@ -53,7 +54,9 @@ export function StatsScreen() {
       <section className={styles.section}>
         <h2 className={styles.sectionTitle}>{t('stats.byTrack')}</h2>
         {dash.loading && <Loading label={t('stats.loading')} shape="line" />}
-        {!dash.loading && started.length === 0 && <p className={styles.muted}>{t('stats.noData')}</p>}
+        {/* Revisión de UI del 2026-10-23: un fallo de red salía como «sin datos». */}
+        {dash.error !== null && <ErrorState message={t('common.loadError')} onRetry={dash.reload} />}
+        {!dash.loading && dash.error === null && started.length === 0 && <p className={styles.muted}>{t('stats.noData')}</p>}
         <StaggerList className={styles.list}>
           {started.map((tr) => {
             const name = lang === 'es' ? tr.name_es : tr.name_en;
@@ -88,7 +91,8 @@ export function StatsScreen() {
       <section className={styles.section}>
         <h2 className={styles.sectionTitle}>{t('stats.bySkill')}</h2>
         {skills.loading && <Loading label={t('stats.loading')} shape="line" />}
-        {!skills.loading && attemptedSkills.length === 0 && <p className={styles.muted}>{t('stats.noData')}</p>}
+        {skills.error !== null && <ErrorState message={t('common.loadError')} onRetry={skills.reload} />}
+        {!skills.loading && skills.error === null && attemptedSkills.length === 0 && <p className={styles.muted}>{t('stats.noData')}</p>}
         <StaggerList className={styles.list}>
           {attemptedSkills.slice(0, 12).map((s) => {
             const name = lang === 'es' ? s.name_es : s.name_en;

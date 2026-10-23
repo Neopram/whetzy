@@ -1,6 +1,8 @@
 import { useTranslation } from 'react-i18next'
 import InstructorPanel from '../components/instructor/InstructorPanel'
+import { Button } from '../components/common/Button'
 import { useAppStore } from '../stores/useAppStore'
+import styles from './InstructorScreen.module.css'
 
 export default function InstructorScreen() {
   const { t } = useTranslation()
@@ -11,19 +13,19 @@ export default function InstructorScreen() {
   // por `screen === 'instructor'` (estado persistido, deep link): la guarda va aquí.
   if (!canCreateCourses) {
     return (
-      <div className="page-container instructor-page">
-        <h1>{t('instructor.title')}</h1>
-        <p role="alert">{t('instructor.noAccess')}</p>
-        <button type="button" onClick={() => setScreen('profile')}>
+      <div className={styles.screen}>
+        <h1 className={styles.title}>{t('instructor.title')}</h1>
+        <p className={styles.notice} role="alert">{t('instructor.noAccess')}</p>
+        <Button type="button" variant="secondary" onClick={() => setScreen('profile')}>
           {t('instructor.backToProfile')}
-        </button>
+        </Button>
       </div>
     )
   }
 
   return (
-    <div className="page-container instructor-page">
-      <h1>{t('instructor.title')}</h1>
+    <div className={styles.screen}>
+      <h1 className={styles.title}>{t('instructor.title')}</h1>
       <InstructorPanel />
     </div>
   )

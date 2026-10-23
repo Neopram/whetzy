@@ -17,6 +17,7 @@ import { badgeMoments } from '../lib/homeMoments';
 import { StaggerItem, StaggerList } from '../components/common/Stagger';
 import styles from './ProfileScreen.module.css';
 import { Loading } from '../components/common/Loading';
+import { ErrorState } from '../components/common/ErrorState';
 
 // Los enlaces de compra llevan el aspecto del Button común (serie 34).
 const LINK_PRIMARY = `${btn.btn} ${btn.primary} ${btn.md} ${btn.full}`;
@@ -244,7 +245,9 @@ export function ProfileScreen() {
           <span className={styles.badgeCount}>{earnedIds.size}</span>
         </div>
         {badges.loading && <Loading label={t('profile.loading')} shape="line" />}
-        {!badges.loading && allBadges.length === 0 && <p className={styles.muted}>{t('profile.noBadges')}</p>}
+        {/* Revisión de UI del 2026-10-23: un fallo de red salía como «sin insignias». */}
+        {badges.error !== null && <ErrorState message={t('common.loadError')} onRetry={badges.reload} />}
+        {!badges.loading && badges.error === null && allBadges.length === 0 && <p className={styles.muted}>{t('profile.noBadges')}</p>}
         <StaggerList as="div" className={styles.achievements} data-testid="badges-grid">
           {allBadges.map((b) => {
             const fresh = newBadges.has(b.badge.id) && !reduceMotion;

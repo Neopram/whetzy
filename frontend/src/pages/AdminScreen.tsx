@@ -129,7 +129,10 @@ export function AdminScreen() {
     try {
       setLoading(true);
       setError(null);
-      const res = await fetch(`${apiBase}/admin/revenue/mrr?month=2026-09`, fetchOpts());
+      // El mes en curso (UTC). Antes era `2026-09` fijo: desde octubre el panel
+      // enseñaba un mes viejo sin decirlo (revisión de UI del 2026-10-23).
+      const month = new Date().toISOString().slice(0, 7);
+      const res = await fetch(`${apiBase}/admin/revenue/mrr?month=${month}`, fetchOpts());
       if (!res.ok) throw new Error(t('admin.errors.fetchFailed'));
       const data = await res.json();
       setRevenueData(data);
@@ -155,8 +158,10 @@ export function AdminScreen() {
     }
   };
 
-  useEffect(() => {
-    switch (activeTab) {
+  // Una sola función carga cada pestaña: la usan el cambio de pestaña y el
+  // «Reintentar» del error, que antes era `() => {}` y no hacía nada.
+  const loadTab = (tab: Tab) => {
+    switch (tab) {
       case 'metrics':
         fetchMetrics();
         break;
@@ -185,7 +190,10 @@ export function AdminScreen() {
         setLoading(false);
         break;
     }
-  }, [activeTab]);
+  };
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => loadTab(activeTab), [activeTab]);
 
   const tabs: { id: Tab; label: string }[] = [
     { id: 'metrics', label: t('admin.tabs.metrics') },
@@ -221,7 +229,7 @@ export function AdminScreen() {
 
       <div className={styles.content}>
         {loading && <Loading label={t('admin.loading', 'Cargando datos del panel...')} shape="list" />}
-        {error && <ErrorState message={error} onRetry={() => {}} />}
+        {error && <ErrorState message={error} onRetry={() => loadTab(activeTab)} />}
 
         {activeTab === 'users' && (
           <div className={styles.panel}>

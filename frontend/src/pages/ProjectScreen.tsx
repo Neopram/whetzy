@@ -15,6 +15,7 @@ import {
 import styles from './ProjectScreen.module.css';
 import { GameIcon } from '../components/common/AppIcon';
 import { Loading } from '../components/common/Loading';
+import { ErrorState } from '../components/common/ErrorState';
 
 const MonacoCodeEditor = lazy(
   () => import('../components/quiz/MonacoCodeEditor').then((m) => ({ default: m.MonacoCodeEditor }))
@@ -59,22 +60,28 @@ function ProjectList({ onSelect }: { onSelect: (slug: string) => void }) {
 
       {listing.loading && <Loading label={t('home.loading')} shape="line" />}
 
+      {/* Revisión de UI del 2026-10-23: un fallo de red dejaba la pantalla en blanco. */}
+      {listing.error !== null && <ErrorState message={t('common.loadError')} onRetry={listing.reload} />}
+
       {listing.data && listing.data.length === 0 && (
         <p className={styles.empty}>{t('project.noProjects')}</p>
       )}
 
       {listing.data?.map((p) => (
-        <motion.div
+        // Era un <div> con onClick: con teclado no se podía abrir ningún proyecto.
+        <motion.button
+          type="button"
           key={p.id}
           className={styles.projectCard}
           onClick={() => onSelect(p.slug)}
           whileTap={{ scale: 0.98 }}
         >
-          <div className={styles.projectInfo}>
-            <p className={styles.projectName}>
+          {/* Dentro de un <button> solo vale contenido en línea: <span>, no <p>/<div>. */}
+          <span className={styles.projectInfo}>
+            <span className={styles.projectName}>
               {lang === 'es' ? p.name_es : p.name_en}
-            </p>
-            <p className={styles.projectMeta}>
+            </span>
+            <span className={styles.projectMeta}>
               <span role="img" aria-label={`${p.difficulty}/3`}>
                 {Array.from({ length: Math.min(Math.max(p.difficulty, 1), 3) }, (_, k) => (
                   <GameIcon key={k} name="estrella" size={14} />
@@ -82,12 +89,12 @@ function ProjectList({ onSelect }: { onSelect: (slug: string) => void }) {
               </span>
               {' · '}
               {p.source_license}
-            </p>
-          </div>
+            </span>
+          </span>
           <span className={`${styles.runtimeBadge} ${runtimeClass[p.runtime] ?? ''}`}>
             {p.runtime.toUpperCase()}
           </span>
-        </motion.div>
+        </motion.button>
       ))}
     </div>
   );
@@ -243,6 +250,18 @@ function ProjectRunner({ slug, onBack }: { slug: string; onBack: () => void }) {
           <button className={styles.backBtn} onClick={onBack} aria-label={t('common.back')}><span aria-hidden="true">←</span></button>
         </div>
         <Loading label={t('home.loading')} shape="card" />
+      </div>
+    );
+  }
+
+  // Revisión de UI del 2026-10-23: un fallo de red decía «no encontrado».
+  if (project.error !== null) {
+    return (
+      <div className={styles.screen}>
+        <div className={styles.header}>
+          <button className={styles.backBtn} onClick={onBack} aria-label={t('common.back')}><span aria-hidden="true">←</span></button>
+        </div>
+        <ErrorState message={t('common.loadError')} onRetry={project.reload} />
       </div>
     );
   }
