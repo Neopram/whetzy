@@ -40,7 +40,12 @@ describe('Hoy — la banda no se inventa sin datos', () => {
     render(<HomeScreen />);
     expect(await screen.findByTestId('home-band-loading')).toBeInTheDocument();
     expect(screen.queryByTestId('home-band')).toBeNull();
-    expect(document.body.textContent).not.toContain(i18n.t('bands.insufficient'));
+    // La banda guarda su sitio mientras carga (sin salto al llegar los datos),
+    // pero oculta: ni se ve ni la lee el lector de pantalla.
+    const visibles = screen
+      .queryAllByText(i18n.t('bands.insufficient'))
+      .filter((el) => !el.closest('[aria-hidden="true"]'));
+    expect(visibles).toHaveLength(0);
   });
 
   it('si la petición falla lo dice y deja reintentar, sin banda', async () => {

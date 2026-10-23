@@ -159,12 +159,16 @@ export function HomeScreen() {
           <p className={styles.bandLabel}>{t('home.bandTitle')}</p>
           {/* Revisión de UI del 2026-10-23: sin skills cargadas, `overallBand([])`
               es «Evidencia insuficiente»; mientras cargaban o si fallaban, un
-              fallo de red se leía como un diagnóstico del alumno. */}
-          {skills.loading ? (
-            <div data-testid="home-band-loading">
+              fallo de red se leía como un diagnóstico del alumno. Mientras carga,
+              la banda guarda su sitio oculta (sin ella, al llegar los datos
+              empujaba «Siguiente paso»: CLS 0,043 en esqueletos.spec) y el
+              esqueleto va encima. */}
+          {skills.loading && (
+            <div className={styles.bandLoading} data-testid="home-band-loading">
               <Loading label={t('home.loading')} shape="line" />
             </div>
-          ) : skills.error !== null ? (
+          )}
+          {skills.error !== null ? (
             <>
               <p className={styles.threshold} role="alert">{t('home.bandError')}</p>
               <motion.button className={styles.btnStudy} onClick={skills.reload} whileTap={{ scale: 0.98 }}>
@@ -172,8 +176,8 @@ export function HomeScreen() {
               </motion.button>
             </>
           ) : (
-            <>
-              <p className={`${styles.bandName} ${styles[BAND_CLASS[band]]}`} data-testid="home-band">
+            <div className={skills.loading ? styles.bandPending : styles.bandBody} aria-hidden={skills.loading || undefined}>
+              <p className={`${styles.bandName} ${styles[BAND_CLASS[band]]}`} data-testid={skills.loading ? undefined : 'home-band'}>
                 {t(`bands.${band}`)}
               </p>
               <p className={styles.gaugeMeta}>
@@ -191,7 +195,7 @@ export function HomeScreen() {
                     insufficient: bandCount('insufficient'),
                   })}
               </p>
-            </>
+            </div>
           )}
         </motion.section>
 

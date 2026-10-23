@@ -28,6 +28,7 @@
 .topGrid { display: grid; gap: var(--le-space-md); }
 
 .readiness {
+  position: relative;
   display: grid;
   justify-items: center;
   gap: var(--le-space-sm);
@@ -35,6 +36,26 @@
   border: 1px solid var(--le-border);
   border-radius: var(--le-radius-lg);
   background: var(--le-surface);
+}
+
+/* La banda va en un envoltorio sin caja propia: sus párrafos siguen en la
+   rejilla de .readiness, con el mismo hueco que antes. Mientras cargan las
+   skills ocupa su sitio oculta y el esqueleto se pinta encima (2026-10-23). */
+.bandBody,
+.bandPending {
+  display: contents;
+}
+
+.bandPending {
+  visibility: hidden;
+}
+
+.bandLoading {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: var(--le-space-xl) var(--le-space-lg);
 }
 
 .gaugeMeta {
