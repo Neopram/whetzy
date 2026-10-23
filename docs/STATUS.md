@@ -2983,3 +2983,15 @@ Rama `claude/youthful-allen-i8k7zb-auditoria-tracks`, desde `origin/master` (no 
 - Regresión visual de `/auth`: las 8 capturas de Linux no coinciden en este entorno, ni con el texto viejo (3-7 % de píxeles; Chromium 1194 frente al 1248 del proyecto). No se regeneran aquí; toca regenerarlas en el nivel 2 local con el Chromium del proyecto (`npx playwright test -c playwright.visual.config.ts -u`).
 - Ledger: H.13 y H.48 cerradas; H.20, H.25, H.27, H.35 y H.54 decididas; H.55 sigue en pausa. Falta el nombre legal del dueño para los Términos.
 
+
+## 2026-10-23 — Revisión completa de la UI y PR de fallos (ADR-71)
+
+- Revisión de `master` (`9b27593`): las 33 pantallas, el mapa de rutas, los planes de UI y las filas del ledger.
+  Los hallazgos de los lectores se comprobaron uno a uno en el código antes de usarlos.
+- PR de fallos: borrar cuenta con 2FA, la banda de Hoy sin datos, errores de red pintados como «vacío» (Estadísticas,
+  insignias, Proyectos, Duelos), foco del modal, «Reintentar» y mes del MRR en el back-office, estilos de Instructor
+  y tarjetas de proyecto que no se abrían con teclado. Cada uno con su test en rojo antes del arreglo.
+- ADR-71, por delegación del dueño: umbral de Rutas en palabras, fuera la barra de theta de la prueba de nivel,
+  el «75 %» de la landing se queda atado a su constante, y las capturas aprobadas viven en el repo (D-28).
+- Verificado en local: `tsc -b`, `oxlint`, vitest 179 ficheros y 1299 tests, paridad i18n y `check_docs.py`.
+- Siguiente: PR de documentación (ledger, `MAPA_PRODUCTO`, threat model, `PLAN_UI_AVANZADA`, `SEGMENTOS`, diseño).
