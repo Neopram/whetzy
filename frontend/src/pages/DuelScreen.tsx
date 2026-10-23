@@ -21,6 +21,7 @@ import { showToast } from '../components/common/Toast';
 import { RankingTabs } from '../components/layout/RankingTabs';
 import styles from './DuelScreen.module.css';
 import { Loading } from '../components/common/Loading';
+import { ErrorState } from '../components/common/ErrorState';
 
 type View = 'list' | 'challenge-modal' | 'playing' | 'result';
 
@@ -32,6 +33,8 @@ export function DuelScreen() {
   const [view, setView] = useState<View>('list');
   const [myDuels, setMyDuels] = useState<DuelSummary[]>([]);
   const [loading, setLoading] = useState(true);
+  // Revisión de UI del 2026-10-23: un fallo de red salía como «no tienes duelos».
+  const [loadFailed, setLoadFailed] = useState(false);
   // Nombres de habilidad: el duelo solo trae `skill_id`, y la lista enseñaba
   // «sk010102» tal cual (auditoría).
   const skills = useApi(() => progressApi.skills(), []);
@@ -67,8 +70,9 @@ export function DuelScreen() {
     try {
       const data = await duelsApi.my();
       setMyDuels(data);
+      setLoadFailed(false);
     } catch {
-      /* silently skip */
+      setLoadFailed(true);
     } finally {
       setLoading(false);
     }
@@ -335,6 +339,11 @@ export function DuelScreen() {
 
       {loading ? (
         <Loading label={t('duel.loading')} shape="list" />
+      ) : loadFailed ? (
+        <ErrorState
+          message={t('common.loadError')}
+          onRetry={() => { setLoading(true); void fetchDuels(); }}
+        />
       ) : myDuels.length === 0 ? (
         <p className={styles.empty}>{t('duel.noDuels')}</p>
       ) : (

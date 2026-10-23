@@ -5,6 +5,26 @@ Versioning: [Semantic Versioning](https://semver.org/)
 
 ---
 
+## [Unreleased] — 2026-10-23 (fallos de UI de la revisión completa, ADR-71)
+
+**ES**
+
+- Borrar cuenta funciona con verificación en dos pasos: pide el código antes de confirmar; los errores del servidor ya no salen crudos y al terminar hay un enlace de salida.
+- Hoy no dice «Evidencia insuficiente» mientras carga ni si falla la red; Estadísticas, Perfil (insignias), Proyectos y Duelos distinguen un fallo de red de «no hay nada» y dejan reintentar.
+- El modal no roba el foco al escribir, se llama como su título y retiene el Tab.
+- Back-office: «Reintentar» recarga la pestaña y el MRR es del mes en curso (antes, 2026-09 fijo).
+- Instructor tiene estilos propios; las tarjetas de proyecto se abren con teclado.
+- ADR-60: la nota del umbral en Rutas va en palabras y la prueba de nivel ya no dibuja una barra con la theta del modelo; el «75 %» de la landing se queda atado a su constante.
+
+**EN**
+
+- Delete account works with two-step verification: it asks for the code before confirming; server errors are no longer shown raw, and there is a way out at the end.
+- Today no longer says "Insufficient evidence" while loading or on a network failure; Stats, Profile (badges), Projects and Duels tell a network failure apart from "nothing here" and offer a retry.
+- The modal keeps focus while typing, is named after its title and traps Tab.
+- Back-office: "Try again" reloads the tab and MRR is for the current month (was hard-coded to 2026-09).
+- Instructor has its own styles; project cards open with the keyboard.
+- ADR-60: the mastery-threshold note in Tracks is in words and the placement test no longer draws a bar from the model's theta; the landing "75 %" stays, tied to its constant.
+
 ## [Unreleased] — 2026-10-22 (decisiones del dueño, ADR-70)
 
 **ES**

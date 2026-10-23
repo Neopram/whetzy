@@ -77,6 +77,9 @@ describe('ADR-60: ninguna pantalla enseña el dominio del modelo como %', () => 
       'tracks.moduleMastered',
       'placement.abilityResult',
       'placement.lowReliability',
+      // ADR-71 (2026-10-23): el umbral de dominio tampoco se dice como «95 % de
+      // probabilidad de conocimiento (BKT)»; es una cifra del modelo.
+      'tracks.thresholdNote',
     ];
     for (const lang of [es, en]) {
       for (const k of keys) {
@@ -85,6 +88,22 @@ describe('ADR-60: ninguna pantalla enseña el dominio del modelo como %', () => 
         expect(v, k).not.toMatch(/\{\{(pct|mastery)\}\}|%/);
       }
     }
+  });
+
+  it('la prueba de nivel no dibuja una barra con la theta del modelo (ADR-71)', () => {
+    // El ancho de la barra «Nivel estimado» salía de theta: un % del modelo en
+    // forma de barra. El resultado ya se dice en palabras (`abilityResult`).
+    const src = readFileSync(join(SRC, 'pages', 'PlacementScreen.tsx'), 'utf8');
+    expect(src).not.toMatch(/thetaAPorcentaje|abilityFill/);
+  });
+
+  it('el «75 %» de la landing es el objetivo del selector, no una estimación (ADR-71)', () => {
+    // Se permite porque es un parámetro fijo del diseño, no una medida del
+    // alumno; pero tiene que seguir siendo verdad.
+    const quiz = readFileSync(join(SRC, '..', '..', 'backend', 'app', 'services', 'quiz.py'), 'utf8');
+    const landing = readFileSync(join(SRC, 'pages', 'LandingScreen.tsx'), 'utf8');
+    expect(quiz).toMatch(/^TARGET_SUCCESS_PROBABILITY = 0\.75$/m);
+    expect(landing).toContain('<dd>75 %</dd>');
   });
 
   it('la prueba de nivel no promete Python en una ruta que no lo es', () => {

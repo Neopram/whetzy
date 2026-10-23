@@ -1833,3 +1833,15 @@ decisión de esta tabla reabre una ADR del dueño.
 
 **Sigue en manos del dueño.** Su nombre legal (T1); dar de alta los precios anual y regional en Paddle; rotar la clave de Groq (H.12); las tiendas (H.2, H.3, H.5, H.14); la cohorte beta (H.10); y las acciones con cuentas personales (H.23, 26.7, 27.5, 27.6, H.38–H.40, H.28).
 
+
+## ADR-71 — Decisiones de UI del 2026-10-23, tomadas por delegación del dueño (DELEGACIÓN)
+
+**Origen.** Revisión completa de la app y de los documentos del 2026-10-23. El dueño pidió el PR de fallos y el de documentación, y delegó todas las decisiones en la sesión («toma todas las decisiones tú como dueño»). Cada una lleva su guarda.
+
+| # | Asunto | Decisión | Guarda |
+|---|---|---|---|
+| 1 | ADR-60, landing | **El «75 %» de «acierto objetivo por pregunta» se queda.** No es una estimación del alumno: es el objetivo fijo del selector (`TARGET_SUCCESS_PROBABILITY = 0.75`, `backend/app/services/quiz.py`). Si el parámetro cambia, la cifra cambia con él. | `adr60.sinPorcentajeDelModelo.test.ts` ata la cifra a la constante |
+| 2 | ADR-60, Rutas | **La nota del umbral no dice «95 % de probabilidad de conocimiento (BKT)».** Dice en palabras que una habilidad cuenta como dominada cuando el motor tiene evidencia fuerte. | `tracks.thresholdNote` entra en la lista de claves sin `%` |
+| 3 | ADR-60, prueba de nivel | **Se quita la barra «Nivel estimado»** que se llenaba con theta durante la prueba: era un % del modelo dibujado. El resultado ya se dice en palabras (`placement.abilityResult`). | La misma guarda: `PlacementScreen.tsx` sin `thetaAPorcentaje` |
+| 4 | D-28 (34.8) | **Las capturas aprobadas viven en el repo:** las 64 PNG de `frontend/e2e/__screenshots__/linux/` que usa `playwright.visual.config.ts`. Solo se regeneran en un PR que lo diga, con el antes y el después. | 34.8 pasa a esperar solo axe por ruta |
+| 5 | Documentos de diseño | Donde un documento de `docs/design/`, `SEGMENTOS.md` o un plan choca con un ADR posterior o con el código verificado, **manda el ADR más reciente**; el documento se corrige con una nota de fecha, sin reescribir su historia. | `check_docs.py` |

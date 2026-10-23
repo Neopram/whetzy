@@ -157,24 +157,42 @@ export function HomeScreen() {
       <div className={styles.topGrid}>
         <motion.section className={styles.readiness} variants={listItemVariants} aria-label={t('home.bandTitle')}>
           <p className={styles.bandLabel}>{t('home.bandTitle')}</p>
-          <p className={`${styles.bandName} ${styles[BAND_CLASS[band]]}`} data-testid="home-band">
-            {t(`bands.${band}`)}
-          </p>
-          <p className={styles.gaugeMeta}>
-            <span className={styles.readyDot} aria-hidden="true" />
-            {t('bands.evidence', { answers, correct })}
-          </p>
-          <p className={styles.threshold}>
-            {band === 'insufficient'
-              // Aquí se suman las respuestas de todas las skills: «menos de 7
-              // respuestas» contradecía un total de 40. Lo que falta es por skill.
-              ? t('bands.why.insufficientPerSkill', { n: MIN_EVIDENCE_ANSWERS })
-              : t('home.bandCounts', {
-                strong: bandCount('strong'),
-                developing: bandCount('developing'),
-                insufficient: bandCount('insufficient'),
-              })}
-          </p>
+          {/* Revisión de UI del 2026-10-23: sin skills cargadas, `overallBand([])`
+              es «Evidencia insuficiente»; mientras cargaban o si fallaban, un
+              fallo de red se leía como un diagnóstico del alumno. */}
+          {skills.loading ? (
+            <div data-testid="home-band-loading">
+              <Loading label={t('home.loading')} shape="line" />
+            </div>
+          ) : skills.error !== null ? (
+            <>
+              <p className={styles.threshold} role="alert">{t('home.bandError')}</p>
+              <motion.button className={styles.btnStudy} onClick={skills.reload} whileTap={{ scale: 0.98 }}>
+                {t('home.retryBand')}
+              </motion.button>
+            </>
+          ) : (
+            <>
+              <p className={`${styles.bandName} ${styles[BAND_CLASS[band]]}`} data-testid="home-band">
+                {t(`bands.${band}`)}
+              </p>
+              <p className={styles.gaugeMeta}>
+                <span className={styles.readyDot} aria-hidden="true" />
+                {t('bands.evidence', { answers, correct })}
+              </p>
+              <p className={styles.threshold}>
+                {band === 'insufficient'
+                  // Aquí se suman las respuestas de todas las skills: «menos de 7
+                  // respuestas» contradecía un total de 40. Lo que falta es por skill.
+                  ? t('bands.why.insufficientPerSkill', { n: MIN_EVIDENCE_ANSWERS })
+                  : t('home.bandCounts', {
+                    strong: bandCount('strong'),
+                    developing: bandCount('developing'),
+                    insufficient: bandCount('insufficient'),
+                  })}
+              </p>
+            </>
+          )}
         </motion.section>
 
         <motion.section className={styles.next} variants={listItemVariants} aria-label={t('home.nextStep')}>
