@@ -50,7 +50,10 @@ Series 22.2 Status: **Security headers completed**, CORS configuration fixed, te
 
 #### Threat: Tokens in localStorage (XSS Vulnerable)
 - **Risk**: CRITICAL
-- **Status**: IMPLEMENTED (22.15): tokens in HttpOnly cookies, never in localStorage
+- **Status**: IMPLEMENTED (22.15): tokens in HttpOnly cookies, never in localStorage. Amended 2026-10-23: when the
+  browser blocks the cookie (Safari/iPhone, 43.1, PR #226), `bridgeIfCookiesBlocked` keeps both tokens in
+  `sessionStorage` for the tab and sends them as `Authorization: Bearer`. Accepted cost (owner): an XSS could read
+  them while that tab is open
 - **Code**: `backend/app/core/cookies.py` (`set_auth_cookies`); `frontend/src/services/api.ts` only removes the legacy keys
 
 #### Threat: Admin Key in Plaintext Header

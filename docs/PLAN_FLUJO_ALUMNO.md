@@ -59,7 +59,7 @@
 
 | # | Decisión |
 |---|---|
-| D1 | Sesión en iPhone. Definitivo: API en `api.whetzy.com` + `COOKIE_DOMAIN` (dueño). Puente inmediato: el frontend guarda el **access token en memoria** y lo manda como `Authorization: Bearer` (el backend ya lo acepta: `security.py:174-181` [V]); el refresh sigue por cookie. En Safari sin DNS, la sesión dura lo que la pestaña. |
+| D1 | Sesión en iPhone. Definitivo: API en `api.whetzy.com` + `COOKIE_DOMAIN` (dueño). Puente inmediato: el frontend guarda el **access token en memoria** (enmendado por el dueño: en `sessionStorage`, ver la nota de arriba y PR #226) y lo manda como `Authorization: Bearer` (el backend ya lo acepta: `security.py:174-181` [V]); el refresh sigue por cookie. En Safari sin DNS, la sesión dura lo que la pestaña. |
 | D2 | Onboarding: registro → objetivo (aprender / certificarme / ambos) → **elegir track de aprendizaje** (rejilla de los 24 tracks agrupados) → certificación opcional relacionada → experiencia → **prueba de nivel del track** (o «empiezo de cero») → resultado → **Hoy**. Se quita la pregunta de idioma (ya está en el registro) y la de horas pasa al perfil. |
 | D3 | Prueba de nivel de **20 preguntas**: 15 estratificadas (5 básicas, 5 intermedias y 5 avanzadas, repartidas por módulos) + 5 adaptativas en la banda frontera. Banda de una pregunta: su `difficulty_tier` si lo tiene; si no, el tercio del módulo dentro del track (16 tracks no tienen tier [V]). θ con la EAP de #219. |
 | D4 | Siembra tras la prueba, por módulo y no por pregunta suelta. Un módulo con ≥ 70 % deja sus skills en 0,6 (practicables, no «dominadas»); el resto, con encogimiento hacia 0,1. Nunca baja una skill con historial (D-18). La prueba **no** marca lecciones como vistas. |

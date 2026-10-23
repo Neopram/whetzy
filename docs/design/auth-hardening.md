@@ -443,7 +443,8 @@ def log_audit_event(
 ### Phase 3: Full Enforcement (Week 4)
 - Tighten lockout thresholds (5 failed attempts → exponential)
 - Enforce max 5 sessions per user
-- Require 2FA for admin accounts — **no implementado** (2026-10-22, H.58): el código no exige 2FA a las cuentas admin
+- Require 2FA for admin accounts — **en parte** (revisión 2026-10-23): las rutas de usuarios del back-office exigen
+  2FA al dueño (`require_owner_2fa`, `admin_users.py`); el resto del panel (`admin.py`, `require_owner`) no (H.58)
 - Enable session/device tracking UI
 - Measure security improvements: lockout prevents N attacks, replay detection works
 

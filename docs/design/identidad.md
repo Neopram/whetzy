@@ -2,7 +2,8 @@
 
 Documenta lo que el código tiene HOY, no un rediseño nuevo. Fuente de verdad:
 `frontend/src/styles/design-tokens.css` (namespace `--le-*`, canónico desde la
-serie 34 — paleta "Obsidian", ADR-47). No narrativa RPG, no plantilla genérica.
+serie 34 — paleta "Obsidian"; ningún ADR la define, la fija la serie 34 del ledger: antes se citaba ADR-47, que
+trata de la cola humana). No narrativa RPG, no plantilla genérica.
 
 ## Un solo fichero de tokens
 

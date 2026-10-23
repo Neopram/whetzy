@@ -37,6 +37,9 @@
 - NO serif (developer-first, not math-first)
 
 ### Espaciado (8px base):
+> **Sustituido** (46.4, 2026-10-21): estos tokens eran de `theme/tokens.css`, ya borrado. Hoy mandan los `--le-*`
+> de `frontend/src/styles/design-tokens.css` (`--le-space-*`, `--le-radius-*`, `--le-transition-base: 200ms`);
+> ver `identidad.md`.
 - --space-4: 2rem [DEFAULT PADDING]
 - --radius-md: 8px [DEFAULT]
 - --transition-normal: 300ms cubic-bezier(0.4, 0, 0.2, 1)

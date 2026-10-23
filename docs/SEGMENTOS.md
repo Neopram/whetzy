@@ -3,6 +3,12 @@
 > **Documento vivo nº 13.** Define los 6 segmentos con sus personas, pain points,
 > propuesta de valor, flujo en la app, métricas de éxito y **créditos/referidos por
 > segmento** (`ECONOMIA.md`). Última actualización: 2026-09-30 (ADR-28, ADR-38).
+>
+> **Nota del 2026-10-23 (revisión completa de la UI, PR #327).** Los flujos de este documento son anteriores a ADR-65
+> (`PLAN_FLUJO_ALUMNO.md`), que manda donde chocan: el registro va primero; el onboarding pregunta objetivo,
+> ruta, certificación y experiencia (las horas pasan a Perfil); la prueba de nivel tiene **20** preguntas fijas,
+> no 20-50; y saltar módulos se hace por siembra por módulo y prueba para saltarlo, no por un «skip» de BKT. El
+> panel de empresa del S5 (importar CSV, panel de equipo) no existe (ADR-69, H.56).
 
 ---
 
