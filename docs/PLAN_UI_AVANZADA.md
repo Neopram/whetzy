@@ -349,24 +349,28 @@ Rigen las mismas líneas rojas de §6.0. El orden de cada fila es siempre el mis
 
 ### 7.5 Las 27 pantallas sin movimiento propio (46.15, un PR por bloque)
 
-| Bloque | Pantalla | Qué se mueve y con qué dato | A propósito quieto |
-|---|---|---|---|
-| A. Entrada | Auth | error de campo con sacudida de nivel 0 y sin sonido; el botón pasa a «enviando» sin cambiar de tamaño | — |
-| | Onboarding | barra de pasos que se llena; la tarjeta elegida se marca con un check dibujado; pasos con eje compartido | — |
-| | Prueba de nivel | puntos de progreso por pregunta respondida; la banda estimada aparece con `AnimatePresence`, sin % (ADR-60) | — |
-| | Verificar, Restablecer, Olvidé | check dibujado cuando el servidor confirma | — |
-| B. Aprender | Lección | las secciones aparecen al entrar en pantalla (IntersectionObserver, una vez); «Copiado» en los bloques de código | — |
-| | Tracks | el nodo que subió de banda desde la última visita late con la foto de `homeMoments` | — |
-| | Playground, Proyecto | botón «Ejecutar» con estado en curso; los resultados de los tests entran escalonados; todos en verde → `emit('correct')` | — |
-| C. Competir | Duelo | barra del rival en vivo; anillo de cuenta atrás; resultado del servidor como nivel 3 (`session_end`) | — |
-| | Simulacro, Examen de ruta | navegador de preguntas con puntos; el anillo del tiempo late una vez al entrar en los 5 últimos minutos, sin sonido; el resultado del servidor se cuenta como en el resumen, con la banda de aprobado o no | — |
-| D. Progreso | Perfil | insignias escalonadas; la insignia nueva desde la última foto brilla una vez | — |
-| | Stats | las barras crecen desde 0 al entrar; cifras con `CountUp` | — |
-| | Cartera | el saldo cuenta al cambiar; movimientos escalonados | — |
-| | Informe de dominio, Perfil público | bandas escalonadas | — |
-| | Certificado público | el sello se dibuja solo si el servidor lo da por válido | — |
-| E. Comprar | Checkout, Marketplace | la tarjeta del plan elegida se eleva; las tarjetas del catálogo entran escalonadas; el éxito solo con confirmación del servidor | — |
-| F. Leer | Legal, Evidencia, Estado, Borrar cuenta, Admin, Instructor | — | **quietas**: se leen, se deciden o son internas. Solo esqueletos (46.14) |
+**Rehecha contra el código el 2026-10-24** (§7.7). Cada promesa de la tabla original se buscó en `frontend/src`.
+Columna «Evidencia»: el test unitario (`src/test/…`) y el e2e (`e2e/…`) que lo afirman; «sin test propio» cuando
+está en el código y nada lo vigila. Lo que no se hace lleva el motivo; nada se da por hecho sin haberlo visto.
+
+| Bloque | Pantalla | Hecho (y con qué dato) | Evidencia | No se hace, y por qué |
+|---|---|---|---|---|
+| A. Entrada | Auth | el error del formulario tiembla (nivel 0, sin sonido) y se anuncia; con movimiento reducido no tiembla | `entrada46.test.tsx`, `entrada.spec.ts` · `e840523` | — («enviando» sin cambiar de tamaño: el botón es de ancho completo; sin test propio) |
+| | Onboarding | cada paso entra desplazándose; la barra de pasos se llena (transición de `width` en `onboarding.css`) | `entrada46.test.tsx`, `entrada.spec.ts`; la barra, sin test propio | check dibujado en la tarjeta elegida: el toque pasa de paso al instante y el check no llegaría a verse |
+| | Prueba de nivel | un punto por pregunta respondida; el nivel, en palabras y sin % (ADR-60), aparece con efecto | `entrada46.test.tsx`, `entrada.spec.ts` · `eb74c7d` | — |
+| | Verificar, Restablecer, Olvidé | check dibujado solo cuando el servidor confirma; con movimiento reducido, estático | `entrada46.test.tsx`, `resetPasswordPage.i18n.test.tsx`, `entrada.spec.ts` · Restablecer en `e7abd77` | — |
+| B. Aprender | Lección | «Copiado» al copiar el ejemplo; cada paso de la lección entra con desplazamiento (`motion.section key={step}`) | `aprender46.test.tsx`, `aprender.spec.ts` · `8ebc7b8`; el paso, sin test propio | IntersectionObserver por sección: la lección va por pasos, una tarjeta cada vez, y no hay página larga que recorrer |
+| | Tracks | la skill que subió de banda desde la última visita late una vez, con su propia foto | `aprender46.test.tsx` (3 casos), `aprender.spec.ts` | — |
+| | Playground, Proyecto | «Ejecutar» con estado en curso (Playground); paso aceptado por el servidor → `emit('correct')` y el aviso entra (Proyecto) | `aprender46.test.tsx`, `aprender.spec.ts` | resultados de tests escalonados: el Proyecto recibe un solo veredicto (pasa / no pasa) y el Playground no tiene tests |
+| C. Competir | Duelo | el desenlace del servidor entra y cierra la sesión una vez; sin resultado del rival, nada | `competir46.test.tsx`, `competir.spec.ts` · `b1fcd2e` | barra del rival en vivo y anillo de cuenta atrás: los duelos son asíncronos (partida grabada, sin reloj) |
+| | Simulacro, Examen de ruta | el reloj late al entrar en los 5 últimos minutos, sin sonido; el veredicto entra y cierra la sesión una vez | `competir46.test.tsx`, `competir.spec.ts` | navegador de preguntas con puntos: no existe navegador; añadirlo es una función (saltar entre preguntas), no movimiento → propuesta aparte |
+| D. Progreso | Perfil | insignias escalonadas; la nueva desde la última foto brilla una vez | `progreso46.test.tsx`, `progreso.spec.ts` · `b663309` | — |
+| | Stats | las barras crecen desde 0; listas escalonadas; las cifras del resumen cuentan al llegar los datos (2026-10-24) | `progreso46.test.tsx` («Cifras que cuentan»), `progreso.spec.ts` | — |
+| | Cartera | listas escalonadas; el saldo cuenta cuando cambia (canjear, comprar), no al entrar (2026-10-24) | `progreso46.test.tsx` («Cifras que cuentan») | — |
+| | Informe de dominio, Perfil público | rutas, certificados y proyectos escalonados | `progreso46.test.tsx` | — |
+| | Certificado público | el sello se dibuja solo si el servidor lo da por válido; revocado, sin sello | `progreso46.test.tsx`, `progreso.spec.ts` | — |
+| E. Comprar | Checkout, Marketplace | éxito (check dibujado) solo cuando el servidor confirma; las tarjetas del catálogo entran escalonadas | `comprar46.test.tsx`, `comprar.spec.ts` · `b6ba7e4` | tarjeta del plan que se eleva: el plan llega elegido en la URL y el checkout enseña una sola tarjeta |
+| F. Leer | Legal, Evidencia, Estado, Borrar cuenta, Admin, Instructor | **quietas a propósito**: se leen, se deciden o son internas | esqueletos de 46.14 (`esqueletos.spec.ts`, `esqueletos-pantallas.spec.ts`) | — |
 
 ### 7.6 Orden sin excepciones (46.16)
 

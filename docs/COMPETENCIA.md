@@ -189,6 +189,27 @@ o antibot a la descarga directa y no se sortearon.
 - Tutorials Dojo anuncia «95 to 98% passing rate» basado en «feedback»: marketing sin
   denominador. Nadie de la muestra publica una tasa de aprobado auditada.
 
+### A.2e Captura del 2026-10-24: Brilliant, Duolingo y Whetzy (46.6)
+
+Playwright/Chromium a través del proxy de la sesión, páginas públicas, sin cuenta ni login,
+a 390×844 y 1440×900. Imágenes en `docs/competencia-screenshots/2026-10-24/` (gitignoreada,
+como §A.2c; entregadas al dueño). Hora UTC de cada carga, la que imprimió el script.
+
+| Página | URL | Hora (UTC) | HTTP | Lo que se ve en la primera pantalla a 390 px |
+|---|---|---|---|---|
+| Duolingo, portada | `https://www.duolingo.com/` | 15:22:12 | 200 | logo, ilustración con la mascota y personajes, un titular («¡La forma más divertida de aprender idiomas, ajedrez y más!»), dos botones: «Empieza ahora» y «Ya tengo una cuenta» |
+| Brilliant, portada | `https://brilliant.org/` | 15:22:28 | 200 | **vista previa del producto arriba del todo** (puzle de código por bloques: `while`, `move`, `collect`), titular «Your personal tutor for math and coding», sellos «Editors' Choice» y «Featured App», dos botones (alumno / padre o docente), aviso de cookies |
+| Brilliant, cursos | `https://brilliant.org/courses/` | 15:22:44 | 200 | pestañas por materia con icono, ruta de cursos con ilustración propia por curso y etiqueta de curso escolar |
+| Whetzy, landing | `https://whetzy.com/landing` | 15:22:59 | 200 | cifras («35 rutas · 12.037 preguntas · ES / EN»), titular, un párrafo que explica el motor (BKT + FSRS + Elo), dos botones; **ninguna imagen del producto** en la primera pantalla |
+
+**Lo que esto no es:** el interior de una lección. Duolingo y Brilliant piden cuenta para
+entrar a una, y esta captura no crea cuentas. Comparar la experiencia de aprendizaje por dentro
+sigue sin evidencia (40.13 abierta en ese punto).
+
+**Lo que sí enseña:** los dos rivales abren con el producto o su personaje a la vista; Whetzy
+abre con texto. Propuesta para el dueño, no decisión: una vista previa real (una pregunta con su
+feedback, o el mapa de bandas de Hoy) arriba de la landing.
+
 ### A.3 La lógica de negocio del mercado, y dónde encaja Whetzy
 
 **Cinco modelos, cinco anclas de precio.**
