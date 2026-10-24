@@ -35,6 +35,9 @@ for (const width of [390, 1280]) {
 
     const sent: { url: string; body: unknown }[] = [];
     const json = (route: Route, body: unknown) => route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(body) });
+    // La pestaña que abre por defecto (Métricas) también es del dueño: sin
+    // simularla, el 403 real pinta el aviso «solo para el dueño» (34.8).
+    await page.route('**/api/v1/admin/metrics/**', (r) => json(r, { dau: 1, wau: 2, mau: 3, total_users: 4, retention_d1: 0, retention_d7: 0 }));
     await page.route('**/api/v1/admin/users?**', (r) => json(r, {
       items: [{ id: ANA.id, username: 'anabanana', email_masked: 'fe***@gmail.com', created_at: ANA.account.created_at, status: 'active' }],
       page: 1, page_size: 20, total: 1,
@@ -72,17 +75,17 @@ for (const width of [390, 1280]) {
   });
 }
 
-test('un alumno no ve «Admin» en su perfil y el backend le niega la búsqueda', async ({ page }) => {
+test('un alumno no ve «Admin» en su perfil y el backend le niega el panel', async ({ page }) => {
   await registerUser(page, { username: uniqueUsername('e2e_alu_'), displayName: 'Alumno' });
   await page.getByRole('button', { name: 'Yo', exact: true }).click();
   await expect(page.getByRole('button', { name: /Panel de administración|Admin/ })).toHaveCount(0);
 
-  // Aunque escriba la URL a mano, el servidor dice que no (sin simular nada).
+  // Aunque escriba la URL a mano, el servidor dice que no (sin simular nada) y
+  // la pantalla lo dice en vez de ofrecer pestañas y «Reintentar» (34.8).
+  const metricas = page.waitForResponse((r) => r.url().includes('/api/v1/admin/metrics/'));
   await page.goto('/admin');
-  await page.getByRole('button', { name: 'Usuarios', exact: true }).click();
-  await page.getByLabel('Buscar por email, usuario o id').fill('fede');
-  const respuesta = page.waitForResponse((r) => r.url().includes('/api/v1/admin/users?'));
-  await page.getByRole('button', { name: 'Buscar', exact: true }).click();
-  expect((await respuesta).status()).toBe(403);
-  await expect(page.getByRole('alert')).toBeVisible();
+  expect((await metricas).status()).toBe(403);
+  await expect(page.getByText('Este panel es solo para la cuenta del dueño.')).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Usuarios', exact: true })).toHaveCount(0);
+
 });
