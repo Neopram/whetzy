@@ -41,7 +41,7 @@
 
 | Serie | Nombre | DONE/Total | % | Abiertas |
 |---|---|---|---|---|
-| 46 | Experiencia avanzada | 19/20 | 95 % | 46.15 |
+| 46 | Experiencia avanzada | 20/20 | 100 % | — |
 | 43 | Flujo del alumno listo para pruebas | 7/8 | 88 % | 43.6 |
 | 42 | Ultracode: código tras la sincronización | 7/13 | 54 % | 42.1, 42.3, 42.7, 42.8, 42.10, 42.13 |
 | 41 | Documentación al día con el código | 5/6 | 83 % | 41.3 |
@@ -595,7 +595,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 46.12 | **1** | Home: contadores y banda con `AnimatePresence` | DONE — #291, §7 10-21 | plan §7.3 |
 | 46.13 | **2** | Liga y Preparación escalonadas | DONE — #292, §7 10-21 | plan §7.3 |
 | 46.14 | **1** | Transiciones de ruta y esqueletos de carga | DONE — verificador 2026-10-24: `esqueletos-pantallas.spec.ts` (`307e306`), mutado → rojo | e2e de esqueletos fuera de Stats |
-| 46.15 | **2** | Movimiento en las 27 pantallas sin él | DOING — #295–#299; falta tabla §7.5 y check en Restablecer | plan §7.5 |
+| 46.15 | **2** | Movimiento en las 27 pantallas sin él | DONE — verificador 2026-10-24 (4.ª vuelta): §7.5 rehecha contra el código, con CountUp y checkout nuevos (`928a069`) | plan §7.5 |
 | 46.16 | **2** | Tokens de movimiento y guarda | DONE — #294, §7 10-21 | plan §7.6 |
 
 ## 3. Cola HUMAN-BLOCKED
