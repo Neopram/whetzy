@@ -5,6 +5,26 @@ Versioning: [Semantic Versioning](https://semver.org/)
 
 ---
 
+## [Unreleased] — 2026-10-24 (series 34 y 46: accesibilidad en cada ruta, esqueletos, cifras que cuentan)
+
+**ES**
+
+- axe en cada ruta y pantalla, en español e inglés y en tema oscuro y claro. Arreglado lo que encontró: el botón común quedaba sin nombre mientras cargaba (Entrar, Olvidé/Restablecer, Borrar cuenta), contrastes de Evidencia y del tema claro (insignia naranja, pestaña activa, «Reintentar»), y Restablecer, Verificar correo y el perfil público inexistente no tenían encabezado.
+- El panel de administración, sin permiso, dice que es solo del dueño en vez de «no se han podido cargar los datos».
+- Liga: ▲ y ▼ dicen «zona de ascenso» y «zona de descenso»; la barra inferior se nombra en el idioma de la app; las pestañas de entrada dicen cuál está activa.
+- Perfil, Liga, Duelos y Cartera enseñan su esqueleto al cargar, sin saltos. La Cartera ya no pinta «0 créditos» si falla la red, y pedir el código de invitación dos veces a la vez ya no da error.
+- Estadísticas: las cifras del resumen cuentan al llegar; Cartera: el saldo cuenta cuando cambia. Con movimiento reducido, nada.
+
+**EN**
+
+- axe on every route and screen, in Spanish and English and in dark and light. Fixed what it found: the shared button lost its name while loading (Sign in, Forgot/Reset, Delete account), contrast on Evidence and in the light theme (orange badge, active tab, «Retry»), and Reset password, Verify email and a missing public profile had no heading.
+- The admin panel, without permission, says it is owner-only instead of «could not load the data».
+- League: ▲ and ▼ read «promotion zone» and «relegation zone»; the bottom bar is named in the app language; the sign-in tabs say which one is active.
+- Profile, League, Duels and Wallet show their skeleton while loading, with no layout shift. The Wallet no longer shows «0 credits» on a network error, and asking for the invite code twice at once no longer fails.
+- Statistics: the summary figures count up when they arrive; Wallet: the balance counts when it changes. With reduced motion, none of it.
+
+---
+
 ## [Unreleased] — 2026-10-23 (fallos de UI de la revisión completa, ADR-71)
 
 **ES**

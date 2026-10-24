@@ -41,7 +41,7 @@
 
 | Serie | Nombre | DONE/Total | % | Abiertas |
 |---|---|---|---|---|
-| 46 | Experiencia avanzada | 16/20 | 80 % | 46.5, 46.6, 46.14, 46.15 |
+| 46 | Experiencia avanzada | 19/20 | 95 % | 46.15 |
 | 43 | Flujo del alumno listo para pruebas | 7/8 | 88 % | 43.6 |
 | 42 | Ultracode: código tras la sincronización | 7/13 | 54 % | 42.1, 42.3, 42.7, 42.8, 42.10, 42.13 |
 | 41 | Documentación al día con el código | 5/6 | 83 % | 41.3 |
@@ -50,7 +50,7 @@
 | 38 | Negocio medible — KPIs, pilotos B2B, instructores, afiliados | 6/6 | 100 % | — |
 | 37 | Catálogo uniforme 32 × 10, simulacros reservados y prioridad por dema… | 7/23 | 30 % | 37.1, 37.4, 37.5, 37.6, 37.7, 37.8 +10 |
 | 35 | Lo que el mercado enseña: competencia verificada → producto | 4/5 | 80 % | 35.6 |
-| 34 | Una sola interfaz: todas las pantallas al lenguaje visual de la landi… | 4/11 | 36 % | 34.2, 34.3, 34.4, 34.6, 34.7, 34.8 +1 |
+| 34 | Una sola interfaz: todas las pantallas al lenguaje visual de la landi… | 6/11 | 55 % | 34.3, 34.4, 34.6, 34.7, 34.9 |
 | 33 | Operación medible — SLO, restauración y offline idempotente | 1/1 | 100 % | — |
 | 32 | Motor demostrable — calibración y evidencia de aprendizaje | 2/3 | 67 % | 32.2 |
 | 31 | Fuente única de cifras, staging y migraciones con datos | 3/7 | 50 % | 31.1, 31.5, 31.6, 31.8 |
@@ -381,14 +381,14 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 34.11 | **1** | Hallazgos de comportamiento vistos al rediseñar (no son es… | **DONE** | `be2e83b` → §T |
 | 34.12 | **2** | Plural e idioma en la UI: `HomeScreen.tsx` sin `count`… | **DONE** | `772fe5d` → §T |
 | 34.1 | **0** | Devolver el estilo a las 13 pantallas rotas: por fichero,… | **DONE** | `e58b6b2` → §T |
-| 34.2 | **1** | **Un solo juego de tokens**: una sola fuente (`src/theme/tokens.css` o… | **PARCIAL** | 2026-10-16: tokens de los dos temas con los colores del logo (#197) y sin `rgba` en `.module.css` (#222, guarda `tokens.noRgba`) → §T |
-| 34.3 | **1** | Componentes base al estilo de la landing: `Button`, `Card`… | **PARCIAL** | 2026-10-16: `Button` común en Auth, Duelo, Perfil y Quiz (#214, #216); botones de icono con nombre (#207) → §T |
+| 34.2 | **1** | **Un solo juego de tokens**: una sola fuente (`src/theme/tokens.css` o… | **DONE** | 2026-10-24 verificador: 0 `var(--x, #`, sin `src/theme/`, contraste 79/79, claro mantenido (DECISIONS «Marca») → §T |
+| 34.3 | **1** | Componentes base al estilo de la landing: `Button`, `Card`… | **PARCIAL** | `Button` en Auth, Duelo, Perfil, Quiz (#214, #216); cargando con nombre (`d083aa4`). Falta en Tracks, exámenes, Cartera, Lección… → §T |
 | 34.4 | **1** | **Primer uso**: Auth (login, registro, OAuth, olvido/reset), Onboarding,… | **PARCIAL** | 2026-10-16: Auth y olvido/reset con `Button` (#214, #216); «atrás» y `replace` en la entrada (#215). Falta `ttfq-prod.spec.ts` contra producción (dueño) → §T |
 | 34.5 | **1** | Aprendizaje: Home, Tracks, Lesson y Quiz (con Monaco, WhyB… | **DONE** | → §T |
-| 34.6 | **2** | **Progreso y social**: Profile, Stats, League, Duel, Readiness, MockExam,… | **PARCIAL** | 2026-10-16: Stats con bandas (#204), Perfil por rol (#207), Duelo y Quiz con `Button` (#214, #216) → §T |
-| 34.7 | **2** | **Resto**: Admin, Instructor, Marketplace, Legal, Evidence, DeleteAccount | **PARCIAL** | 2026-10-16: Admin solo dueño (#202), Evidence sin notas a terceros (#206), Borrar cuenta con tokens (#209), Marketplace en módulo (#223). Falta revisar Instructor → §T |
-| 34.8 | **2** | Regresión visual: Playwright con capturas por ruta (ES/EN × móvil/… | **PARCIAL** | 2026-10-16: E2E 54/56 en local (#220) y selectores por nombre con guarda (#217). D-28 decidida en #327: las capturas aprobadas son las de `e2e/__screenshots__/linux`. Falta axe por ruta → §T |
-| 34.9 | **2** | Verificación y re-puntuación: verificador adversario (protocolo §7… |  | → §I (criterio archivado por 20.10) |
+| 34.6 | **2** | **Progreso y social**: Profile, Stats, League, Duel, Readiness, MockExam,… | **PARCIAL** | Stats con bandas y cifras que cuentan, Liga ▲▼ con nombre, Cartera con error y saldo que cuenta (2026-10-24) → §T |
+| 34.7 | **2** | **Resto**: Admin, Instructor, Marketplace, Legal, Evidence, DeleteAccount | **PARCIAL** | Admin solo dueño (#202) y 403 honesto (`d083aa4`), Instructor en módulo (#327), Evidencia AA (`d083aa4`) → §T |
+| 34.8 | **2** | Regresión visual: Playwright con capturas por ruta (ES/EN × móvil/… | **DONE** | 2026-10-24 verificador (2.ª vuelta): `e2e/axe-rutas.spec.ts` 50 casos, ES/EN × oscuro/claro; huecos: `/admin` del dueño, Quiz solo es/oscuro. Visual: 20/64 baselines no casan aquí, igual en la base → §T |
+| 34.9 | **2** | Verificación y re-puntuación: verificador adversario (protocolo §7… | **PARCIAL** | 2026-10-24: verificador sobre 34.2 y 34.8; teardown §15 con capturas fechadas. Resto, al cerrar cada fila → §I |
 
 ### 35. Lo que el mercado enseña: competencia verificada → producto (abierta 2026-09-24, a petición del dueño)
 
@@ -584,8 +584,8 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 46.2b | **2** | `@capacitor/haptics` | DONE — #276 `00e52a5`, §7 10-20 | PR propio (ADR-67 D4) |
 | 46.3 | **1** | Estados vacíos y momentos de Home | DONE — #264, #267, #272; e2e de misión en `e7abd77` | plan §2 y §6.2 |
 | 46.4 | **2** | Un solo sistema de tokens | DONE `4393460` | 0 `var(--color-`; 0 variables sin definir |
-| 46.5 | **2** | Regresión visual en nivel 2 | PARCIAL — 64 capturas `e416b83`; falta la guarda de mutar un token | rojo al mutar un token |
-| 46.6 | **2** | Medición y re-puntuación | TODO | tabla con evidencia |
+| 46.5 | **2** | Regresión visual en nivel 2 | DONE — verificador 2026-10-24: `--le-brand` rojo → 20/64 rojas, restaurado 64/64, ~107 s/pasada; no ve `--le-surface` ±5 | rojo al mutar un token |
+| 46.6 | **2** | Medición y re-puntuación | DONE — verificador 2026-10-24: teardown §15 (≈53→≈65), COMPETENCIA §A.2e; rivales sin nota, 40.13 abierta | tabla con evidencia |
 | 46.7 | **1** | Resumen y ceremonias | DONE — #269, #273, #288; e2e nivel 4 en `e7abd77` | plan §6.4 |
 | 46.8 | **2** | Mascota: brief para ilustrador | DONE — #277 `b15f062`, §7 10-20 | brief y 3 direcciones (ADR-67 D2) |
 | 46.9 | **1** | Sonido encendido por defecto | DONE — #275 `e5f5e5a`, §7 10-20 | sin preferencia → on (ADR-67 D3) |
@@ -594,7 +594,7 @@ uno. Sin H.11 y H.SEED, nada de esta serie existe para un usuario.
 | 46.11 | **1** | Llama de racha en 3 tamaños + escudo | DONE — #290, §7 10-21 | plan §7.3 |
 | 46.12 | **1** | Home: contadores y banda con `AnimatePresence` | DONE — #291, §7 10-21 | plan §7.3 |
 | 46.13 | **2** | Liga y Preparación escalonadas | DONE — #292, §7 10-21 | plan §7.3 |
-| 46.14 | **1** | Transiciones de ruta y esqueletos de carga | PARCIAL `601b5bb`: sin spinner «Cargando…» en pantallas | e2e de esqueletos fuera de Stats |
+| 46.14 | **1** | Transiciones de ruta y esqueletos de carga | DONE — verificador 2026-10-24: `esqueletos-pantallas.spec.ts` (`307e306`), mutado → rojo | e2e de esqueletos fuera de Stats |
 | 46.15 | **2** | Movimiento en las 27 pantallas sin él | DOING — #295–#299; falta tabla §7.5 y check en Restablecer | plan §7.5 |
 | 46.16 | **2** | Tokens de movimiento y guarda | DONE — #294, §7 10-21 | plan §7.6 |
 
