@@ -45,14 +45,20 @@ export function AdminScreen() {
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',
   });
-
+  // Un 401/403 no es un fallo de red: el panel es solo del dueño (#202), y
+  // «Reintentar» no lo arregla (axe por ruta, 34.8, 2026-10-24).
+  const [forbidden, setForbidden] = useState(false);
+  const ensureOk = (res: Response) => {
+    if (res.status === 401 || res.status === 403) setForbidden(true);
+    if (!res.ok) throw new Error(t('admin.errors.fetchFailed'));
+  };
 
   const fetchMetrics = async () => {
     try {
       setLoading(true);
       setError(null);
       const res = await fetch(`${apiBase}/admin/metrics/users?range_days=7`, fetchOpts());
-      if (!res.ok) throw new Error(t('admin.errors.fetchFailed'));
+      ensureOk(res);
       const data = await res.json();
       setMetricsData(data);
     } catch (err) {
@@ -67,7 +73,7 @@ export function AdminScreen() {
       setLoading(true);
       setError(null);
       const res = await fetch(`${apiBase}/admin/security/auth-events?limit=10`, fetchOpts());
-      if (!res.ok) throw new Error(t('admin.errors.fetchFailed'));
+      ensureOk(res);
       const data = await res.json();
       setSecurityData(data);
     } catch (err) {
@@ -100,7 +106,7 @@ export function AdminScreen() {
       setLoading(true);
       setError(null);
       const res = await fetch(`${apiBase}/admin/ops/health`, fetchOpts());
-      if (!res.ok) throw new Error(t('admin.errors.fetchFailed'));
+      ensureOk(res);
       const data = await res.json();
       setOpsData(data);
     } catch (err) {
@@ -115,7 +121,7 @@ export function AdminScreen() {
       setLoading(true);
       setError(null);
       const res = await fetch(`${apiBase}/admin/gdpr/exports?status=pending`, fetchOpts());
-      if (!res.ok) throw new Error(t('admin.errors.fetchFailed'));
+      ensureOk(res);
       const data = await res.json();
       setGDPRData(data);
     } catch (err) {
@@ -133,7 +139,7 @@ export function AdminScreen() {
       // enseñaba un mes viejo sin decirlo (revisión de UI del 2026-10-23).
       const month = new Date().toISOString().slice(0, 7);
       const res = await fetch(`${apiBase}/admin/revenue/mrr?month=${month}`, fetchOpts());
-      if (!res.ok) throw new Error(t('admin.errors.fetchFailed'));
+      ensureOk(res);
       const data = await res.json();
       setRevenueData(data);
     } catch (err) {
@@ -148,7 +154,7 @@ export function AdminScreen() {
       setLoading(true);
       setError(null);
       const res = await fetch(`${apiBase}/admin/economy/credits?limit=10`, fetchOpts());
-      if (!res.ok) throw new Error(t('admin.errors.fetchFailed'));
+      ensureOk(res);
       const data = await res.json();
       setEconomyData(data);
     } catch (err) {
@@ -207,6 +213,18 @@ export function AdminScreen() {
     { id: 'revenue', label: t('admin.tabs.revenue') },
     { id: 'economy', label: t('admin.tabs.economy') },
   ];
+
+  if (forbidden) {
+    return (
+      <div className={styles.admin}>
+        <div className={styles.header}>
+          <h1>{t('admin.title')}</h1>
+          <p className={styles.subtitle}>{t('admin.errors.forbidden')}</p>
+        </div>
+        <a href="/" className={styles.backLink}>{t('admin.errors.backHome')}</a>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.admin}>

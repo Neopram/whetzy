@@ -50,10 +50,16 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         className={cls}
         disabled={disabled || loading}
         whileTap={disabled || loading ? undefined : tapScale}
+        aria-busy={loading || undefined}
         {...(rest as object)}
       >
         {loading ? (
-          <span className={styles.spinner} aria-hidden="true" />
+          <>
+            <span className={styles.spinner} aria-hidden="true" />
+            {/* El texto se queda para el lector de pantalla: sin él, el botón
+                no tenía nombre mientras cargaba (axe button-name, 34.8). */}
+            <span className="visually-hidden">{children}</span>
+          </>
         ) : (
           <>
             {leftIcon}

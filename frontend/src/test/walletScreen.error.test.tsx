@@ -37,6 +37,7 @@ describe('Cartera — un fallo de red no es un saldo vacío', () => {
 
     m(economy.referralCode).mockResolvedValue({ code: 'PM4HE2EG', share_url: 'https://whetzy.com/r/PM4HE2EG' });
     fireEvent.click(screen.getByRole('button', { name: i18n.t('common.retry') }));
-    expect(await screen.findByText('120')).toBeInTheDocument();
+    // El saldo va en CountUp: una copia visible y otra para el lector de pantalla.
+    expect((await screen.findByTestId('wallet-balance')).querySelector('.visually-hidden')).toHaveTextContent('120');
   });
 });

@@ -9,7 +9,7 @@
  * Con movimiento reducido, nada de eso.
  */
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { cleanup, render, screen, waitFor } from '@testing-library/react';
+import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import i18n from '../i18n';
 import { ProfileScreen } from '../pages/ProfileScreen';
 import { StatsScreen } from '../pages/StatsScreen';
@@ -202,5 +202,48 @@ describe('Stagger — presupuesto (46.15 D)', () => {
     expect(staggerFor(3)).toBeCloseTo(0.04);
     // 35 rutas del catálogo a 0,04 s eran 1,4 s de espera antes de la última.
     expect(staggerFor(35) * 35).toBeLessThanOrEqual(DUR.response + 1e-9);
+  });
+});
+
+// Tabla §7.5 rehecha contra el código (2026-10-24): «cifras con CountUp» en
+// Stats y «el saldo cuenta al cambiar» en Cartera estaban prometidas y no hechas.
+describe('Cifras que cuentan (46.15 D)', () => {
+  it('Stats: las cifras del resumen cuentan al llegar los datos; el lector oye el valor final', async () => {
+    m(progress.dashboard).mockResolvedValue({
+      level: 1, total_xp: 1500, current_streak: 0, max_streak: 0, streak_freeze_available: 0,
+      last_active: null, reviews_due: 0, total_sessions: 1, total_questions_answered: 12, tracks: [],
+    });
+    m(progress.skills).mockResolvedValue([]);
+    render(<StatsScreen />);
+    const q = await screen.findByTestId('stats-questions');
+    await waitFor(() => expect(q).toHaveAttribute('data-fx', 'count'));
+    expect(q.querySelector('.visually-hidden')).toHaveTextContent('12');
+  });
+
+  it('Stats con movimiento reducido: la cifra sale ya final, sin contar', async () => {
+    reduce = true;
+    m(progress.dashboard).mockResolvedValue({
+      level: 1, total_xp: 1500, current_streak: 0, max_streak: 0, streak_freeze_available: 0,
+      last_active: null, reviews_due: 0, total_sessions: 1, total_questions_answered: 12, tracks: [],
+    });
+    m(progress.skills).mockResolvedValue([]);
+    render(<StatsScreen />);
+    const q = await screen.findByTestId('stats-questions');
+    await waitFor(() => expect(q.querySelector('[aria-hidden="true"]')).toHaveTextContent('12'));
+    expect(q).not.toHaveAttribute('data-fx');
+  });
+
+  it('Cartera: el saldo no cuenta al entrar, sí cuando cambia (canjear un código)', async () => {
+    m(economy.balance).mockResolvedValue({ balance: 10, currency: 'credits', expires_in_days: 90 });
+    m(economy.referralCode).mockResolvedValue({ code: 'X', share_url: '' });
+    m(economy.prices).mockResolvedValue({ credit_value_usd: 0.01, grifos: [], sumideros: [] });
+    vi.spyOn(economy, 'redeemPromo').mockResolvedValue({ credits: 50, balance: 60 } as never);
+    render(<WalletScreen />);
+    const amount = await screen.findByTestId('wallet-balance');
+    expect(amount).not.toHaveAttribute('data-fx');
+    fireEvent.change(screen.getByLabelText(i18n.t('wallet.promoPlaceholder')), { target: { value: 'HOLA' } });
+    fireEvent.click(screen.getByRole('button', { name: i18n.t('wallet.redeem') }));
+    await waitFor(() => expect(amount).toHaveAttribute('data-fx', 'count'));
+    expect(amount.querySelector('.visually-hidden')).toHaveTextContent('60');
   });
 });

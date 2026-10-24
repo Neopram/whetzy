@@ -10,7 +10,7 @@ interface Props {
 export function Card({ children, className = '', onClick }: Props) {
   const Tag = onClick ? 'button' : 'div';
   return (
-    <Tag className={`${styles.card} ${className}`} onClick={onClick}>
+    <Tag className={`${styles.card} ${className}`} onClick={onClick} type={onClick ? 'button' : undefined}>
       {children}
     </Tag>
   );

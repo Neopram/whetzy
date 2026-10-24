@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
-import { formatViolations, registerUser, uniqueUsername } from './helpers';
+import { formatViolations, registerUser, uniqueUsername, waitForAnimations } from './helpers';
 
 /**
  * 46.14 (docs/PLAN_UI_AVANZADA.md §7.4), fuera de Stats: con la red lenta, cada
@@ -65,7 +65,7 @@ for (const lang of ['es', 'en'] as const) {
       await expect(busy).toBeVisible();
       await expect(busy.locator('[data-skeleton]')).toBeVisible();
       await expect(page.locator('[data-boot-splash]')).toHaveCount(0);
-      await page.waitForTimeout(300);
+      await waitForAnimations(page);
       const axe = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa']).analyze();
       expect(axe.violations, formatViolations(axe.violations)).toHaveLength(0);
 

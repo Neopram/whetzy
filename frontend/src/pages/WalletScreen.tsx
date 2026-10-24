@@ -1,6 +1,7 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Capacitor } from '@capacitor/core';
+import { useReducedMotion } from 'framer-motion';
 
 import {
   economy,
@@ -13,6 +14,8 @@ import { StaggerItem, StaggerList } from '../components/common/Stagger';
 import styles from './WalletScreen.module.css';
 import { Loading } from '../components/common/Loading';
 import { ErrorState } from '../components/common/ErrorState';
+import { CountUp } from '../components/quiz/CountUp';
+import { DUR } from '../lib/motion';
 
 export default function WalletScreen() {
   const { t, i18n } = useTranslation();
@@ -37,6 +40,13 @@ export default function WalletScreen() {
   const [reportCode, setReportCode] = useState<string | null>(null);
   const [reportError, setReportError] = useState(false);
 
+  // §7.5 bloque D: el saldo cuenta cuando cambia (canjear, comprar), no al
+  // entrar. `countFrom` es el saldo de antes del cambio; null, nada que contar.
+  const reduce = useReducedMotion() ?? false;
+  const [countFrom, setCountFrom] = useState<number | null>(null);
+  const balanceNow = useRef<number | null>(null);
+  useEffect(() => { balanceNow.current = balance?.balance ?? null; }, [balance]);
+
   const load = useCallback(async () => {
     try {
       const [b, p, r] = await Promise.all([
@@ -44,6 +54,7 @@ export default function WalletScreen() {
         economy.prices(),
         economy.referralCode(),
       ]);
+      if (balanceNow.current !== null) setCountFrom(balanceNow.current);
       setBalance(b);
       setPrices(p);
       setReferral(r);
@@ -94,6 +105,7 @@ export default function WalletScreen() {
     try {
       const result = await economy.redeemPromo(code);
       setPromoMsg({ ok: true, text: t('wallet.redeemSuccess', { credits: result.credits }) });
+      if (balance) setCountFrom(balance.balance);
       setBalance((prev) => prev ? { ...prev, balance: result.balance } : prev);
       setPromoCode('');
     } catch {
@@ -130,7 +142,15 @@ export default function WalletScreen() {
       <h1 className={styles.title}>{t('wallet.title')}</h1>
 
       <section className={styles.balanceCard} aria-label={t('wallet.balance')}>
-        <span className={styles.balanceAmount}>{balance?.balance ?? 0}</span>
+        {(() => {
+          const value = balance?.balance ?? 0;
+          const counts = !reduce && countFrom !== null && countFrom !== value;
+          return (
+            <span className={styles.balanceAmount} data-testid="wallet-balance" data-fx={counts ? 'count' : undefined}>
+              <CountUp value={value} from={countFrom ?? value} state={counts ? 'run' : 'done'} durationMs={DUR.response * 1000} />
+            </span>
+          );
+        })()}
         <span className={styles.balanceLabel}>{t('wallet.credits')}</span>
         {balance && balance.expires_in_days > 0 && (
           <span className={styles.balanceExpiry}>{t('wallet.expiresIn', { days: balance.expires_in_days })}</span>

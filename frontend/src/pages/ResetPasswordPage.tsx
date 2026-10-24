@@ -48,6 +48,11 @@ export function ResetPasswordPage({ token, onSuccess }: Props) {
 
   return (
     <div className={styles.screen}>
+      {/* Sin encabezado, un lector de pantalla no sabía en qué página estaba
+          (axe por ruta, 34.8). Mismo bloque que Olvidé la contraseña. */}
+      <div className={styles.brand}>
+        <h1 className={styles.brandName}>{t('resetPassword.title')}</h1>
+      </div>
       <form className={styles.form} onSubmit={handleSubmit}>
         <label className={styles.field}>
           <span className={styles.label}>{t('resetPassword.newPasswordPlaceholder')}</span>
