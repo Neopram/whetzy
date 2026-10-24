@@ -12,6 +12,7 @@ import {
 import { StaggerItem, StaggerList } from '../components/common/Stagger';
 import styles from './WalletScreen.module.css';
 import { Loading } from '../components/common/Loading';
+import { ErrorState } from '../components/common/ErrorState';
 
 export default function WalletScreen() {
   const { t, i18n } = useTranslation();
@@ -22,6 +23,8 @@ export default function WalletScreen() {
   const [prices, setPrices] = useState<CreditPrices | null>(null);
   const [referral, setReferral] = useState<ReferralCodeInfo | null>(null);
   const [loading, setLoading] = useState(true);
+  // 2026-10-24: un fallo se tragaba y la pantalla decía «0 créditos».
+  const [loadFailed, setLoadFailed] = useState(false);
   const [copied, setCopied] = useState(false);
 
   const [promoCode, setPromoCode] = useState('');
@@ -44,8 +47,10 @@ export default function WalletScreen() {
       setBalance(b);
       setPrices(p);
       setReferral(r);
+      setLoadFailed(false);
     } catch {
-      // API error — show empty state
+      // Un fallo no es un saldo vacío: se dice y se puede reintentar.
+      setLoadFailed(true);
     } finally {
       setLoading(false);
     }
@@ -100,6 +105,15 @@ export default function WalletScreen() {
 
   if (loading) {
     return <div className={styles.screen}><Loading label={t('common.loading')} shape="list" /></div>;
+  }
+
+  if (loadFailed) {
+    return (
+      <div className={styles.screen}>
+        <h1 className={styles.title}>{t('wallet.title')}</h1>
+        <ErrorState message={t('common.loadError')} onRetry={() => { setLoading(true); void load(); }} />
+      </div>
+    );
   }
 
   // Cada fila lleva su texto propio: el identificador del backend («module_done»,

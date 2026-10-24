@@ -9,6 +9,7 @@ from datetime import UTC, datetime, timedelta
 from typing import Any
 
 from sqlalchemy import and_, delete, func, select
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import settings
@@ -310,24 +311,39 @@ class ReferralService:
     """Service for referral management."""
 
     @staticmethod
-    async def get_or_create_referral_code(db: AsyncSession, user_id: uuid.UUID) -> str:
-        """Get or create a referral code for a user."""
+    async def _code_of(db: AsyncSession, user_id: uuid.UUID) -> str | None:
         result = await db.execute(
-            select(ReferralCode).where(ReferralCode.user_id == user_id)
+            select(ReferralCode.code).where(ReferralCode.user_id == user_id)
         )
-        ref_code = result.scalar()
-        
-        if not ref_code:
-            # Generate unique code (base32, exclude confusing chars)
-            import random
-            alphabet = 'ACDEFGHJKMNPQRTWXYZ234567'  # Exclude 0,O,1,I,L,B,S
-            code = ''.join(random.choice(alphabet) for _ in range(8))
-            
-            ref_code = ReferralCode(user_id=user_id, code=code)
-            db.add(ref_code)
-            await db.flush()
-        
-        return ref_code.code
+        return result.scalar()
+
+    @staticmethod
+    async def get_or_create_referral_code(db: AsyncSession, user_id: uuid.UUID) -> str:
+        """Get or create a referral code for a user.
+
+        Dos peticiones a la vez (la Cartera monta dos veces en desarrollo, o dos
+        pestañas) veían las dos «sin código» e insertaban; la segunda chocaba con
+        `uq_referral_user` y el endpoint daba 500 (2026-10-24). Cada inserción va
+        en un savepoint: si choca, se devuelve el código que guardó la otra; si lo
+        que chocó fue el propio código (también único), se prueba otro.
+        """
+        existing = await ReferralService._code_of(db, user_id)
+        if existing:
+            return existing
+
+        alphabet = "ACDEFGHJKMNPQRTWXYZ234567"  # Exclude 0,O,1,I,L,B,S
+        for _ in range(5):
+            code = "".join(secrets.choice(alphabet) for _ in range(8))
+            try:
+                async with db.begin_nested():
+                    db.add(ReferralCode(user_id=user_id, code=code))
+            except IntegrityError:
+                existing = await ReferralService._code_of(db, user_id)
+                if existing:
+                    return existing
+                continue
+            return code
+        raise RuntimeError("no se pudo generar un código de referido único")
 
     @staticmethod
     async def register_referral(

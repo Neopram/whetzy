@@ -14,6 +14,7 @@ from app.models.economy import (
     PromoCode,
     PromoCodeRedemption,
     Referral,
+    ReferralCode,
 )
 from app.services.economy import (
     _SAFE_ALPHABET,
@@ -520,3 +521,27 @@ async def test_generate_batch_per_type(db_session: AsyncSession):
             db_session, code_type=code_type, credits=10, count=1, created_by="test",
         )
         assert codes[0].code_type == code_type
+
+
+@pytest.mark.asyncio
+async def test_referral_code_race_returns_existing_code(db_session: AsyncSession, monkeypatch):
+    """Dos peticiones a la vez (la Cartera monta dos veces en desarrollo, o dos
+    pestañas): las dos ven «no hay código» e insertan; la segunda chocaba con
+    `uq_referral_user` y el endpoint daba 500 (e2e de esqueletos, 2026-10-24).
+    Ahora la que pierde devuelve el código que guardó la otra."""
+    uid = uuid4()
+    db_session.add(ReferralCode(user_id=uid, code="RACE2345"))
+    await db_session.flush()
+
+    real_lookup = ReferralService._code_of
+    calls = {"n": 0}
+
+    async def lookup_misses_first(db, user_id):
+        calls["n"] += 1
+        if calls["n"] == 1:
+            return None  # la otra petición aún no había escrito al mirar
+        return await real_lookup(db, user_id)
+
+    monkeypatch.setattr(ReferralService, "_code_of", staticmethod(lookup_misses_first))
+    code = await ReferralService.get_or_create_referral_code(db_session, uid)
+    assert code == "RACE2345"
