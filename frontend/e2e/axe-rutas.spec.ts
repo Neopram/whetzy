@@ -28,6 +28,9 @@ async function audit(page: Page, label: string) {
 }
 
 const PUBLIC = [
+  // accessibility.spec las mide solo en oscuro; aquí, los dos temas.
+  '/landing',
+  '/privacy',
   '/terms',
   '/refund',
   '/evidence',

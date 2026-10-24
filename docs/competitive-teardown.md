@@ -536,7 +536,7 @@ esa evidencia, **sin usuarios**.
 
 | Dimensión | Peso | 17-10 | 24-10 | Evidencia de la nota nueva |
 |---|---|---|---|---|
-| Sistema visual | 0,15 | 65 | 85 | un solo juego de tokens (46.4; `src/theme/` ya no existe; 0 `var(--x, #hex)` en `src/`); `tokens.contraste.test.ts` 79/79; axe sin violaciones en los 46 casos de `e2e/axe-rutas.spec.ts` (21 rutas públicas × oscuro/claro; Hoy, 15 pantallas internas y `/admin` sin permiso en es/en × oscuro/claro), 46/46 el 2026-10-24 |
+| Sistema visual | 0,15 | 65 | 85 | un solo juego de tokens (46.4; `src/theme/` ya no existe; 0 `var(--x, #hex)` en `src/`); `tokens.contraste.test.ts` 79/79; axe sin violaciones en los 50 casos de `e2e/axe-rutas.spec.ts` (23 rutas públicas × oscuro/claro; Hoy, 15 pantallas internas y `/admin` sin permiso en es/en × oscuro/claro), 46/46 y las 4 de `/landing` y `/privacy` el 2026-10-24 |
 | Animación y pulido | 0,15 | 35 | 75 | feedback dentro de la tarjeta (46.1, #266); movimiento reducido respetado y vigilado (`motionGuard.test.ts`, casos «con movimiento reducido» de `entrada46`, `aprender46`, `competir46`, `progreso46`, `comprar46`); sonido y vibración (`lib/feedbackFx.ts`, `@capacitor/haptics`); tabla §7.5 rehecha contra el código |
 | Superficie interactiva | 0,20 | 40 | 45 | tipo `interactive` (40.1) y 3 widgets en código (`frontend/src/widgets/`: búsqueda binaria, CIDR, JOIN) con `e2e/widgets-piloto.spec.ts`; **0 preguntas `interactive` en el banco** (`content/`), así que el alumno aún no ve ninguno |
 | IA dentro de la experiencia | 0,15 | 55 | 60 | tutor por modos (¿Por qué? / ¿Cómo? / A fondo; `e2e/tutor-modos.spec.ts`); el tutor que señala y habla (40.5, 40.6) sigue en TODO |
