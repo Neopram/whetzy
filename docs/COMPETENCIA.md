@@ -198,7 +198,7 @@ como §A.2c; entregadas al dueño). Hora UTC de cada carga, la que imprimió el 
 | Página | URL | Hora (UTC) | HTTP | Lo que se ve en la primera pantalla a 390 px |
 |---|---|---|---|---|
 | Duolingo, portada | `https://www.duolingo.com/` | 15:22:12 | 200 | logo, ilustración con la mascota y personajes, un titular («¡La forma más divertida de aprender idiomas, ajedrez y más!»), dos botones: «Empieza ahora» y «Ya tengo una cuenta» |
-| Brilliant, portada | `https://brilliant.org/` | 15:22:28 | 200 | **vista previa del producto arriba del todo** (puzle de código por bloques: `while`, `move`, `collect`), titular «Your personal tutor for math and coding», sellos «Editors' Choice» y «Featured App», dos botones (alumno / padre o docente), aviso de cookies |
+| Brilliant, portada | `https://brilliant.org/` | 15:21:05 y 15:22:28 | 200 | **dos portadas distintas en dos cargas seguidas** (prueba A/B, probablemente). 15:21:05 (`brilliant-home-390-1521.png`): vista previa del producto arriba del todo (puzle de código por bloques: `while`, `move`, `collect`), titular, sellos «Editors' Choice» y «Featured App», dos botones. 15:22:28 (`brilliant-home-390.png`): titular arriba, dos botones y debajo una tarjeta «Visual, interactive tutoring» con capturas del producto. En las dos, aviso de cookies |
 | Brilliant, cursos | `https://brilliant.org/courses/` | 15:22:44 | 200 | pestañas por materia con icono, ruta de cursos con ilustración propia por curso y etiqueta de curso escolar |
 | Whetzy, landing | `https://whetzy.com/landing` | 15:22:59 | 200 | cifras («35 rutas · 12.037 preguntas · ES / EN»), titular, un párrafo que explica el motor (BKT + FSRS + Elo), dos botones; **ninguna imagen del producto** en la primera pantalla |
 

@@ -101,7 +101,7 @@ export function VerifyEmailPage({ token, lang }: Props) {
       <div className={styles.screen}>
         {/* 46.15 A: el servidor confirmó el correo. */}
         <DrawnCheck />
-        <p>{t('verifyEmail.success')}</p>
+        <h1 className={styles.notice}>{t('verifyEmail.success')}</h1>
         {/* Un enlace con el aspecto del Button común: navegar es un <a>, no un <button>. */}
         {signedIn ? (
           <a className={`${btn.btn} ${btn.primary} ${btn.lg} ${btn.full} ${styles.submit}`} href="/">
@@ -121,7 +121,8 @@ export function VerifyEmailPage({ token, lang }: Props) {
 
   return (
     <div className={styles.screen}>
-      <p>{t('verifyEmail.invalidOrExpired')}</p>
+      {/* Encabezado, no texto suelto: el lector de pantalla dice dónde está (34.8). */}
+      <h1 className={styles.notice}>{t('verifyEmail.invalidOrExpired')}</h1>
       {resendState === 'sent' ? (
         <p>{t('verifyEmail.resendSent')}</p>
       ) : (

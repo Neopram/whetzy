@@ -56,7 +56,7 @@ export default function PublicProfileScreen({ handle }: { handle: string }) {
     return (
       <div className={styles.publicProfilePrivate}>
         <NoIndex title="Whetzy" lang={lang} />
-        {t('profile.notFound', 'No existe ningún perfil con ese nombre de usuario')}
+        <h1 className={styles.notFound}>{t('profile.notFound', 'No existe ningún perfil con ese nombre de usuario')}</h1>
       </div>
     )
   }

@@ -41,6 +41,17 @@ const PUBLIC = [
   '/checkout?plan=pro',
   '/delete-account',
   '/_ui',
+  // Verificador adversario de 34.9 (2026-10-24): estas faltaban. Con un código
+  // que no existe se mide la página de «no encontrado», que es la que ve quien
+  // llega con un enlace roto.
+  '/login',
+  '/register',
+  '/verify-email?token=e2e-no-valido',
+  '/verify/E2E-NO-VALIDO',
+  '/certificate/E2E-NO-VALIDO',
+  '/report/e2e-no-valido',
+  '/u/e2e-no-existe',
+  '/r/E2E-NO-VALIDO',
 ];
 
 // El oscuro es el de por defecto; el claro se mantiene (decisión del dueño del
@@ -67,6 +78,11 @@ for (const theme of ['dark', 'light'] as const) for (const path of PUBLIC) {
 
 // Pantallas internas sin ruta propia: se entra por el store, como hace la app.
 const IN_APP: { screen: string; state?: object }[] = [
+  // Las de la barra inferior: accessibility.spec las mide solo en es/oscuro.
+  { screen: 'tracks' },
+  { screen: 'stats' },
+  { screen: 'league' },
+  { screen: 'profile' },
   { screen: 'duels' },
   { screen: 'wallet' },
   { screen: 'marketplace' },
@@ -84,6 +100,7 @@ const RUNS = [
   { lang: 'es', theme: 'dark' },
   { lang: 'en', theme: 'dark' },
   { lang: 'es', theme: 'light' },
+  { lang: 'en', theme: 'light' },
 ] as const;
 
 for (const { lang, theme } of RUNS) {
@@ -96,6 +113,7 @@ for (const { lang, theme } of RUNS) {
       w.__whetzyStore.setState({ user: { ...w.__whetzyStore.getState().user, language: l } });
     }, lang);
     await settled(page);
+    await audit(page, `home (${lang}, ${theme})`);
 
     for (const { screen, state } of IN_APP) {
       await page.evaluate(([s, extra]) => {
@@ -103,6 +121,11 @@ for (const { lang, theme } of RUNS) {
       }, [screen, state ?? {}] as const);
       await expect(page.getByTestId('home-active-track')).toHaveCount(0);
       await settled(page);
+      // Sin su parámetro, Preparación y Examen de ruta rebotan a Rutas (App.tsx)
+      // y se mediría otra pantalla; Prueba de nivel rebota a Hoy (arriba).
+      if (screen !== 'tracks') {
+        await expect(page.getByRole('heading', { level: 1, name: /^(Rutas de aprendizaje|Learning paths)$/ })).toHaveCount(0);
+      }
       await audit(page, `${screen} (${lang}, ${theme})`);
       await page.evaluate(() => (window as unknown as StoreW).__whetzyStore.setState({ currentScreen: 'home' }));
       await expect(page.getByTestId('home-active-track')).toBeVisible({ timeout: 15_000 });
