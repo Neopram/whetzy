@@ -45,14 +45,20 @@ export function AdminScreen() {
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',
   });
-
+  // Un 401/403 no es un fallo de red: el panel es solo del dueño (#202), y
+  // «Reintentar» no lo arregla (axe por ruta, 34.8, 2026-10-24).
+  const [forbidden, setForbidden] = useState(false);
+  const ensureOk = (res: Response) => {
+    if (res.status === 401 || res.status === 403) setForbidden(true);
+    if (!res.ok) throw new Error(t('admin.errors.fetchFailed'));
+  };
 
   const fetchMetrics = async () => {
     try {
       setLoading(true);
       setError(null);
       const res = await fetch(`${apiBase}/admin/metrics/users?range_days=7`, fetchOpts());
-      if (!res.ok) throw new Error(t('admin.errors.fetchFailed'));
+      ensureOk(res);
       const data = await res.json();
       setMetricsData(data);
     } catch (err) {
@@ -67,7 +73,7 @@ export function AdminScreen() {
       setLoading(true);
       setError(null);
       const res = await fetch(`${apiBase}/admin/security/auth-events?limit=10`, fetchOpts());
-      if (!res.ok) throw new Error(t('admin.errors.fetchFailed'));
+      ensureOk(res);
       const data = await res.json();
       setSecurityData(data);
     } catch (err) {
@@ -100,7 +106,7 @@ export function AdminScreen() {
       setLoading(true);
       setError(null);
       const res = await fetch(`${apiBase}/admin/ops/health`, fetchOpts());
-      if (!res.ok) throw new Error(t('admin.errors.fetchFailed'));
+      ensureOk(res);
       const data = await res.json();
       setOpsData(data);
     } catch (err) {
@@ -115,7 +121,7 @@ export function AdminScreen() {
       setLoading(true);
       setError(null);
       const res = await fetch(`${apiBase}/admin/gdpr/exports?status=pending`, fetchOpts());
-      if (!res.ok) throw new Error(t('admin.errors.fetchFailed'));
+      ensureOk(res);
       const data = await res.json();
       setGDPRData(data);
     } catch (err) {
@@ -129,8 +135,11 @@ export function AdminScreen() {
     try {
       setLoading(true);
       setError(null);
-      const res = await fetch(`${apiBase}/admin/revenue/mrr?month=2026-09`, fetchOpts());
-      if (!res.ok) throw new Error(t('admin.errors.fetchFailed'));
+      // El mes en curso (UTC). Antes era `2026-09` fijo: desde octubre el panel
+      // enseñaba un mes viejo sin decirlo (revisión de UI del 2026-10-23).
+      const month = new Date().toISOString().slice(0, 7);
+      const res = await fetch(`${apiBase}/admin/revenue/mrr?month=${month}`, fetchOpts());
+      ensureOk(res);
       const data = await res.json();
       setRevenueData(data);
     } catch (err) {
@@ -145,7 +154,7 @@ export function AdminScreen() {
       setLoading(true);
       setError(null);
       const res = await fetch(`${apiBase}/admin/economy/credits?limit=10`, fetchOpts());
-      if (!res.ok) throw new Error(t('admin.errors.fetchFailed'));
+      ensureOk(res);
       const data = await res.json();
       setEconomyData(data);
     } catch (err) {
@@ -155,8 +164,10 @@ export function AdminScreen() {
     }
   };
 
-  useEffect(() => {
-    switch (activeTab) {
+  // Una sola función carga cada pestaña: la usan el cambio de pestaña y el
+  // «Reintentar» del error, que antes era `() => {}` y no hacía nada.
+  const loadTab = (tab: Tab) => {
+    switch (tab) {
       case 'metrics':
         fetchMetrics();
         break;
@@ -185,7 +196,10 @@ export function AdminScreen() {
         setLoading(false);
         break;
     }
-  }, [activeTab]);
+  };
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => loadTab(activeTab), [activeTab]);
 
   const tabs: { id: Tab; label: string }[] = [
     { id: 'metrics', label: t('admin.tabs.metrics') },
@@ -199,6 +213,18 @@ export function AdminScreen() {
     { id: 'revenue', label: t('admin.tabs.revenue') },
     { id: 'economy', label: t('admin.tabs.economy') },
   ];
+
+  if (forbidden) {
+    return (
+      <div className={styles.admin}>
+        <div className={styles.header}>
+          <h1>{t('admin.title')}</h1>
+          <p className={styles.subtitle}>{t('admin.errors.forbidden')}</p>
+        </div>
+        <a href="/" className={styles.backLink}>{t('admin.errors.backHome')}</a>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.admin}>
@@ -221,7 +247,7 @@ export function AdminScreen() {
 
       <div className={styles.content}>
         {loading && <Loading label={t('admin.loading', 'Cargando datos del panel...')} shape="list" />}
-        {error && <ErrorState message={error} onRetry={() => {}} />}
+        {error && <ErrorState message={error} onRetry={() => loadTab(activeTab)} />}
 
         {activeTab === 'users' && (
           <div className={styles.panel}>

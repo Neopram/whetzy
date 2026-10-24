@@ -9,9 +9,24 @@ import { StaggerItem, StaggerList } from '../components/common/Stagger';
 import styles from './StatsScreen.module.css';
 import { TrackIcon } from '../components/common/AppIcon';
 import { Loading } from '../components/common/Loading';
+import { ErrorState } from '../components/common/ErrorState';
+import { CountUp } from '../components/quiz/CountUp';
+import { useReducedMotion } from 'framer-motion';
+import { DUR } from '../lib/motion';
 
 // ADR-60: ni la ruta ni la skill se enseñan como % del modelo mientras no
 // esté calibrado. La ruta, por skills dominadas (un hecho); la skill, por banda.
+
+/** Cifra del resumen: cuenta desde 0 al llegar los datos (§7.5, bloque D); con
+ *  movimiento reducido, o antes de los datos, sale tal cual. */
+function Figure({ value, ready, reduce, testId }: { value: number; ready: boolean; reduce: boolean; testId: string }) {
+  const counts = ready && !reduce;
+  return (
+    <span className={styles.tileVal} data-testid={testId} data-fx={counts ? 'count' : undefined}>
+      <CountUp value={value} format={(n) => n.toLocaleString()} state={counts ? 'run' : 'done'} durationMs={DUR.response * 1000} />
+    </span>
+  );
+}
 
 export function StatsScreen() {
   const user = useAppStore((s) => s.user);
@@ -20,6 +35,7 @@ export function StatsScreen() {
   const dash = useApi(() => progressApi.dashboard(), []);
   const skills = useApi(() => progressApi.skills(), []);
   const { t } = useTranslation();
+  const reduce = useReducedMotion() ?? false;
 
   // Solo las rutas empezadas: el panel devuelve las 35 y listarlas todas a 0 %
   // (o promediarlas) escondía el progreso real, como pasaba en Hoy.
@@ -37,15 +53,15 @@ export function StatsScreen() {
 
       <div className={styles.overview}>
         <div className={styles.tile}>
-          <span className={styles.tileVal}>{(dash.data?.total_xp ?? user.totalXp).toLocaleString()}</span>
+          <Figure value={dash.data?.total_xp ?? user.totalXp} ready={dash.data !== null} reduce={reduce} testId="stats-xp" />
           <span className={styles.tileLabel}>{t('stats.totalXp')}</span>
         </div>
         <div className={styles.tile}>
-          <span className={styles.tileVal}>{dash.data?.total_questions_answered ?? 0}</span>
+          <Figure value={dash.data?.total_questions_answered ?? 0} ready={dash.data !== null} reduce={reduce} testId="stats-questions" />
           <span className={styles.tileLabel}>{t('stats.questions')}</span>
         </div>
         <div className={styles.tile}>
-          <span className={styles.tileVal}>{attemptedSkills.length}</span>
+          <Figure value={attemptedSkills.length} ready={skills.data !== null} reduce={reduce} testId="stats-skills" />
           <span className={styles.tileLabel}>{t('stats.skillsPractised')}</span>
         </div>
       </div>
@@ -53,7 +69,9 @@ export function StatsScreen() {
       <section className={styles.section}>
         <h2 className={styles.sectionTitle}>{t('stats.byTrack')}</h2>
         {dash.loading && <Loading label={t('stats.loading')} shape="line" />}
-        {!dash.loading && started.length === 0 && <p className={styles.muted}>{t('stats.noData')}</p>}
+        {/* Revisión de UI del 2026-10-23: un fallo de red salía como «sin datos». */}
+        {dash.error !== null && <ErrorState message={t('common.loadError')} onRetry={dash.reload} />}
+        {!dash.loading && dash.error === null && started.length === 0 && <p className={styles.muted}>{t('stats.noData')}</p>}
         <StaggerList className={styles.list}>
           {started.map((tr) => {
             const name = lang === 'es' ? tr.name_es : tr.name_en;
@@ -88,7 +106,8 @@ export function StatsScreen() {
       <section className={styles.section}>
         <h2 className={styles.sectionTitle}>{t('stats.bySkill')}</h2>
         {skills.loading && <Loading label={t('stats.loading')} shape="line" />}
-        {!skills.loading && attemptedSkills.length === 0 && <p className={styles.muted}>{t('stats.noData')}</p>}
+        {skills.error !== null && <ErrorState message={t('common.loadError')} onRetry={skills.reload} />}
+        {!skills.loading && skills.error === null && attemptedSkills.length === 0 && <p className={styles.muted}>{t('stats.noData')}</p>}
         <StaggerList className={styles.list}>
           {attemptedSkills.slice(0, 12).map((s) => {
             const name = lang === 'es' ? s.name_es : s.name_en;

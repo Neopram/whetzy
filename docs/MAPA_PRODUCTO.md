@@ -27,19 +27,24 @@ Se resuelven en `App()` antes de cualquier hook; no necesitan sesión salvo dond
 | `/privacy`, `/terms`, `/refund` | `LegalScreen doc=…` | Textos legales publicados (claves i18n `legal.*`) | E1: las propias claves `legal.*` (ADR-55; los borradores, en `docs/archive/legal-borradores/`) |
 | `/evidence` | `EvidenceScreen` | Cifras reales del producto | E0: ledger 38.5 |
 | `/status` | `StatusPage` | Estado público del servicio | E0: ledger 22.7 |
-| `/es/carrera`, `/en/career`, `/es/empresas`, `/en/enterprise`, `/blog` | `marketing/CareerPage`, `marketing/EnterprisePage`, `marketing/BlogPage` | **Reservadas y vacías** (fase 0, 2026-10-02): las rellena S6 (marketing) | E0: `docs/SESIONES.md` |
+| `/es/carrera`, `/en/career`, `/es/empresas`, `/en/enterprise` | `marketing/CareerPage`, `marketing/EnterprisePage` | **Reservadas**: título y aviso «no disponible», con `noindex` (fase 0, 2026-10-02; las rellena S6) | E0: `docs/SESIONES.md` |
+| `/blog` | `marketing/BlogPage` | Lista y detalle de los artículos de `content/blog/{es,en}` (revisión 2026-10-23: ya no está vacía) | E0: `docs/SESIONES.md` |
 | `/checkout?plan=&track=` | `CheckoutScreen` | Pago web con Paddle (cabeceras propias, sin COEP) | E1: ledger H.29, `docs/API.md` |
 | `/admin` | `AdminScreen` (9 pestañas: metrics, users, log, security, content, ops, gdpr, revenue, economy; «Usuarios» y «Registro» exigen además 2FA, serie 44) | Panel del dueño (`role=owner`) | E2: `docs/design/admin-spec.md` |
 | `/certificate/<código>`, `/verify/<código>` | `CertificateScreen` | Verificación pública de un certificado | E1: `docs/ECONOMIA.md` §11, ADR-37 |
 | `/report/<código>` | `MasteryReportScreen` | Informe de dominio público comprado con 300 créditos: instantánea con fecha, «Guardar como PDF» por la impresión del navegador | E1: `docs/ECONOMIA.md` §2.3 |
-| `/u/<usuario>` | `PublicProfileScreen` | Perfil público opt-in | E0: `SEGMENTOS.md`, `ECONOMIA.md` |
+| `/u/<usuario>` | `PublicProfileScreen` | Perfil público opt-in; con `PUBLIC_PROFILES_ENABLED=False` (hoy) el backend responde 404 a todos | E0: `SEGMENTOS.md`, `ECONOMIA.md` |
 | `/r/<código>` | (redirección) | Guarda el código de referido y lleva a `/register` | E1: `docs/ECONOMIA.md` §3 |
 | `/` | la app con sesión (§2) | — | — |
 | `/_ui` | `UiKitScreen` | Muestrario de componentes, **solo en desarrollo** (`import.meta.env.DEV`) | — (herramienta interna) |
 
 ## 2. Pantallas dentro de la app (tipo `Screen`, sin URL)
 
-Navegación inferior de 5 pestañas (design/v2): **Hoy · Rutas · Practicar · Ranking · Yo**.
+Navegación inferior de 5 pestañas (design/v2): **Hoy · Rutas · Practicar · Ranking · Yo**. Las pantallas de una
+sola tarea la ocultan (`IMMERSIVE_SCREENS`, `lib/immersiveScreens.ts`: quiz, prueba de nivel, exámenes, lección,
+preparación, playground, proyectos y duelos). Las principales tienen URL propia (`SCREEN_PATHS`,
+`lib/screenHistory.ts`: `/tracks`, `/ranking`, `/profile`, `/stats`, `/wallet`, `/catalog`); recargarla sirve el SPA
+(`frontend/public/_redirects`).
 Antes de Hoy, un usuario nuevo pasa por `OnboardingScreen` (una vez por usuario; desde 43.3 lo recuerda el servidor,
 `onboarding_completed_at`, y no el navegador): objetivo → ruta de aprendizaje (24, agrupadas) → certificación
 relacionada opcional → experiencia → prueba de nivel de 20 o «empiezo de cero» → Hoy.
@@ -54,7 +59,7 @@ Mientras la cuenta no tenga el correo verificado, todas las pantallas con sesió
 | `tracks` | `TracksScreen` | pestaña Rutas, filas de «Tus rutas» | catálogo (filtros Todas / Aprender / Certificaciones) y detalle (vistas Currículo / Mapa / Glosario; en cada módulo disponible, la prueba para saltarlo si el backend puede montarla, O1.4) | E2: `design/v2/brief-msg2.md` §A–B |
 | `lesson` | `LessonScreen` | «Aprender», una habilidad en Rutas | pasos de texto + paso de ejemplo | E2: `design/v2/brief-msg2.md` §C |
 | `quiz` | `QuizScreen` | pestaña Practicar, «Practicar», repaso | pregunta, ejecución de código, feedback, tutor («¿Por qué?», con etiqueta de IA y «Reportar esta explicación»; se apaga en Ajustes), «Reportar un problema» con la pregunta | E2: `design/v2/brief-msg2.md` §D |
-| `placement` | `PlacementScreen` | «¿Ya sabes algo de esto?» en el detalle de ruta | intro, cargando, test, resultado, error | E0: ledger |
+| `placement` | `PlacementScreen` | «¿Ya sabes algo de esto?» en el detalle de ruta, la oferta al entrar en una ruta sin práctica y el onboarding | intro, cargando, test, resultado, error | E0: ledger |
 | `readiness` | `ReadinessScreen` | «Preparación para la certificación» | arco + barras por dominio | E2: `design/v2/brief-msg2.md` §E |
 | `mockexam` | `MockExamScreen` | «Simulacro de examen» | modos simulacro / certificador; fases intro, en curso, corrigiendo, resultado | E2: `design/v2/brief-msg2.md` §F |
 | `trackexam` | `TrackExamScreen` | «Examen final del curso» | intro, examen, resultado; admite `test_out` de módulo, que lanza el detalle de ruta en Rutas | E2: `design/v2/brief-msg2.md` §F |
@@ -63,13 +68,14 @@ Mientras la cuenta no tenga el correo verificado, todas las pantallas con sesió
 | `profile` | `ProfileScreen` | pestaña Yo | ajustes (incluida la verificación en dos pasos: alta con QR, desactivar con código), plan y cancelación, plan ganado con referidos y hasta cuándo (ADR-57), tema, idioma, accesos a Stats/Cartera/Instructor/Admin | E1: `design/v2/brief-msg1.md` (nav) |
 | `stats` | `StatsScreen` | Yo → Estadísticas | resumen y progreso | E0: ledger |
 | `wallet` | `WalletScreen` | Yo → Cartera | saldo, fuentes y gastos que lista `/economy/prices`, canje de códigos; «Invitar amigos» solo si el referido figura como fuente (desde ADR-57, sí). Sin lista de movimientos | E1: `docs/ECONOMIA.md` §2–5 |
-| `instructor` | `InstructorScreen` | Yo → Instructor | panel del instructor | E1: `docs/MARKETPLACE.md` §4 |
+| `instructor` | `InstructorScreen` | Yo → Instructor (solo con `can_create_courses`; la venta sigue cerrada con `INSTRUCTOR_MARKETPLACE_ENABLED=False`) | panel del instructor | E1: `docs/MARKETPLACE.md` §4 |
 | `marketplace` | `MarketplaceScreen` | Yo → Marketplace; deslizar a la izquierda en móvil | catálogo con filtros Todos / Aprender / Certificación | E1: `docs/MARKETPLACE.md` |
-| `playground` | `PlaygroundScreen` | Hoy → Herramientas | editor Python / SQL / JS | E0: CHANGELOG (serie 19) |
+| `playground` | `PlaygroundScreen` | «Probar este código» en la lección; libre, desde Rutas (43.7: ya no sale de Hoy) | editor Python / SQL / JS | E0: CHANGELOG (serie 19) |
 | `projects` | `ProjectScreen` | Hoy → Herramientas | proyecto multi-paso, pasa / falla | E0: CHANGELOG |
 | `admin` | `AdminScreen` | Yo → Admin (solo owner) | las 9 pestañas de `/admin`: buscar usuarios, su ficha y las acciones de soporte con motivo (44.3) | E2: `docs/design/admin-spec.md` |
 
-Total: **14 rutas URL en producción** (más `/_ui` en desarrollo y la redirección `/r/`),
+Total: las **filas de la tabla §1** (agrupadas; contadas el 2026-10-23, `App()` resuelve 21 rutas exactas, los
+prefijos `/r/`, `/u/`, `/verify/`, `/certificate/` y `/report/`, y las 6 de `STANDALONE_DOC`, con `/_ui` solo en desarrollo),
 **18 pantallas** del tipo `Screen` más el onboarding, **33 ficheros** en `frontend/src/pages/`.
 
 ## 3. API
@@ -94,8 +100,8 @@ Búsqueda en `frontend/src` y `backend/app` (sin tests) y en las claves i18n ES.
 | Qué | Dónde se promete | Estado del código |
 |---|---|---|
 | Panel B2B / equipos | `docs/legal/b2b_pilot_offer_*.md`, ledger 24.9 | no existe |
-| `/blog`, `/compare`, `/pricing` | ledger 26.9, 27.10; `archive/SPEC_WEB.md` | `/blog` reservada y vacía (2026-10-02); las otras dos no existen |
-| Sign in with Apple | ADR-13 (obligatorio antes de App Store) | no existe (bloqueado por H.2) |
+| `/blog`, `/compare`, `/pricing` | ledger 26.9, 27.10; `archive/SPEC_WEB.md` | `/blog` existe (lista y detalle de `content/blog/`); las otras dos no existen |
+| Sign in with Apple | ADR-13 (obligatorio antes de App Store) | código hecho (19.2: `oauth.py`, botón en `AuthScreen`), oculto hasta que el servidor tenga sus cuatro variables (H.2) |
 | Comunidad y grupos de estudio | ledger 40.7–40.8 | no existe |
 | Widgets interactivos, tutor por voz | ledger 40.1–40.6 | no existe |
 | Vídeos | ledger 18.9 | no existe |

@@ -526,3 +526,30 @@ leídas por la sesión, el resto por agentes).
     conversión freemium del 2,1 %. Nada de eso es de Whetzy: son las referencias a batir.
 - **Lo que sí puede mover más de 4 puntos** sigue siendo §11.6: usuarios (H.10), tiendas
   y distribución.
+
+## 15. Rúbrica de interfaz y experiencia re-puntuada — 2026-10-24 (46.6, 34.9)
+
+La rúbrica es la de `PLAN_UI_AVANZADA.md` §0 (pesos fijos, solo interfaz y experiencia; la de §7.1
+de este documento mide el producto entero y no se toca). La línea base del 2026-10-17 daba
+**≈ 53**. Cada celda nueva cita lo que la sostiene; las notas siguen siendo juicio de la sesión sobre
+esa evidencia, **sin usuarios**.
+
+| Dimensión | Peso | 17-10 | 24-10 | Evidencia de la nota nueva |
+|---|---|---|---|---|
+| Sistema visual | 0,15 | 65 | 85 | un solo juego de tokens (46.4; `src/theme/` ya no existe; 0 `var(--x, #hex)` en `src/`); `tokens.contraste.test.ts` 79/79; axe sin violaciones en los 50 casos de `e2e/axe-rutas.spec.ts` (23 rutas públicas × oscuro/claro; Hoy, 15 pantallas internas y `/admin` sin permiso en es/en × oscuro/claro), 46/46 y las 4 de `/landing` y `/privacy` el 2026-10-24 |
+| Animación y pulido | 0,15 | 35 | 75 | feedback dentro de la tarjeta (46.1, #266); movimiento reducido respetado y vigilado (`motionGuard.test.ts`, casos «con movimiento reducido» de `entrada46`, `aprender46`, `competir46`, `progreso46`, `comprar46`); sonido y vibración (`lib/feedbackFx.ts`, `@capacitor/haptics`); tabla §7.5 rehecha contra el código |
+| Superficie interactiva | 0,20 | 40 | 45 | tipo `interactive` (40.1) y 3 widgets en código (`frontend/src/widgets/`: búsqueda binaria, CIDR, JOIN) con `e2e/widgets-piloto.spec.ts`; **0 preguntas `interactive` en el banco** (`content/`), así que el alumno aún no ve ninguno |
+| IA dentro de la experiencia | 0,15 | 55 | 60 | tutor por modos (¿Por qué? / ¿Cómo? / A fondo; `e2e/tutor-modos.spec.ts`); el tutor que señala y habla (40.5, 40.6) sigue en TODO |
+| Accesibilidad e i18n | 0,10 | 85 | 90 | axe en cada ruta y pantalla de `App.tsx`, ES y EN, oscuro y claro, salvo dos huecos: `/admin` con la cuenta del dueño y el Quiz con feedback (solo es/oscuro, `accessibility.spec.ts`); arreglados hoy: `Button` cargando sin nombre, contraste de Evidencia, insignia naranja y pestañas en claro, Reintentar en claro, Restablecer, Verificar correo y perfil público inexistente sin encabezado, ▲▼ de la Liga sin nombre, navegación con etiqueta solo en inglés |
+| Rendimiento y sensación nativa | 0,10 | 55 | 60 | vibración nativa (`@capacitor/haptics`); presupuestos de peso (`scripts/check-bundle.mjs`, `e2e/perf-budget.spec.ts`); **LCP en 4G sin medir** esta semana |
+| Onboarding y retención | 0,15 | 50 | 50 | embudo de pago y encuesta del primer quiz propios (`GET /analytics/conversion`, 46.6); **sin cohorte de usuarios**, así que nada medido que mueva la nota |
+| **Total** | 1,00 | **≈ 53** | **≈ 65** | 0,15·85 + 0,15·75 + 0,20·45 + 0,15·60 + 0,10·90 + 0,10·60 + 0,15·50 = 64,5 |
+
+**Meta ≥ 75: no alcanzada.** Lo que más pesa en lo que falta: superficie interactiva (widgets en
+el banco: contenido en pausa, ADR-62) y retención (usuarios).
+
+**Rivales: sin nota.** Las cifras de §0 del plan para Duolingo (≈ 89), Brilliant (≈ 87) y DataCamp
+(≈ 72) eran estimación de memoria. La captura de hoy (`COMPETENCIA.md` §A.2e) es de páginas
+públicas, no del interior de una lección, y no sostiene una nota por dimensión. Por eso aquí **no
+hay ningún «mejor que» ni «peor que»** frente a ellos; 40.13 sigue abierta hasta medir con cuenta y
+con usuarios.

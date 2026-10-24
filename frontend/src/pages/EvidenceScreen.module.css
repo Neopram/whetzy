@@ -101,7 +101,8 @@
   display: block;
   font-weight: 700;
   font-size: 0.95rem;
-  color: var(--le-purple-dark);
+  /* --le-purple-dark en oscuro (#7B68EE) daba 4,34:1 sobre la tarjeta (axe, 34.8). */
+  color: var(--le-purple);
   margin-bottom: 6px;
 }
 .engineDesc {
@@ -198,8 +199,9 @@
 .behindList strong { color: var(--le-text); }
 
 /* ── Links ── */
-.link { color: var(--le-purple-dark); text-decoration: none; }
-.link:hover { text-decoration: underline; }
+/* Subrayado siempre: dentro de un párrafo, el color solo no basta para
+   distinguir un enlace (axe link-in-text-block, WCAG 1.4.1; 34.8). */
+.link { color: var(--le-purple); text-decoration: underline; text-underline-offset: 2px; }
 
 .inlineCode {
   font-family: 'JetBrains Mono', 'Fira Code', monospace;

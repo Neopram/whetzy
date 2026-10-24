@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
-import { registerUser, uniqueUsername, formatViolations, answerCurrentQuestion } from './helpers';
+import { registerUser, uniqueUsername, formatViolations, answerCurrentQuestion, waitForAnimations } from './helpers';
 
 // A plain 4-option MCQ in track01, used to reach the answer-feedback panel
 // without booting the Python runtime.
@@ -11,6 +11,7 @@ test.describe('WCAG 2.2 AA — axe-core', () => {
     await page.goto('/auth');
     await expect(page.getByRole('heading', { name: /Whetzy/i }).or(page.locator('h1,h2').first())).toBeVisible({ timeout: 10_000 }).catch(() => undefined);
 
+    await waitForAnimations(page);
     const results = await new AxeBuilder({ page })
       .withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'])
       .analyze();
@@ -24,6 +25,7 @@ test.describe('WCAG 2.2 AA — axe-core', () => {
     await page.goto('/landing');
     await expect(page.locator('table').first()).toBeAttached({ timeout: 10_000 });
 
+    await waitForAnimations(page);
     const results = await new AxeBuilder({ page })
       .withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'])
       .analyze();
@@ -37,6 +39,7 @@ test.describe('WCAG 2.2 AA — axe-core', () => {
 
     await expect(page.getByRole('button', { name: 'ESTUDIAR AHORA' })).toBeVisible({ timeout: 10_000 });
 
+    await waitForAnimations(page);
     const results = await new AxeBuilder({ page })
       .withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'])
       .analyze();
@@ -58,6 +61,7 @@ test.describe('WCAG 2.2 AA — axe-core', () => {
 
     await page.getByRole('button', { name: 'Yo', exact: true }).click();
     await expect(page.getByRole('switch').first()).toBeVisible({ timeout: 15_000 });
+    await waitForAnimations(page);
     const profile = await new AxeBuilder({ page })
       .withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'])
       .analyze();
@@ -65,6 +69,7 @@ test.describe('WCAG 2.2 AA — axe-core', () => {
 
     await page.getByRole('button', { name: 'Estadísticas' }).click();
     await expect(page.getByRole('heading', { name: 'Estadísticas' })).toBeVisible({ timeout: 15_000 });
+    await waitForAnimations(page);
     const stats = await new AxeBuilder({ page })
       .withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'])
       .analyze();
@@ -83,6 +88,7 @@ test.describe('WCAG 2.2 AA — axe-core', () => {
       page.locator('[class*="loading_"], [class*="leagueName_"]').first()
     ).toBeVisible({ timeout: 20_000 });
 
+    await waitForAnimations(page);
     const results = await new AxeBuilder({ page })
       .withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'])
       .analyze();
@@ -98,6 +104,7 @@ test.describe('WCAG 2.2 AA — axe-core', () => {
     // The module spine carries the status badges — the green/brand tint pills.
     await expect(page.locator('[class*="moduleHeader_"]').first()).toBeVisible({ timeout: 20_000 });
 
+    await waitForAnimations(page);
     const results = await new AxeBuilder({ page })
       .withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'])
       .analyze();
@@ -130,6 +137,7 @@ test.describe('WCAG 2.2 AA — axe-core', () => {
     await answerCurrentQuestion(page);
     await expect(page.locator('[class*="explanation_"]')).toBeVisible({ timeout: 30_000 });
 
+    await waitForAnimations(page);
     const results = await new AxeBuilder({ page })
       .withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'])
       .analyze();
@@ -141,6 +149,7 @@ test.describe('WCAG 2.2 AA — axe-core', () => {
     await page.goto('/privacy');
     await expect(page.locator('h1')).toBeVisible({ timeout: 10_000 });
 
+    await waitForAnimations(page);
     const results = await new AxeBuilder({ page })
       .withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'])
       .analyze();

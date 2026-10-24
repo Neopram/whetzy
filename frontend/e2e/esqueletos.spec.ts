@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
-import { formatViolations, registerUser, uniqueUsername } from './helpers';
+import { formatViolations, registerUser, uniqueUsername, waitForAnimations } from './helpers';
 
 /**
  * 46.14 (docs/PLAN_UI_AVANZADA.md §7.4): con la red lenta, Stats enseña un
@@ -56,7 +56,7 @@ for (const lang of ['es', 'en'] as const) {
       // a contraste 1,01. Antes de axe se espera a que no quede y a que acabe el fundido.
       await page.screenshot({ path: `../docs/ui-snapshots/46.14/esqueleto-${lang}-${width}.png` });
       await expect(page.locator('[data-boot-splash]')).toHaveCount(0);
-      await page.waitForTimeout(300);
+      await waitForAnimations(page);
       const axe = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa']).analyze();
       expect(axe.violations, formatViolations(axe.violations)).toHaveLength(0);
       await expect(page.locator('[aria-busy="true"]')).toHaveCount(0, { timeout: 15_000 });

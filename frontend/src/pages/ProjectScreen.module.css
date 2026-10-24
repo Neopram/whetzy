@@ -213,14 +213,20 @@
   padding-bottom: calc(var(--le-nav-height) + var(--le-space-xl));
 }
 
+/* La tarjeta es un <button> (2026-10-23: con teclado no se abría): se le quitan
+   los estilos del navegador para que se vea igual que cuando era un <div>. */
 .projectCard {
   display: flex;
   align-items: center;
   gap: var(--le-space-md);
+  width: 100%;
   padding: var(--le-space-md);
   border: 1px solid var(--le-border);
   border-radius: var(--le-radius-md);
   background: var(--le-surface);
+  color: inherit;
+  font: inherit;
+  text-align: left;
   cursor: pointer;
   transition: border-color var(--le-transition-base);
 }
@@ -229,43 +235,56 @@
   border-color: var(--le-brand);
 }
 
+.projectCard:focus-visible {
+  outline: 2px solid var(--le-brand);
+  outline-offset: 2px;
+}
+
 .projectInfo {
+  display: block;
   flex: 1;
   min-width: 0;
 }
 
 .projectName {
+  display: block;
   font-size: var(--le-fs-md);
   font-weight: var(--le-fw-bold);
   color: var(--le-text);
 }
 
 .projectMeta {
+  display: block;
   font-size: var(--le-fs-xs);
   color: var(--le-text-secondary);
   margin-top: 2px;
 }
 
+/* El color de marca va en el borde y el fondo, no en la letra: #E48916 sobre
+   su propio tinte daba 2,37:1 (axe en el CI del 2026-10-24) y el azul y el
+   amarillo tampoco llegan a 4,5:1. La letra es --le-text, que pasa en los dos temas. */
 .runtimeBadge {
   font-size: var(--le-fs-xs);
   font-weight: var(--le-fw-black);
-  padding: 2px 8px;
+  padding: 1px 7px;
+  border: 1px solid;
   border-radius: 100px;
+  color: var(--le-text);
 }
 
 .runtimePython {
   background: color-mix(in srgb, var(--brand-python) 12.5%, transparent);
-  color: var(--brand-python);
+  border-color: var(--brand-python);
 }
 
 .runtimeSql {
   background: color-mix(in srgb, var(--brand-sql) 12.5%, transparent);
-  color: var(--brand-sql);
+  border-color: var(--brand-sql);
 }
 
 .runtimeJs {
   background: color-mix(in srgb, var(--brand-js-bg) 12.5%, transparent);
-  color: var(--brand-js);
+  border-color: var(--brand-js);
 }
 
 .empty {

@@ -4,7 +4,7 @@
  */
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { act, cleanup, fireEvent, render, screen } from '@testing-library/react';
-import '../i18n';
+import i18n from '../i18n';
 import { BottomNav } from '../components/layout/BottomNav';
 
 function scrollTo(y: number) {
@@ -20,7 +20,7 @@ beforeEach(() => {
 });
 afterEach(cleanup);
 
-const nav = () => screen.getByRole('navigation', { name: 'Main navigation' });
+const nav = () => screen.getByRole('navigation', { name: i18n.t('nav.main') });
 
 describe('BottomNav — se aparta al leer', () => {
   it('bajar la esconde; subir la devuelve', async () => {

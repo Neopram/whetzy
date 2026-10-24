@@ -137,9 +137,14 @@ export function LeagueScreen() {
                 data-fx={reduce ? undefined : 'pulse-once'}
                 animate={reduce ? undefined : { scale: [1, 1.3, 1] }}
                 transition={{ duration: 0.4, delay: 0.5 }}
+                role="img"
+                aria-label={t('league.promotionZone')}
               >▲</motion.span>
             )}
-            {data.demotion_zone > 0 && p.rank > data.total_members - data.demotion_zone && <span className={styles.rowDemote}>▼</span>}
+            {/* Con nombre: el lector decía «triángulo negro hacia abajo» (34.6). */}
+            {data.demotion_zone > 0 && p.rank > data.total_members - data.demotion_zone && (
+              <span className={styles.rowDemote} role="img" aria-label={t('league.demotionZone')}>▼</span>
+            )}
           </motion.div>
         ))}
         </motion.div>

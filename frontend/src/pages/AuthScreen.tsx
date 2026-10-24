@@ -249,6 +249,8 @@ export function AuthScreen({ onAuthed }: Props) {
           className={`${styles.tab} ${mode === 'register' ? styles.tabActive : ''}`}
           onClick={() => { setMode('register'); setError(null); }}
           type="button"
+          // Cambian de modo, sin paneles: aria-pressed dice cuál está activo (34.4).
+          aria-pressed={mode === 'register'}
         >
           {t('auth.register')}
         </button>
@@ -256,6 +258,7 @@ export function AuthScreen({ onAuthed }: Props) {
           className={`${styles.tab} ${mode === 'login' ? styles.tabActive : ''}`}
           onClick={() => { setMode('login'); setError(null); }}
           type="button"
+          aria-pressed={mode === 'login'}
         >
           {t('auth.login')}
         </button>

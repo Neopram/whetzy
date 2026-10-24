@@ -111,11 +111,16 @@
   border-radius: var(--le-radius-md);
   font-size: var(--le-fs-sm);
   cursor: pointer;
+  transition: transform var(--le-transition-base), box-shadow var(--le-transition-base);
 }
 
+/* La opción elegida se eleva (46.15 E); global.css apaga la transición con
+   movimiento reducido y queda solo el estado. */
 .choiceOn {
   border-color: var(--le-brand);
   font-weight: var(--le-fw-bold);
+  transform: translateY(-2px);
+  box-shadow: var(--le-shadow-md);
 }
 
 .price {

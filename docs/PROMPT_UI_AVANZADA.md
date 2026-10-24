@@ -41,11 +41,11 @@ distintas, mandan ellos y lo anotas en el PR.
   a `common.json` mientras tengas un PR de la 45 abierto. `legal.json`, `motor.json`, `contenido.json`
   y `marketing.json` no se tocan: si una fila necesita un cambio ahí, va en «Fuera de alcance».
 - **Compartidos** (`SESIONES.md` §3): `frontend/package.json` + lockfile, `scripts/ci_local.sh`,
-  `.githooks/**` solo en PRs propios y mínimos (46.2b, 46.5b), listados en «Fuera de alcance».
+  `.githooks/**` solo en PRs propios y mínimos (46.2b; la 46.5b nunca llegó a ser fila), listados en «Fuera de alcance».
 - **Ledger:** lo editas tú, como con la 45, pero en commits `ledger: …` separados y siempre tras
   `git merge origin/master`. Antes del push: `python scripts/ledger.py fases --write`,
-  `python scripts/ledger.py check`, `python scripts/check_docs.py`. Hoy quedan 475 B de margen
-  (60.965 de 61.440): por eso 46.0 va primero y sin ella no se añade ninguna fila.
+  `python scripts/ledger.py check`, `python scripts/check_docs.py`. El 2026-10-17 quedaban 475 B de margen
+  (60.965 de 61.440): por eso 46.0 fue primero. Hoy el margen se mide con `wc -c docs/AUTONOMOUS_STATE.md`.
 - **Contenido:** `content/**` no se toca (ADR-62) hasta D1. `frontend/src/widgets/**` es tuyo
   (`SESIONES.md` §4.1).
 

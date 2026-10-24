@@ -44,8 +44,6 @@ function weakestSkill(skills: CurriculumSkill[]): string {
   return weakest?.skill_id ?? skills[0]?.skill_id ?? '';
 }
 
-const pct = (x: number) => Math.round(x * 100);
-
 export function TracksScreen() {
   const lang = useAppStore((s) => s.user.language);
   const selectedTrackId = useAppStore((s) => s.selectedTrackId);
@@ -449,7 +447,6 @@ function TrackDetail({ track, lang, onBrowse }: { track: TrackRead; lang: 'es' |
             <Curriculum
               track={track.id}
               modules={modules}
-              threshold={cur.data.mastery_threshold}
               lang={lang}
               startQuiz={startQuiz}
               startLesson={startLesson}
@@ -463,11 +460,10 @@ function TrackDetail({ track, lang, onBrowse }: { track: TrackRead; lang: 'es' |
 }
 
 function Curriculum({
-  track, modules, threshold, lang, startQuiz, startLesson, risen,
+  track, modules, lang, startQuiz, startLesson, risen,
 }: {
   track: string;
   modules: CurriculumModule[];
-  threshold: number;
   lang: 'es' | 'en';
   startQuiz: StartQuiz;
   startLesson: (skillId: string) => void;
@@ -510,7 +506,8 @@ function Curriculum({
           </section>
         );
       })}
-      <p className={styles.footnote}>{t('tracks.thresholdNote', { n: pct(threshold) })}</p>
+      {/* ADR-71: el umbral se explica en palabras, no como «95 % (BKT)». */}
+      <p className={styles.footnote}>{t('tracks.thresholdNote')}</p>
     </>
   );
 }

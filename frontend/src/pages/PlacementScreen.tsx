@@ -35,10 +35,6 @@ import { Loading } from '../components/common/Loading';
 /** Las mismas 20 de `PLACEMENT_LENGTH`; lo vigila `test_placement_regla_visible.py`. */
 export const PLACEMENT_LENGTH = 20;
 
-/** El motor devuelve theta en logits (~-3..3); la barra necesita 0..1. */
-function thetaAPorcentaje(theta: number): number {
-  return Math.round(Math.max(0, Math.min(1, (theta + 3) / 6)) * 100);
-}
 
 /** ADR-60: el resultado se dice en palabras, no como «nivel 63 %». Cinco
  *  tramos de un logit sobre la escala de theta (~-3..3). */
@@ -65,7 +61,6 @@ export function PlacementScreen({ trackId }: Props) {
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [pregunta, setPregunta] = useState<QuestionPublic | null>(null);
   const [respondidas, setRespondidas] = useState(0);
-  const [theta, setTheta] = useState(0);
   const [seleccion, setSeleccion] = useState<number | null>(null);
   const [acierto, setAcierto] = useState<boolean | null>(null);
   const [enviando, setEnviando] = useState(false);
@@ -112,7 +107,6 @@ export function PlacementScreen({ trackId }: Props) {
           sessionId, pregunta.id, indice, Date.now() - mostradaEn.current
         );
         setAcierto(r.correct);
-        setTheta(r.ability_estimate);
         setRespondidas(r.questions_answered);
 
         // Un respiro para ver si se acerto antes de pasar; el motor ya tiene la
@@ -278,15 +272,9 @@ export function PlacementScreen({ trackId }: Props) {
         </div>
       </div>
 
-      <div className={styles.abilityIndicator}>
-        <span className={styles.abilityLabel}>{t('placement.estimatedLevel')}</span>
-        <div className={styles.abilityBar}>
-          <div
-            className={styles.abilityFill}
-            style={{ width: `${thetaAPorcentaje(theta)}%` }}
-          />
-        </div>
-      </div>
+      {/* ADR-71 (2026-10-23): aquí había una barra «Nivel estimado» cuyo ancho
+          salía de theta, un % del modelo dibujado. El nivel se dice al final,
+          en palabras (`abilityResult`). */}
 
       <div className={styles.questionCard}>
         <h2 className={styles.questionText}>

@@ -133,6 +133,23 @@ export function formatViolations(violations: AxeViolation[]): string {
 }
 
 /**
+ * Espera a que no quede ninguna animación finita en curso antes de pasar axe:
+ * axe mide el color mezclado con la opacidad del momento, así que un fundido o
+ * un escalonado a medias da contrastes falsos (2026-10-24: /checkout en claro,
+ * 17; las filas de la Liga al entrar escalonadas, 3,14:1). Las infinitas
+ * (pulsos, spinners) no acaban nunca y no cuentan.
+ */
+export async function waitForAnimations(page: Page) {
+  await expect
+    .poll(() => page.evaluate(() => document.getAnimations().filter((a) => {
+      const end = a.effect?.getComputedTiming().endTime;
+      return a.playState === 'running' && typeof end === 'number' && Number.isFinite(end);
+    }).length), { timeout: 15_000 })
+    .toBe(0);
+  await page.waitForTimeout(300);
+}
+
+/**
  * Answers whatever question is currently on screen in QuizScreen and waits
  * for the feedback panel. The answer need not be right: any graded answer
  * reaches the feedback panel, which is all these specs wait for.

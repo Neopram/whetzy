@@ -90,7 +90,7 @@ export function BottomNav() {
     <nav
       className={`${styles.nav} ${hidden ? styles.hidden : ''}`}
       role="navigation"
-      aria-label="Main navigation"
+      aria-label={t('nav.main')}
       data-hidden={hidden ? 'true' : undefined}
       onFocus={() => setFocused(true)}
       onBlur={(e) => { if (!e.currentTarget.contains(e.relatedTarget as Node | null)) setFocused(false); }}
